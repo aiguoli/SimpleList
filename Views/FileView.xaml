@@ -22,6 +22,7 @@
                 <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" />
                 <MenuFlyoutItem Text="Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
                 <MenuFlyoutItem Text="Delete" Command="{Binding DeleteFileCommand}" CommandParameter="{Binding Id}" />
+                <MenuFlyoutItem Text="Rename" Click="ShowRenameFileDialogAsync" />
             </MenuFlyout>
         </Grid.ContextFlyout>
         <Grid.ColumnDefinitions>

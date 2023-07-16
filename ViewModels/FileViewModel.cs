@@ -59,6 +59,11 @@ namespace SimpleList.ViewModels
             Cloud.GetFiles(parrentId);
         }
 
+        private async void ShowRenameFileDialog()
+        {
+
+        }
+
         private readonly DriveItem _file;
 
         public string Id { get => _file.Id; }

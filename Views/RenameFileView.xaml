@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ContentDialog
-    x:Class="SimpleList.Views.CreateFolderView"
+    x:Class="SimpleList.Views.RenameFileView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:SimpleList.ViewModels"
     mc:Ignorable="d"
-    d:DataContext="{x:Bind vm:CreateFolderViewModel}"
-    Title="Create folder"
+    d:DataContext="{x:Bind vm:RenameFileViewModel}"
+    Title="Rename file"
     PrimaryButtonText="OK"
     CloseButtonText="Cancel"
-    PrimaryButtonCommand="{Binding CreateFolderCommand}"
+    PrimaryButtonCommand="{Binding RenameFileCommand}"
     DefaultButton="Primary">
 
-    <TextBox Header="Type name of new folder:" PlaceholderText="Folder name" Text="{Binding FolderName, Mode=TwoWay}" />
+    <TextBox Header="Rename your file:" PlaceholderText="File name" Text="{Binding FileName, Mode=TwoWay}" />
 </ContentDialog>

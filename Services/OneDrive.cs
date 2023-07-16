@@ -31,6 +31,16 @@ namespace SimpleList.Services
             return await graphClient.Me.Drive.Items[parentItemId].Children.Request().AddAsync(requestBody);
         }
 
+        public async Task<DriveItem> RenameFile(string itemId, string newName)
+        {
+            GraphServiceClient graphClient = _provider.GetClient();
+            DriveItem requestBody = new()
+            {
+                Name = newName,
+            };
+            return await graphClient.Me.Drive.Items[itemId].Request().UpdateAsync(requestBody);
+        }
+
         public async void Login()
         {
             try
