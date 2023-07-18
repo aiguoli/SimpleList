@@ -14,5 +14,5 @@
     PrimaryButtonCommand="{Binding RenameFileCommand}"
     DefaultButton="Primary">
 
-    <TextBox Header="Rename your file:" PlaceholderText="File name" Text="{Binding FileName, Mode=TwoWay}" />
+    <TextBox Header="Type new filename:" PlaceholderText="File name" Text="{Binding FileName, Mode=TwoWay}" />
 </ContentDialog>

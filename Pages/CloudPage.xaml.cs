@@ -40,5 +40,10 @@ namespace SimpleList.Pages
             };
             await dialog.ShowAsync();
         }
+
+        private void DragFileToDownload(ListViewBase sender, DragItemsCompletedEventArgs args)
+        {
+
+        }
     }
 }

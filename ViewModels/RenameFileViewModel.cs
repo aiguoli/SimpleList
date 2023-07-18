@@ -9,6 +9,7 @@ namespace SimpleList.ViewModels
         {
             Cloud = cloud;
             _file = file;
+            _fileName = file.Name;
             RenameFileCommand = new RelayCommand(RenameFile);
         }
 
