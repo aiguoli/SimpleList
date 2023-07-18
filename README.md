@@ -1,6 +1,6 @@
 # SimpleList
 
-English | [¼òÌåÖĞÎÄ](./README_zh_CN.md)
+English | [ç®€ä½“ä¸­æ–‡](./README_zh_CN.md)
 
 SimpleList is a OneDrive files index application developed using WinUI3.
 
