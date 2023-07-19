@@ -20,6 +20,7 @@ Packaging seems to be complicated, still under investigation...
 - [x] Delete
 - [ ] Properties
 - [x] Total usage
+- [ ] Open in new tab
 - [ ] Custom theme
 - [ ] Multiple accounts
 
