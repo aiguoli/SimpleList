@@ -36,7 +36,7 @@
             ShowError="False" 
             HorizontalAlignment="Left" 
             VerticalAlignment="Top" 
-            Visibility="{Binding IsLoading}" />
+            Visibility="Collapsed" />
         <BreadcrumbBar Grid.Row="1" x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked" Margin="10 5 10 5">
             <BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="vm:BreadcrumbItem">
@@ -54,7 +54,10 @@
         <ListView  Grid.Row="2"
             ItemsSource="{Binding Files}" 
             ItemTemplate="{StaticResource ListViewItemTemplate}" 
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            AllowDrop="True"
+            DragOver="ListView_DragOver"
+            Drop="DropToUpload">
             <ListView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />

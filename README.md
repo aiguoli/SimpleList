@@ -14,7 +14,7 @@ Packaging seems to be complicated, still under investigation...
 - [x] Download
 - [ ] Preview
 - [ ] Download progress
-- [ ] Upload
+- [x] Upload
 - [ ] Automatic synchronization
 - [x] Rename
 - [x] Delete

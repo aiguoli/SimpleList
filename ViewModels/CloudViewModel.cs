@@ -4,13 +4,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using SimpleList.Services;
-using SimpleList.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Windows.Storage;
 
 namespace SimpleList.ViewModels
 {
@@ -59,6 +57,8 @@ namespace SimpleList.ViewModels
             BreadcrumbItems.Add(new BreadcrumbItem { Name = file.Name, ItemId = file.Id });
             GetFiles(file.Id);
         }
+
+        private async void UploadFile(StorageFile file) { }
 
 
         private string _parentItemId;

@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Authentication;
 using CommunityToolkit.Graph.Extensions;
 using Microsoft.Graph;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace SimpleList.Services
 {
@@ -39,6 +42,34 @@ namespace SimpleList.Services
                 Name = newName,
             };
             return await graphClient.Me.Drive.Items[itemId].Request().UpdateAsync(requestBody);
+        }
+
+        public async Task UploadFileAsync(StorageFile file, string itemId)
+        {
+            GraphServiceClient graphClient = _provider.GetClient();
+            using Stream stream = await file.OpenStreamForReadAsync();
+            UploadSession uploadSession = await graphClient.Me.Drive.Items[itemId].ItemWithPath(file.Name).CreateUploadSession().Request().PostAsync();
+            int maxChunckSize = 320 * 1024;
+            LargeFileUploadTask<DriveItem> fileUploadTask = new(uploadSession, stream, maxChunckSize, graphClient);
+
+            long fileSize = stream.Length;
+            await fileUploadTask.UploadAsync();
+        }
+
+        public async Task UploadFolderAsync(StorageFolder folder, string itemId)
+        {
+            var files = await folder.GetFilesAsync();
+            DriveItem cloudFolder = await CreateFolder(itemId, folder.Name);
+            foreach (var file in files)
+            {
+                await UploadFileAsync(file, cloudFolder.Id);
+            }
+
+            var subfolders = await folder.GetFoldersAsync();
+            foreach(var subfolder in subfolders)
+            {
+                await UploadFolderAsync(subfolder, cloudFolder.Id);
+            }
         }
 
         public async void Login()

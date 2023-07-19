@@ -1,8 +1,12 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.ViewModels;
 using SimpleList.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -41,9 +45,33 @@ namespace SimpleList.Pages
             await dialog.ShowAsync();
         }
 
-        private void DragFileToDownload(ListViewBase sender, DragItemsCompletedEventArgs args)
+        private async void DropToUpload(object sender, DragEventArgs e)
         {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                IReadOnlyList<IStorageItem> items = await e.DataView.GetStorageItemsAsync();
+                CloudViewModel cloudViewModel = (CloudViewModel)DataContext;
+                foreach (IStorageItem item in items)
+                {
+                    if (item is StorageFile file)
+                    {
+                        await cloudViewModel.Drive.UploadFileAsync(file, cloudViewModel.ParentItemId);
+                    }
+                    if (item is StorageFolder folder)
+                    {
+                        await cloudViewModel.Drive.UploadFolderAsync(folder, cloudViewModel.ParentItemId);
+                    }
+                }
+                cloudViewModel.Refresh();
+            }
+        }
 
+        private void ListView_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                e.AcceptedOperation = DataPackageOperation.Copy;
+            }
         }
     }
 }
