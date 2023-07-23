@@ -58,9 +58,6 @@ namespace SimpleList.ViewModels
             GetFiles(file.Id);
         }
 
-        private async void UploadFile(StorageFile file) { }
-
-
         private string _parentItemId;
         private Visibility _isLoading;
         public ObservableCollection<FileViewModel> Files { get; } = new();

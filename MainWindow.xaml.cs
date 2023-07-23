@@ -122,9 +122,9 @@ namespace SimpleList
         }
 
         [DllImport("CoreMessaging.dll")]
-        private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object dispatcherQueueController);
+        private static extern int CreateDispatcherQueueController(in DispatcherQueueOptions options, out nint dispatcherQueueController);
 
-        object m_dispatcherQueueController = null;
+        nint m_dispatcherQueueController;
         public void EnsureWindowsSystemDispatcherQueueController()
         {
             if (Windows.System.DispatcherQueue.GetForCurrentThread() != null)
@@ -133,14 +133,14 @@ namespace SimpleList
                 return;
             }
 
-            if (m_dispatcherQueueController == null)
+            if (m_dispatcherQueueController == 0)
             {
                 DispatcherQueueOptions options;
                 options.dwSize = Marshal.SizeOf(typeof(DispatcherQueueOptions));
                 options.threadType = 2;    // DQTYPE_THREAD_CURRENT
                 options.apartmentType = 2; // DQTAT_COM_STA
 
-                CreateDispatcherQueueController(options, ref m_dispatcherQueueController);
+                _ = CreateDispatcherQueueController(options, out m_dispatcherQueueController);
             }
         }
     }

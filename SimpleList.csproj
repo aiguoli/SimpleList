@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>SimpleList</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -12,14 +12,32 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>C74F414ECE1179FF7FFD7BBC4C65EA20008D20D3</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>32CB264851E8BF923F1ED3C1843A4BB405767DFD</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Never</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxPackageDir>C:\Users\Thawne\Desktop\1\</AppxPackageDir>
+	<!--  不打包  -->
+	<WindowsPackageType>None</WindowsPackageType>
+	<!--  启用剪裁  -->
+	<!--  会导致文件列表页刷新不出文件，很奇怪  -->
+	<PublishTrimmed>true</PublishTrimmed>
+	<TrimMode>partial</TrimMode>
+	<!--  自包含 .NET 运行时  -->
+	<SelfContained>true</SelfContained>
+	<!--  单文件  -->
+	<PublishSingleFile>true</PublishSingleFile>
+	<!--  关闭 ReadyToRun  -->
+	<PublishReadyToRun>false</PublishReadyToRun>
+	<!--  不包含 Windows App Runtime  -->
+	<WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
+	<!--  压缩发布的文件  -->
+	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+	<!--  单文件包含原生库  -->
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>  
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\SettingsCard.xaml" />
@@ -45,11 +63,11 @@
     <PackageReference Include="CommunityToolkit.Authentication" Version="7.1.4" />
     <PackageReference Include="CommunityToolkit.Authentication.Msal" Version="7.1.4" />
     <PackageReference Include="CommunityToolkit.Graph" Version="7.1.4" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230602002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
-    <Manifest Include="$(ApplicationManifest)" />
+	<Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
   <!-- 

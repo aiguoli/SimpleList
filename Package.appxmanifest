@@ -10,7 +10,7 @@
   <Identity
     Name="03520929-b815-448a-ad84-5b25532dd443"
     Publisher="CN=Thawne"
-    Version="0.0.1.0" />
+    Version="0.1.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="03520929-b815-448a-ad84-5b25532dd443" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
