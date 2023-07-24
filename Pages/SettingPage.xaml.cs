@@ -15,12 +15,12 @@ namespace SimpleList.Pages
         public SettingPage()
         {
             InitializeComponent();
-            themeMode.SelectedIndex = App.Current.RequestedTheme switch
-            {
-                ApplicationTheme.Light => 1,
-                ApplicationTheme.Dark => 2,
-                _ => 0,
-            };
+            //themeMode.SelectedIndex = App.Current.RequestedTheme switch
+            //{
+            //    ApplicationTheme.Light => 1,
+            //    ApplicationTheme.Dark => 2,
+            //    _ => 0,
+            //};
         }
 
         private void themeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
