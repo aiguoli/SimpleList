@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Authentication;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using SimpleList.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,7 +34,13 @@ namespace SimpleList
                 Title = "SimpleList"
             };
             m_window.Activate();
+
             ConfigureGlobalProvider();
+            Ioc.Default.ConfigureServices(
+                new ServiceCollection()
+                    .AddSingleton<OneDrive>()
+                    .BuildServiceProvider()
+            );
         }
 
         void ConfigureGlobalProvider()

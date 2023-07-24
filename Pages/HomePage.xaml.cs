@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.Services;
 
@@ -14,7 +15,7 @@ namespace SimpleList.Pages
         public HomePage()
         {
             InitializeComponent();
-            // GetTotalUsed();
+            GetDisplayName();
         }
 
         private async void GetTotalUsed()
@@ -24,6 +25,15 @@ namespace SimpleList.Pages
             foreach (var file in files)
             {
                 totalUsed += file.Size ?? 0;
+            }
+        }
+
+        private async void GetDisplayName()
+        {
+            OneDrive drive = Ioc.Default.GetService<OneDrive>();
+            if (drive.IsAuthenticated)
+            {
+                GreetingText.Text = "Hello, " + await drive.GetDisplayName();
             }
         }
 

@@ -72,6 +72,12 @@ namespace SimpleList.Services
             }
         }
 
+        public async Task<string> GetDisplayName()
+        {
+            User user = await _provider.GetClient().Me.Request().GetAsync();
+            return user.DisplayName;
+        }
+
         public async void Login()
         {
             try
@@ -84,6 +90,10 @@ namespace SimpleList.Services
             }
         }
 
-        private IProvider _provider = ProviderManager.Instance.GlobalProvider;
+        private readonly IProvider _provider = ProviderManager.Instance.GlobalProvider;
+
+        // https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/4910
+        // public bool IsAuthenticated => _provider.State == ProviderState.SignedIn;
+        public bool IsAuthenticated => _provider.CurrentAccountId != null;
     }
 }

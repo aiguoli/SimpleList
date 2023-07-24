@@ -5,38 +5,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SimpleList.Pages"
     xmlns:uc="using:SimpleList.Controls"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Padding="36 0 36 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Settings" Margin="30" FontSize="30 20 30 20" FontWeight="Medium" />
-        <!--<StackPanel Grid.Row="1" Orientation="Vertical" Margin="30 0 30 0">
-            <Grid BorderBrush="DarkGray" BorderThickness="1" Padding="10 15 10 15" CornerRadius="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <FontIcon Glyph="&#xE793;" HorizontalAlignment="Left" FontSize="25" />
-                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="15 0 15 0">
-                    <TextBlock Text="App Theme" />
-                    <TextBlock Text="Select which app theme to display" />
-                </StackPanel>
-                <ComboBox Grid.Column="2" x:Name="themeMode" SelectedIndex="2">
-                    <ComboBoxItem Content="Light" Tag="Light" />
-                    <ComboBoxItem Content="Dark" Tag="Dark" />
-                    <ComboBoxItem Content="Use system setting" Tag="Default" />
-                </ComboBox>
-            </Grid>
-        </StackPanel>-->
+        <TextBlock Text="Settings" FontSize="30" FontWeight="Medium" Margin="0 20 0 20" />
         <StackPanel Grid.Row="1" Orientation="Vertical" >
-            <uc:SettingsCard Title="App Theme" Description="Select which app theme to display" Margin="0 10 0 10">
+            <!--<uc:SettingsCard Title="App Theme" Description="Select which app theme to display">
                 <uc:SettingsCard.Icon>
                     <FontIcon Glyph="&#xE793;" FontSize="25" />
                 </uc:SettingsCard.Icon>
@@ -45,10 +27,21 @@
                     <ComboBoxItem Content="Light" Tag="Light" />
                     <ComboBoxItem Content="Dark" Tag="Dark" />
                 </ComboBox>
-            </uc:SettingsCard>
+            </uc:SettingsCard>-->
 
-            <TextBlock Text="About" Margin="30" FontSize="20" />
-            <HyperlinkButton Content="Github" NavigateUri="https://github.com/aiguoli/SimpleList" Margin="30 0 30 0" />
+            <labs:SettingsCard Header="App Theme">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE790;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="themeMode" SelectionChanged="themeMode_SelectionChanged">
+                    <ComboBoxItem Content="Use system setting" Tag="Default" />
+                    <ComboBoxItem Content="Light" Tag="Light" />
+                    <ComboBoxItem Content="Dark" Tag="Dark" />
+                </ComboBox>
+            </labs:SettingsCard>
+
+            <TextBlock Text="About" FontSize="20" Margin="0 10 0 10" />
+            <HyperlinkButton Content="Github" NavigateUri="https://github.com/aiguoli/SimpleList" />
         </StackPanel>
     </Grid>
 </Page>

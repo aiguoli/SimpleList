@@ -15,12 +15,18 @@ namespace SimpleList.Pages
         public SettingPage()
         {
             InitializeComponent();
+            themeMode.SelectedIndex = App.Current.RequestedTheme switch
+            {
+                ApplicationTheme.Light => 1,
+                ApplicationTheme.Dark => 2,
+                _ => 0,
+            };
         }
 
         private void themeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Window startUpWindow = App.StartupWindow;
-            var selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
+            string selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
             if (Enum.TryParse(selectedTheme, out ElementTheme theme) is true)
             {
                 if (startUpWindow.Content is FrameworkElement frameworkElement)

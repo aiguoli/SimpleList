@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Authentication;
 using CommunityToolkit.Graph.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph;
 using Microsoft.UI.Xaml;
@@ -16,7 +17,7 @@ namespace SimpleList.ViewModels
     {
         public CloudViewModel()
         {
-            Drive = new();
+            Drive = Ioc.Default.GetService<OneDrive>();
             OpenFolderCommand = new RelayCommand<FileViewModel>(OpenFolder);
             RefreshCommand = new RelayCommand(Refresh);
             BreadcrumbItems.Add(new BreadcrumbItem { Name = "Home", ItemId = "Root" });
