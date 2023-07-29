@@ -27,7 +27,7 @@ namespace SimpleList.ViewModels
 
         public async void GetFiles(string itemId = "Root")
         {
-            _isLoading = Visibility.Visible;
+            IsLoading = Visibility.Visible;
             _parentItemId = itemId;
             IProvider provider = ProviderManager.Instance.GlobalProvider;
             GraphServiceClient graphClient = provider.GetClient();
@@ -45,7 +45,7 @@ namespace SimpleList.ViewModels
                 Debug.WriteLine(ex);
                 await provider.SignInAsync();
             }
-            _isLoading = Visibility.Collapsed;
+            IsLoading = Visibility.Collapsed;
         }
 
         public void Refresh()

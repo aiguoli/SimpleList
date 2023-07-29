@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Authentication;
 using CommunityToolkit.Graph.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph;
 using Microsoft.UI.Xaml;
@@ -28,6 +29,7 @@ namespace SimpleList.ViewModels
 
         private async void DownloadFile(string itemId)
         {
+            // Only download small files
             IProvider provider = ProviderManager.Instance.GlobalProvider;
             GraphServiceClient graphClient = provider.GetClient();
 
@@ -41,15 +43,19 @@ namespace SimpleList.ViewModels
             savePicker.SuggestedFileName = _file.Name;
             InitializeWithWindow.Initialize(savePicker, hwnd);
             StorageFile file = await savePicker.PickSaveFileAsync();
+            //if (file != null)
+            //{
+            //    var filePath = file.Path;
+            //    var contentStream = await graphClient.Me.Drive.Items[itemId].Content.Request().GetAsync();
+            //    using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+            //    await contentStream.CopyToAsync(fileStream);
+            //}
             if (file != null)
             {
-                var filePath = file.Path;
-                var contentStream = await graphClient.Me.Drive.Items[itemId].Content.Request().GetAsync();
-                using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-                await contentStream.CopyToAsync(fileStream);
+                TaskManagerViewModel manager = Ioc.Default.GetService<TaskManagerViewModel>();
+                await manager.AddDownloadTask(itemId, file);
             }
         }
-
         private async void DeleteFile(string itemId)
         {
             string parrentId = Cloud.ParentItemId;

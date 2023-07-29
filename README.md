@@ -6,7 +6,7 @@ SimpleList is a OneDrive files index application developed using WinUI3.
 
 # Usage
 
-Packaging seems to be complicated, still under investigation...
+Unzip and then double click
 
 # Features
 
@@ -26,7 +26,8 @@ Packaging seems to be complicated, still under investigation...
 
 # Screenshots
 
-![HomePage](./ScreenShots/home.png)
-![CloudPage](./ScreenShots/cloud.png)
+![HomePage](./ScreenShots/HomePage.png)
+![CloudPage](./ScreenShots/CloudPage.png)
 ![CreateFolder](./ScreenShots/newFolder.png)
-![DarkMode](./ScreenShots/dark.png)
+![TaskManager](./ScreenShots/TaskManagerPage.png)
+![DarkMode](./ScreenShots/DarkMode.png)

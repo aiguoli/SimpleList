@@ -17,6 +17,12 @@ namespace SimpleList.Services
             return await graphClient.Me.Drive.Items[itemId].Children.Request().GetAsync();
         }
 
+        public async Task<DriveItem> GetItem(string itemId)
+        {
+            GraphServiceClient graphClient = _provider.GetClient();
+            return await graphClient.Me.Drive.Items[itemId].Request().GetAsync();
+        }
+
         public async Task<DriveItem> CreateFolder(string parentItemId, string folderName)
         {
             GraphServiceClient graphClient = _provider.GetClient();

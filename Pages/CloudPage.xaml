@@ -36,7 +36,7 @@
             ShowError="False" 
             HorizontalAlignment="Left" 
             VerticalAlignment="Top" 
-            Visibility="Collapsed" />
+            Visibility="{Binding IsLoading}" />
         <BreadcrumbBar Grid.Row="1" x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked" Margin="10 5 10 5">
             <BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="vm:BreadcrumbItem">

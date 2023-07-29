@@ -6,7 +6,7 @@ OneDrive列表程序，使用WinUI3开发
 
 # 使用方法
 
-打包似乎很麻烦，还在研究...
+解压后双击打开
 
 # 功能
 
@@ -30,7 +30,8 @@ WinForms，WPF太老了，Avalonia坑太多了用不明白，HTML+CSS+JS的框架又太大，Iced和Sl
 
 # 截图
 
-![HomePage](./ScreenShots/home.png)
-![CloudPage](./ScreenShots/cloud.png)
+![HomePage](./ScreenShots/HomePage.png)
+![CloudPage](./ScreenShots/CloudPage.png)
 ![CreateFolder](./ScreenShots/newFolder.png)
-![DarkMode](./ScreenShots/dark.png)
+![TaskManager](./ScreenShots/TaskManagerPage.png)
+![DarkMode](./ScreenShots/DarkMode.png)
