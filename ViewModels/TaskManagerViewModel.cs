@@ -17,15 +17,20 @@ namespace SimpleList.ViewModels
             await task.StartDownload();
         }   
 
-        public async Task StartAllAsync()
+        public void StartAll()
         {
             foreach (DownloadTaskViewModel task in DownloadTasks)
             {
                 if (!task.Completed)
                 {
-                    await task.ResumeDownload();
+                    task.ResumeDownload();
                 }
             }
+        }
+
+        public void RemoveSelectedCompletedTask(DownloadTaskViewModel task)
+        {
+            DownloadTasks.Remove(task);
         }
 
         public void RemoveCompletedTasks()

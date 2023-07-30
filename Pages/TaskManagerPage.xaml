@@ -18,6 +18,12 @@
             <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Collapsed" FalseValue="Visible" />
             <DataTemplate x:Key="DownloadTaskTemplate" x:DataType="vm:DownloadTaskViewModel">
                 <Grid Margin="0 10 0 10">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Resume" Command="{Binding ResumeCommand}" IsEnabled="{Binding IsPaused}" />
+                            <MenuFlyoutItem Text="Remove" Command="{Binding CancelCommand}" />
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -28,8 +34,16 @@
                         <TextBlock Text="Download completed" Visibility="{Binding Completed, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 0">
-                        <FontIcon Glyph="&#xE769;" Margin="0 0 10 0" />
-                        <FontIcon Glyph="&#xE711;" />
+                        <Button Margin="0 0 10 0" Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}}" Command="{Binding PauseCommand}">
+                            <!--Pasue icon-->
+                            <FontIcon Glyph="&#xE769;" FontSize="10" />
+                        </Button>
+                        <Button Margin="0 0 10 0" Visibility="{Binding IsPaused, Converter={StaticResource BoolToVisibilityConverter}}" Command="{Binding ResumeCommand}">
+                            <FontIcon Glyph="&#xE768;" FontSize="10" />
+                        </Button>
+                        <Button Command="{Binding CancelCommand}">
+                            <FontIcon Glyph="&#xE711;" FontSize="10" />
+                        </Button>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
