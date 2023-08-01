@@ -73,6 +73,7 @@ namespace SimpleList.ViewModels
         public DateTimeOffset? Updated { get => _file.LastModifiedDateTime; }
         public bool IsFile { get => _file.Folder == null; }
         public bool IsFolder { get => !IsFile; }
+        public int? ChildrenCount { get => _file.Folder?.ChildCount; }
         public CloudViewModel Cloud { get; }
         public string ItemType { get; }
         public RelayCommand<string> DownloadFileCommand { get; }
