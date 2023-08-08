@@ -12,7 +12,7 @@ Unzip and then double click
 
 - [x] Index
 - [x] Download
-- [ ] Share
+- [x] Share
 - [ ] Preview
 - [x] Download progress
 - [x] Upload

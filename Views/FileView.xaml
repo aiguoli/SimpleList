@@ -15,7 +15,7 @@
         <converter:DateTimeOffsetToStringConverter x:Key="DateTimeOffsetToStringConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid DoubleTapped="OpenFolder">
         <Grid.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" IsEnabled="{Binding IsFolder}" />

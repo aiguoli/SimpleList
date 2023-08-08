@@ -28,12 +28,6 @@
         </ComboBox>
         <CalendarDatePicker PlaceholderText="Pick expiration date" Header="Expiration date" x:Name="ExpirationDateTime" Date="{Binding ExpirationDateTime, Mode=TwoWay}" />
         <TextBox Header="Password" PlaceholderText="Optional" Text="{Binding Password, Mode=TwoWay}" />
-        <TextBox IsEnabled="False" Header="Share Link" Text="{Binding ShareLink}" Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
-        <RichTextBlock Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
-            <Paragraph>
-                <Run Text="Share Link:" />
-                <Run Text="{Binding ShareLink}" />
-            </Paragraph>
-        </RichTextBlock>
+        <TextBox Header="Share Link" Text="{Binding ShareLink}" Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
     </StackPanel>
 </ContentDialog>
