@@ -36,5 +36,16 @@ namespace SimpleList.Views
             };
             await dialog.ShowAsync();
         }
+
+        private async void ShowShareFileDialogAsync(object sender, RoutedEventArgs e)
+        {
+            FileViewModel viewModel = DataContext as FileViewModel;
+            ShareFileView dialog = new()
+            {
+                XamlRoot = XamlRoot,
+                DataContext = new ShareFileViewModel(viewModel)
+            };
+            await dialog.ShowAsync();
+        }
     }
 }

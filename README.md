@@ -14,7 +14,7 @@ Unzip and then double click
 - [x] Download
 - [ ] Share
 - [ ] Preview
-- [ ] Download progress
+- [x] Download progress
 - [x] Upload
 - [ ] Automatic synchronization
 - [x] Rename

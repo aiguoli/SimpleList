@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="SimpleList.Views.ShareFileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{x:Bind vm:ShareFileViewModel}"
+    Title="Share File"
+    PrimaryButtonText="OK"
+    PrimaryButtonCommand="{Binding ShareFileCommand}"
+    CloseButtonText="Close"
+    DefaultButton="Primary"
+    Closing="ContentDialog_Closing">
+
+    <ContentControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+    </ContentControl.Resources>
+
+    <StackPanel Orientation="Vertical">
+        <ComboBox Header="Scope" SelectedIndex="{Binding Type, Mode=TwoWay}">
+            <x:String>View</x:String>
+            <x:String>Edit</x:String>
+        </ComboBox>
+        <CalendarDatePicker PlaceholderText="Pick expiration date" Header="Expiration date" x:Name="ExpirationDateTime" Date="{Binding ExpirationDateTime, Mode=TwoWay}" />
+        <TextBox Header="Password" PlaceholderText="Optional" Text="{Binding Password, Mode=TwoWay}" />
+        <TextBox IsEnabled="False" Header="Share Link" Text="{Binding ShareLink}" Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+        <RichTextBlock Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
+            <Paragraph>
+                <Run Text="Share Link:" />
+                <Run Text="{Binding ShareLink}" />
+            </Paragraph>
+        </RichTextBlock>
+    </StackPanel>
+</ContentDialog>

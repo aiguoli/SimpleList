@@ -78,6 +78,13 @@ namespace SimpleList.Services
             }
         }
 
+        public async Task<string> CreateLink(string itemId, DateTimeOffset? expirationDateTime=null, string password=null, string type = "view")
+        {
+            GraphServiceClient graphClient = _provider.GetClient();
+            Permission result = await graphClient.Me.Drive.Items[itemId].CreateLink(type, "anonymous", expirationDateTime, password).Request().PostAsync();
+            return result.Link.WebUrl;
+        }
+
         public async Task<string> GetDisplayName()
         {
             User user = await _provider.GetClient().Me.Request().GetAsync();
