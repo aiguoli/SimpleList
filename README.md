@@ -12,13 +12,14 @@ Unzip and then double click
 
 - [x] Index
 - [x] Download
+- [ ] Share
 - [ ] Preview
 - [ ] Download progress
 - [x] Upload
 - [ ] Automatic synchronization
 - [x] Rename
 - [x] Delete
-- [ ] Properties
+- [x] Properties
 - [x] Total usage
 - [ ] Open in new tab
 - [ ] Custom theme
