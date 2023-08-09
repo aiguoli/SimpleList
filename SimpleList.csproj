@@ -19,7 +19,6 @@
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Never</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <AppxPackageDir>C:\Users\Thawne\Desktop\1\</AppxPackageDir>
 	<!--  不打包  -->
 	<WindowsPackageType>None</WindowsPackageType>
 	<!--  启用剪裁  -->
