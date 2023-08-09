@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Graph;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.Services;
 
@@ -16,15 +17,16 @@ namespace SimpleList.Pages
         {
             InitializeComponent();
             GetDisplayName();
+            GetTotalUsed();
         }
 
         private async void GetTotalUsed()
         {
-            long totalUsed = 0;
-            var files = await (new OneDrive().GetFiles());
-            foreach (var file in files)
+            OneDrive drive = Ioc.Default.GetService<OneDrive>();
+            if (drive.IsAuthenticated)
             {
-                totalUsed += file.Size ?? 0;
+                Quota info = await drive.GetStorageInfo();
+                StorageText.Text = "Capacity: " + ReadableFileSize(info.Used ?? 0) + "/" + ReadableFileSize(info.Total ?? 0);
             }
         }
 

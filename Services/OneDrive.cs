@@ -91,6 +91,13 @@ namespace SimpleList.Services
             return user.DisplayName;
         }
 
+        public async Task<Quota> GetStorageInfo()
+        {
+            GraphServiceClient graphClient = _provider.GetClient();
+            Drive drive = await graphClient.Me.Drive.Request().GetAsync();
+            return drive.Quota;
+        }
+
         public async void Login()
         {
             try
