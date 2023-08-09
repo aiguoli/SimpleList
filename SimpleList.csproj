@@ -37,7 +37,8 @@
 	<!--  压缩发布的文件  -->
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 	<!--  单文件包含原生库  -->
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>  
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<PlatformTarget>AnyCPU</PlatformTarget>  
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\SettingsCard.xaml" />
