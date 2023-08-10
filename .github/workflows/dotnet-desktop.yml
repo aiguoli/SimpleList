@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
-        platform: [win10-x64, win10-x86]
+        platform: [x64, x86]
 
     runs-on: windows-latest
 
@@ -45,9 +45,7 @@ jobs:
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=${{ matrix.configuration }}
 
     # Create the app by building and publishing the project
     - name: Create the app
@@ -61,4 +59,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Upload app
-        path: bin
+        path: |
+          bin/win10-x64
+          bin/win10-x86
