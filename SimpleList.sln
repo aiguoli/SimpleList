@@ -15,8 +15,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|ARM64 = Release|ARM64
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
+		Release|x64 = Release|win10-x64
+		Release|x86 = Release|win10-x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{88F4E1E7-EE5D-44D1-AC7C-4986DF8725DA}.Debug|Any CPU.ActiveCfg = Debug|x64
