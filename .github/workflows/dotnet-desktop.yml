@@ -58,7 +58,7 @@ jobs:
 
     # Upload the app
     - name: Upload app
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: Upload app
         path: bin
