@@ -21,7 +21,7 @@ namespace SimpleList.ViewModels
             OpenFolderCommand = new RelayCommand<FileViewModel>(OpenFolder);
             RefreshCommand = new RelayCommand(Refresh);
             BreadcrumbItems.Add(new BreadcrumbItem { Name = "Home", ItemId = "Root" });
-            GetFiles();
+            // GetFiles();
         }
 
 
@@ -59,8 +59,8 @@ namespace SimpleList.ViewModels
             GetFiles(file.Id);
         }
 
-        private string _parentItemId;
-        private Visibility _isLoading;
+        private string _parentItemId = "Root";
+        private Visibility _isLoading = Visibility.Collapsed;
         public ObservableCollection<FileViewModel> Files { get; } = new();
         public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
         public FileViewModel SelectedItem { get; set; }
