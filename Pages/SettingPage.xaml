@@ -14,21 +14,12 @@
     <Grid Padding="36 0 36 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Settings" FontSize="30" FontWeight="Medium" Margin="0 20 0 20" />
-        <StackPanel Grid.Row="1" Orientation="Vertical" >
-            <!--<uc:SettingsCard Title="App Theme" Description="Select which app theme to display">
-                <uc:SettingsCard.Icon>
-                    <FontIcon Glyph="&#xE793;" FontSize="25" />
-                </uc:SettingsCard.Icon>
-                <ComboBox x:Name="themeMode" SelectionChanged="themeMode_SelectionChanged">
-                    <ComboBoxItem Content="Use system setting" Tag="Default" />
-                    <ComboBoxItem Content="Light" Tag="Light" />
-                    <ComboBoxItem Content="Dark" Tag="Dark" />
-                </ComboBox>
-            </uc:SettingsCard>-->
-
+        <TextBlock Text="Settings" FontSize="30" FontWeight="Medium" Margin="0 20 0 0" />
+        <TextBlock Grid.Row="1" Text="Appearance behavior" FontWeight="Bold" Margin="0 10 0 10" />
+        <StackPanel Grid.Row="2" Orientation="Vertical" >
             <labs:SettingsCard Header="App Theme">
                 <labs:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE790;" />
@@ -40,8 +31,22 @@
                 </ComboBox>
             </labs:SettingsCard>
 
-            <TextBlock Text="About" FontSize="20" Margin="0 10 0 10" />
-            <HyperlinkButton Content="Github" NavigateUri="https://github.com/aiguoli/SimpleList" />
+            <TextBlock Text="About" FontWeight="Bold" Margin="0 10 0 10" />
+            <labs:SettingsExpander Header="SimpleList" Description="All free for you">
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE753;" />
+                </labs:SettingsExpander.HeaderIcon>
+                <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        IsTextSelectionEnabled="True"
+                        Text="{x:Bind Version}" />
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard Header="Github">
+                        <HyperlinkButton Content="https://github.com/aiguoli/SimpleList" NavigateUri="https://github.com/aiguoli/SimpleList" />
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+            
         </StackPanel>
     </Grid>
 </Page>

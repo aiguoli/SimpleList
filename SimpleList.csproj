@@ -37,7 +37,13 @@
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 	<!--  单文件包含原生库  -->
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-	<PlatformTarget>AnyCPU</PlatformTarget>  
+	<PlatformTarget>AnyCPU</PlatformTarget>
+	<AssemblyName>SimpleList</AssemblyName>
+	<Authors>Thawne</Authors>
+	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
+	<AssemblyVersion>1.0.0</AssemblyVersion>
+	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
+	<PackageIcon></PackageIcon>  
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\SettingsCard.xaml" />
@@ -55,8 +61,6 @@
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
@@ -83,6 +87,20 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Assets\Square150x150Logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\ShareFileView.xaml">
