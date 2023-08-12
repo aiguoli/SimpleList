@@ -48,16 +48,16 @@ namespace SimpleList
                 m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
 
                 // Hooking up the policy object
-                m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
-                this.Activated += Window_Activated;
-                this.Closed += Window_Closed;
-                ((FrameworkElement)this.Content).ActualThemeChanged += Window_ThemeChanged;
+                m_configurationSource = new SystemBackdropConfiguration();
+                Activated += Window_Activated;
+                Closed += Window_Closed;
+                ((FrameworkElement)Content).ActualThemeChanged += Window_ThemeChanged;
 
                 // Initial configuration state.
                 m_configurationSource.IsInputActive = true;
                 SetConfigurationSourceTheme();
 
-                m_micaController = new Microsoft.UI.Composition.SystemBackdrops.MicaController();
+                m_micaController = new MicaController();
 
                 // Enable the system backdrop.
                 // Note: Be sure to have "using WinRT;" to support the Window.As<...>() call.

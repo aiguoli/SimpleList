@@ -10,6 +10,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=vm:CloudViewModel}"
     mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -38,8 +39,8 @@
             HorizontalAlignment="Left" 
             VerticalAlignment="Top" 
             Visibility="{Binding IsLoading}" />
-        <RelativePanel Grid.Row="1">
-            <BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked" Margin="10 5 10 5">
+        <RelativePanel Grid.Row="1" Margin="10 5 10 5">
+            <BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked">
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate x:DataType="vm:BreadcrumbItem">
                         <BreadcrumbBarItem Content="{Binding}" AutomationProperties.Name="{Binding Name}" Tag="{Binding ItemId}">
