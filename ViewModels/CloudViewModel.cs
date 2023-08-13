@@ -9,6 +9,7 @@ using SimpleList.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Windows.Storage;
 
 namespace SimpleList.ViewModels
@@ -24,26 +25,15 @@ namespace SimpleList.ViewModels
             // GetFiles();
         }
 
-
         public async void GetFiles(string itemId = "Root")
         {
             IsLoading = Visibility.Visible;
             _parentItemId = itemId;
-            IProvider provider = ProviderManager.Instance.GlobalProvider;
-            GraphServiceClient graphClient = provider.GetClient();
-            try
+            IDriveItemChildrenCollectionPage files = await Drive.GetFiles(_parentItemId);
+            Files.Clear();
+            foreach (DriveItem file in files)
             {
-                var files = await graphClient.Me.Drive.Items[_parentItemId].Children.Request().GetAsync();
-                Files.Clear();
-                foreach (var file in files)
-                {
-                    Files.Add(new FileViewModel(this, file));
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                await provider.SignInAsync();
+                Files.Add(new FileViewModel(this, file));
             }
             IsLoading = Visibility.Collapsed;
         }

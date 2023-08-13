@@ -11,10 +11,10 @@ namespace SimpleList.Services
 {
     public class OneDrive
     {
-        public async Task<IDriveItemChildrenCollectionPage> GetFiles(string itemId = "Root")
+        public async Task<IDriveItemChildrenCollectionPage> GetFiles(string parentId = "Root")
         {
             GraphServiceClient graphClient = _provider.GetClient();
-            return await graphClient.Me.Drive.Items[itemId].Children.Request().GetAsync();
+            return await graphClient.Me.Drive.Items[parentId].Children.Request().GetAsync();
         }
 
         public async Task<DriveItem> GetItem(string itemId)
