@@ -1,16 +1,10 @@
-﻿using CommunityToolkit.Authentication;
-using CommunityToolkit.Graph.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
-using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using Windows.Storage;
 
 namespace SimpleList.ViewModels
 {

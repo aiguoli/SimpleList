@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
 using SimpleList.ViewModels;
+using System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -45,7 +46,7 @@ namespace SimpleList
             );
         }
 
-        void ConfigureGlobalProvider()
+        static void ConfigureGlobalProvider()
         {
             if (ProviderManager.Instance.GlobalProvider == null)
             {
@@ -57,5 +58,6 @@ namespace SimpleList
 
         private static Window m_window;
         public static Window StartupWindow => m_window;
+        public IServiceProvider Services { get; }
     }
 }
