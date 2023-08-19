@@ -3,7 +3,6 @@ using CommunityToolkit.Graph.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
 using Downloader;
 using Microsoft.Graph;
 using Microsoft.UI.Dispatching;
@@ -11,7 +10,6 @@ using SimpleList.Services;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
 namespace SimpleList.ViewModels
@@ -96,14 +94,14 @@ namespace SimpleList.ViewModels
             {
                 _downloader.CancelAsync();
             }
-            _manager.RemoveSelectedCompletedTask(this);
+            _manager.RemoveSelectedDownloadTasks(this);
         }
 
         public static readonly int chunkSize = 1024 * 1024;  // 1MB chunks
         private readonly string _itemId;
         private readonly StorageFile _file;
         private OneDrive Drive { get; }
-        private TaskManagerViewModel _manager = Ioc.Default.GetService<TaskManagerViewModel>();
+        private readonly TaskManagerViewModel _manager = Ioc.Default.GetService<TaskManagerViewModel>();
         private DownloadService _downloader;
         private DownloadPackage _pack;
         private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();

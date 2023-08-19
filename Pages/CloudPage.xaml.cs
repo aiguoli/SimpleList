@@ -2,11 +2,15 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.ViewModels;
 using SimpleList.Views;
+using SimpleList.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Linq;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -51,17 +55,21 @@ namespace SimpleList.Pages
             {
                 IReadOnlyList<IStorageItem> items = await e.DataView.GetStorageItemsAsync();
                 CloudViewModel cloudViewModel = (CloudViewModel)DataContext;
-                foreach (IStorageItem item in items)
-                {
-                    if (item is StorageFile file)
-                    {
-                        await cloudViewModel.Drive.UploadFileAsync(file, cloudViewModel.ParentItemId);
-                    }
-                    if (item is StorageFolder folder)
-                    {
-                        await cloudViewModel.Drive.UploadFolderAsync(folder, cloudViewModel.ParentItemId);
-                    }
-                }
+                //foreach (IStorageItem item in items)
+                //{
+                //    if (item is StorageFile file)
+                //    {
+                //        await cloudViewModel.Drive.UploadFileAsync(file, cloudViewModel.ParentItemId);
+                //    }
+                //    if (item is StorageFolder folder)
+                //    {
+                //        await cloudViewModel.Drive.UploadFolderAsync(folder, cloudViewModel.ParentItemId);
+                //    }
+                //}
+
+                TaskManagerViewModel manager = Ioc.Default.GetService<TaskManagerViewModel>();
+                var tasks = items.Select(item => manager.AddUploadTask(cloudViewModel.ParentItemId, item));
+                await Task.WhenAll(tasks);
                 cloudViewModel.Refresh();
             }
         }

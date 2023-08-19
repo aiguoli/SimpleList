@@ -4,6 +4,8 @@ using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -50,32 +52,42 @@ namespace SimpleList.Services
             return await graphClient.Me.Drive.Items[itemId].Request().UpdateAsync(requestBody);
         }
 
-        public async Task UploadFileAsync(StorageFile file, string itemId)
+        public async Task UploadFileAsync(StorageFile file, string itemId, IProgress<long> progress = null)
         {
             GraphServiceClient graphClient = _provider.GetClient();
-            using Stream stream = await file.OpenStreamForReadAsync();
+            Stream stream = await file.OpenStreamForReadAsync();
+            if ((await file.GetBasicPropertiesAsync()).Size == 0)
+            {
+                // Upload an empty file
+                await graphClient.Me.Drive.Items[itemId].ItemWithPath(file.Name).Content.Request().PutAsync<DriveItem>(new MemoryStream());
+                return;
+            }
             UploadSession uploadSession = await graphClient.Me.Drive.Items[itemId].ItemWithPath(file.Name).CreateUploadSession().Request().PostAsync();
             int maxChunckSize = 320 * 1024;
             LargeFileUploadTask<DriveItem> fileUploadTask = new(uploadSession, stream, maxChunckSize, graphClient);
 
-            long fileSize = stream.Length;
-            await fileUploadTask.UploadAsync();
+            await fileUploadTask.UploadAsync(progress);
         }
 
-        public async Task UploadFolderAsync(StorageFolder folder, string itemId)
+        public async Task UploadFolderAsync(StorageFolder folder, string itemId, IProgress<long> progress = null)
         {
+            ulong totalSize = await Utils.GetFolderSize(folder);
+            ulong uploadedSize = 0;
             var files = await folder.GetFilesAsync();
             DriveItem cloudFolder = await CreateFolder(itemId, folder.Name);
-            foreach (var file in files)
-            {
-                await UploadFileAsync(file, cloudFolder.Id);
-            }
 
-            var subfolders = await folder.GetFoldersAsync();
-            foreach(var subfolder in subfolders)
+            IEnumerable<Task> uploadTasks = files.Select(async file =>
             {
-                await UploadFolderAsync(subfolder, cloudFolder.Id);
-            }
+                await UploadFileAsync(file, cloudFolder.Id, progress);
+                ulong fileSize = (await file.GetBasicPropertiesAsync()).Size;
+                Interlocked.Add(ref uploadedSize, fileSize);
+                progress?.Report((long)(uploadedSize / totalSize));
+            });
+            await Task.WhenAll(uploadTasks);
+
+            IReadOnlyList<StorageFolder> subfolders = await folder.GetFoldersAsync();
+            IEnumerable<Task> subfolderTasks = subfolders.Select(subfolder => UploadFolderAsync(subfolder, cloudFolder.Id, progress));
+            await Task.WhenAll(subfolderTasks);
         }
 
         public async Task<string> CreateLink(string itemId, DateTimeOffset? expirationDateTime=null, string password=null, string type = "view")
