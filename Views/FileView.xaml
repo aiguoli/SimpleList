@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:SimpleList.ViewModels"
     xmlns:converter="using:SimpleList.Converters"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{x:Bind vm:FileViewModel}"
@@ -13,6 +14,8 @@
     <UserControl.Resources>
         <converter:FileSizeConverter x:Key="FileSizeConverter" />
         <converter:DateTimeOffsetToStringConverter x:Key="DateTimeOffsetToStringConverter" />
+        <converter:FileNameToCanConvertCommandVisible x:Key="FileNameToCanConvertCommandVisible" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid DoubleTapped="OpenFolder">
@@ -21,6 +24,7 @@
                 <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" IsEnabled="{Binding IsFolder}" />
                 <MenuFlyoutItem Text="Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
                 <MenuFlyoutItem Text="Delete" Command="{Binding DeleteFileCommand}" CommandParameter="{Binding Id}" />
+                <MenuFlyoutItem Text="Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
                 <MenuFlyoutItem Text="Share" Click="ShowShareFileDialogAsync" />
                 <MenuFlyoutItem Text="Rename" Click="ShowRenameFileDialogAsync" />
                 <MenuFlyoutItem Text="Property" Click="ShowPropertyDialogAsync" />

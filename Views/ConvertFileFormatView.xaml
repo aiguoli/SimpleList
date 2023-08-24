@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="SimpleList.Views.ConvertFileFormatView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{x:Bind vm:ConvertFileFormatViewModel}"
+    Title="Convert File Format"
+    PrimaryButtonText="Convert"
+    DefaultButton="Primary"
+    CloseButtonText="Cancel">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="0 0 0 10" TextWrapping="Wrap">
+            <Run Text="The currently supported file formats include " />
+            <Run Text="{Binding FormattedExtensions}" />
+        </TextBlock>
+
+        <RelativePanel Grid.Row="1">
+            <TextBlock Text="Target Format" FontWeight="Bold"  RelativePanel.AlignLeftWithPanel="True" />
+            <ComboBox ItemsSource="{Binding TargetFormats}" SelectedIndex="0" SelectedItem="{Binding SelectedFormat, Mode=TwoWay}"  RelativePanel.AlignRightWithPanel="True" />
+        </RelativePanel>
+
+        <RelativePanel Grid.Row="2">
+            <TextBlock Text="Save Path" FontWeight="Bold" RelativePanel.AlignLeftWithPanel="True" />
+            <StackPanel Orientation="Horizontal"  RelativePanel.AlignRightWithPanel="True">
+                <TextBox Text="{Binding SavedFilePath}" IsEnabled="False" />
+                <Button Content="Browser" Command="{Binding ConvertFileCommand}" />
+            </StackPanel>
+        </RelativePanel>
+    </Grid>
+</ContentDialog>

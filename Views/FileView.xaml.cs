@@ -56,5 +56,19 @@ namespace SimpleList.Views
                 viewModel.Cloud.OpenFolder(viewModel);
             }
         }
+
+        private async void ShowConverFiletDialogAsync(object sender, RoutedEventArgs e)
+        {
+            FileViewModel viewModel = DataContext as FileViewModel;
+            if (viewModel.IsFile)
+            {
+                ConvertFileFormatView dialog = new()
+                {
+                    XamlRoot = XamlRoot,
+                    DataContext = new ConvertFileFormatViewModel(viewModel)
+                };
+                await dialog.ShowAsync();
+            }
+        }
     }
 }

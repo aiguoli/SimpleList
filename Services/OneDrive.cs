@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Authentication;
 using CommunityToolkit.Graph.Extensions;
+using Downloader;
 using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
@@ -108,6 +109,19 @@ namespace SimpleList.Services
             GraphServiceClient graphClient = _provider.GetClient();
             Drive drive = await graphClient.Me.Drive.Request().GetAsync();
             return drive.Quota;
+        }
+
+        public async Task ConvertFileFormat(string itemId, StorageFile file, string format = "pdf")
+        {
+            GraphServiceClient graphClient = _provider.GetClient();
+            List<QueryOption> queryOptions = new()
+            {
+                new QueryOption("format", format)
+            };
+            Stream result = await graphClient.Me.Drive.Items[itemId].Content.Request(queryOptions).GetAsync();
+            using var fileStream = System.IO.File.Create(file.Path);
+            result.Seek(0, SeekOrigin.Begin);
+            await result.CopyToAsync(fileStream);
         }
 
         public async void Login()

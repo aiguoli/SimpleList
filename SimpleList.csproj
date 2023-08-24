@@ -52,6 +52,7 @@
     <None Remove="Pages\HomePage.xaml" />
     <None Remove="Pages\SettingPage.xaml" />
     <None Remove="Pages\TaskManagerPage.xaml" />
+    <None Remove="Views\ConvertFileFormatView.xaml" />
     <None Remove="Views\CreateFolderView.xaml" />
     <None Remove="Views\FileView.xaml" />
     <None Remove="Views\PropertyView.xaml" />
@@ -102,6 +103,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <Page Update="Views\ConvertFileFormatView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\ShareFileView.xaml">
