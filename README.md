@@ -21,6 +21,7 @@ Unzip and then double click
 - [x] Delete
 - [x] Properties
 - [x] Total usage
+- [x] Convert to PDF
 - [ ] Open in new tab
 - [ ] Custom theme
 - [ ] Multiple accounts
