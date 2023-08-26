@@ -32,4 +32,5 @@ Unzip and then double click
 ![CloudPage](./ScreenShots/CloudPage.png)
 ![CreateFolder](./ScreenShots/newFolder.png)
 ![TaskManager](./ScreenShots/TaskManagerPage.png)
+![Sahre](./ScreenShots/Share.png)
 ![DarkMode](./ScreenShots/DarkMode.png)

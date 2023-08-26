@@ -54,6 +54,9 @@
                 </BreadcrumbBar.ItemTemplate>
             </BreadcrumbBar>
             <Button Command="{Binding RefreshCommand}" RelativePanel.AlignRightWithPanel="True">
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F5" />
+                </Button.KeyboardAccelerators>
                 <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
             </Button>
         </RelativePanel>
@@ -63,7 +66,8 @@
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
             AllowDrop="True"
             DragOver="ListView_DragOver"
-            Drop="DropToUpload">
+            Drop="DropToUpload"
+            KeyUp="FileListKeyBoardEvents">
             <ListView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
