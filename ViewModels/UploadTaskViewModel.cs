@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using SimpleList.Services;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 

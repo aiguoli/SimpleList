@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.Services;
 

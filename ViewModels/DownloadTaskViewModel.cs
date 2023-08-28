@@ -1,10 +1,9 @@
-﻿using CommunityToolkit.Authentication;
-using CommunityToolkit.Graph.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Downloader;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
 using SimpleList.Services;
 using System;
@@ -28,9 +27,7 @@ namespace SimpleList.ViewModels
 
         public async Task StartDownload()
         {
-            IProvider provider = ProviderManager.Instance.GlobalProvider;
-            GraphServiceClient graphClient = provider.GetClient();
-            DriveItem item = await graphClient.Me.Drive.Items[_itemId].Request().GetAsync();
+            DriveItem item = await Drive.GetItem(_itemId);
             string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
 
             StartTime = DateTime.Now;

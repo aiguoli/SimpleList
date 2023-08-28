@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
 using System.Collections.ObjectModel;
@@ -23,12 +23,9 @@ namespace SimpleList.ViewModels
         {
             IsLoading = Visibility.Visible;
             _parentItemId = itemId;
-            IDriveItemChildrenCollectionPage files = await Drive.GetFiles(_parentItemId);
+            DriveItemCollectionResponse files = await Drive.GetFiles(_parentItemId);
             Files.Clear();
-            foreach (DriveItem file in files)
-            {
-                Files.Add(new FileViewModel(this, file));
-            }
+            files.Value.ForEach(files => Files.Add(new FileViewModel(this, files)));
             IsLoading = Visibility.Collapsed;
         }
 

@@ -1,17 +1,15 @@
-﻿using CommunityToolkit.Authentication;
-using CommunityToolkit.Graph.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+using SimpleList.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using Windows.UI.Popups;
 using WinRT.Interop;
 
 namespace SimpleList.ViewModels
@@ -29,10 +27,6 @@ namespace SimpleList.ViewModels
 
         private async void DownloadFile(string itemId)
         {
-            // Only download small files
-            IProvider provider = ProviderManager.Instance.GlobalProvider;
-            GraphServiceClient graphClient = provider.GetClient();
-
             Window _downloadPathSelectWindow = new();
             IntPtr hwnd = WindowNative.GetWindowHandle(_downloadPathSelectWindow);
             FileSavePicker savePicker = new()
@@ -59,9 +53,8 @@ namespace SimpleList.ViewModels
         private async void DeleteFile(string itemId)
         {
             string parrentId = Cloud.ParentItemId;
-            IProvider provider = ProviderManager.Instance.GlobalProvider;
-            GraphServiceClient graphClient = provider.GetClient();
-            await graphClient.Me.Drive.Items[itemId].Request().DeleteAsync();
+            OneDrive drive = Ioc.Default.GetService<OneDrive>();
+            await drive.DeleteItem(itemId);
             Cloud.GetFiles(parrentId);
         }
 

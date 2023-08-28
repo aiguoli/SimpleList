@@ -1,10 +1,10 @@
-﻿using CommunityToolkit.Authentication;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
 using SimpleList.ViewModels;
 using System;
+using System.Reflection;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,11 +33,10 @@ namespace SimpleList
         {
             m_window = new MainWindow
             {
-                Title = "SimpleList"
+                Title = Assembly.GetEntryAssembly().GetName().Name
             };
             m_window.Activate();
 
-            ConfigureGlobalProvider();
             Ioc.Default.ConfigureServices(
                 new ServiceCollection()
                     .AddSingleton<OneDrive>()
@@ -46,15 +45,15 @@ namespace SimpleList
             );
         }
 
-        static void ConfigureGlobalProvider()
-        {
-            if (ProviderManager.Instance.GlobalProvider == null)
-            {
-                string clientId = "f3416197-df13-4fd9-a57d-9fb052ba2cdf";
-                string[] scopes = new string[] { "User.Read", "Files.ReadWrite.All" };
-                ProviderManager.Instance.GlobalProvider = new MsalProvider(clientId, scopes);
-            }
-        }
+        //static void ConfigureGlobalProvider()
+        //{
+        //    if (ProviderManager.Instance.GlobalProvider == null)
+        //    {
+        //        string clientId = "f3416197-df13-4fd9-a57d-9fb052ba2cdf";
+        //        string[] scopes = new string[] { "User.Read", "Files.ReadWrite.All" };
+        //        ProviderManager.Instance.GlobalProvider = new MsalProvider(clientId, scopes);
+        //    }
+        //}
 
         private static Window m_window;
         public static Window StartupWindow => m_window;

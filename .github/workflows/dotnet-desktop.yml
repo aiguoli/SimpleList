@@ -54,11 +54,16 @@ jobs:
         Configuration: ${{ matrix.configuration }}
         Platform: ${{ matrix.platform }}
 
-    # Upload the app
-    - name: Upload app
+    - name: Upload win10-x64
       uses: actions/upload-artifact@v3
       with:
-        name: Upload app
+        name: win10-x64
         path: |
           bin/win10-x64
+
+    - name: Upload win10-x86
+      uses: actions/upload-artifact@v3
+      with:
+        name: win10-x86
+        path: |
           bin/win10-x86
