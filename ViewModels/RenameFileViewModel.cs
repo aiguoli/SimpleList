@@ -16,7 +16,7 @@ namespace SimpleList.ViewModels
         private async void RenameFile()
         {
             await Cloud.Drive.RenameFile(_file.Id, _fileName);
-            Cloud.Refresh();
+            await Cloud.Refresh();
         }
 
         private string _fileName;

@@ -49,12 +49,12 @@ namespace SimpleList.Views
             await dialog.ShowAsync();
         }
 
-        private void OpenFolder(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        private async void OpenFolder(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
             FileViewModel viewModel = DataContext as FileViewModel;
             if (viewModel.IsFolder)
             {
-                viewModel.Cloud.OpenFolder(viewModel);
+                await viewModel.Cloud.OpenFolder(viewModel);
             }
         }
 

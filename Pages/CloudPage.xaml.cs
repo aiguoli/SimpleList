@@ -2,7 +2,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.ViewModels;
 using SimpleList.Views;
-using SimpleList.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,7 +28,7 @@ namespace SimpleList.Pages
             DataContext = new CloudViewModel();
         }
 
-        private void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+        private async void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
         {
             var items = BreadcrumbBar.ItemsSource as ObservableCollection<BreadcrumbItem>;
             for (int i = items.Count - 1; i >= args.Index + 1; i--)
@@ -37,7 +36,7 @@ namespace SimpleList.Pages
                 items.RemoveAt(i);
             }
             string itemId = (args.Item as BreadcrumbItem).ItemId;
-            (DataContext as CloudViewModel).GetFiles(itemId);
+            await (DataContext as CloudViewModel).GetFiles(itemId);
         }
 
         private async void CreateFolderDialogAsync(object sender, RoutedEventArgs e)
@@ -60,7 +59,7 @@ namespace SimpleList.Pages
                 TaskManagerViewModel manager = Ioc.Default.GetService<TaskManagerViewModel>();
                 var tasks = items.Select(item => manager.AddUploadTask(cloudViewModel.ParentItemId, item));
                 await Task.WhenAll(tasks);
-                cloudViewModel.Refresh();
+                await cloudViewModel.Refresh();
             }
         }
 
@@ -72,7 +71,7 @@ namespace SimpleList.Pages
             }
         }
 
-        private void FileListKeyBoardEvents(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private async void FileListKeyBoardEvents(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             switch (e.Key)
             {
@@ -81,7 +80,7 @@ namespace SimpleList.Pages
                     FileViewModel folder = (FileViewModel)listView.SelectedItem;
                     if (folder != null && folder.IsFolder)
                     {
-                        (DataContext as CloudViewModel).OpenFolder(folder);
+                        await (DataContext as CloudViewModel).OpenFolder(folder);
                     }
                     break;
                 case VirtualKey.Back:
@@ -91,7 +90,7 @@ namespace SimpleList.Pages
                         break;
                     }
                     items.RemoveAt(items.Count - 1);
-                    (DataContext as CloudViewModel).GetFiles(items.Last().ItemId);
+                    await (DataContext as CloudViewModel).GetFiles(items.Last().ItemId);
                     break;
             }
         }

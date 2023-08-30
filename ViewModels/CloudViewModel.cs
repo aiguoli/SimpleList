@@ -2,9 +2,13 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph.Models;
+using Microsoft.Graph.Models.Security;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace SimpleList.ViewModels
 {
@@ -13,13 +17,12 @@ namespace SimpleList.ViewModels
         public CloudViewModel()
         {
             Drive = Ioc.Default.GetService<OneDrive>();
-            OpenFolderCommand = new RelayCommand<FileViewModel>(OpenFolder);
-            RefreshCommand = new RelayCommand(Refresh);
+            OpenFolderCommand = new AsyncRelayCommand<FileViewModel>(OpenFolder);
+            RefreshCommand = new AsyncRelayCommand(Refresh);
             BreadcrumbItems.Add(new BreadcrumbItem { Name = "Home", ItemId = "Root" });
-            // GetFiles();
         }
 
-        public async void GetFiles(string itemId = "Root")
+        public async Task GetFiles(string itemId = "Root")
         {
             IsLoading = Visibility.Visible;
             _parentItemId = itemId;
@@ -29,15 +32,15 @@ namespace SimpleList.ViewModels
             IsLoading = Visibility.Collapsed;
         }
 
-        public void Refresh()
+        public async Task Refresh()
         {
-            GetFiles(_parentItemId);
+            await GetFiles(_parentItemId);
         }
 
-        public void OpenFolder(FileViewModel file)
+        public async Task OpenFolder(FileViewModel file)
         {
             BreadcrumbItems.Add(new BreadcrumbItem { Name = file.Name, ItemId = file.Id });
-            GetFiles(file.Id);
+            await GetFiles(file.Id);
         }
 
         private string _parentItemId = "Root";
@@ -46,8 +49,8 @@ namespace SimpleList.ViewModels
         public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
         public FileViewModel SelectedItem { get; set; }
         public string ParentItemId => _parentItemId;
-        public RelayCommand<FileViewModel> OpenFolderCommand { get; }
-        public RelayCommand RefreshCommand { get; }
+        public AsyncRelayCommand<FileViewModel> OpenFolderCommand { get; }
+        public AsyncRelayCommand RefreshCommand { get; }
         public Visibility IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
         public OneDrive Drive { get; }
     }

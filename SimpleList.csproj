@@ -21,6 +21,7 @@
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 	<WindowsPackageType>None</WindowsPackageType>
 	<PublishTrimmed>true</PublishTrimmed>
+	<!--If this line is removed, the package size will be smaller, but it will not function properly in the release mode.-->
 	<TrimMode>partial</TrimMode>
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	<SelfContained>true</SelfContained>
@@ -38,6 +39,9 @@
 	<PackageIcon></PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
   </PropertyGroup>
+	<ItemGroup>
+		<TrimmerRootAssembly Include="Microsoft.Identity.Client" />
+	</ItemGroup>
   <ItemGroup>
     <None Remove="Controls\SettingsCard.xaml" />
     <None Remove="Pages\CloudPage.xaml" />

@@ -199,8 +199,6 @@ namespace SimpleList.Services
             driveId = driveItem.Id;
         }
 
-        // https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/4910
-        // public bool IsAuthenticated => _provider.State == ProviderState.SignedIn;
         public bool IsAuthenticated = false;
 
         private static IPublicClientApplication PublicClientApp;

@@ -14,7 +14,7 @@ namespace SimpleList.ViewModels
         private async void CreateFolder()
         {
             await Cloud.Drive.CreateFolder(Cloud.ParentItemId, _folderName);
-            Cloud.Refresh();
+            await Cloud.Refresh();
         }
 
         private string _folderName;

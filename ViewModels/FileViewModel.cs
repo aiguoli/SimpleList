@@ -55,7 +55,7 @@ namespace SimpleList.ViewModels
             string parrentId = Cloud.ParentItemId;
             OneDrive drive = Ioc.Default.GetService<OneDrive>();
             await drive.DeleteItem(itemId);
-            Cloud.GetFiles(parrentId);
+            await Cloud.GetFiles(parrentId);
         }
 
         private readonly DriveItem _file;
