@@ -71,5 +71,16 @@ namespace SimpleList.Views
                 await dialog.ShowAsync();
             }
         }
+
+        private async void ShowDeleteFileDialogAsync(object sender, RoutedEventArgs e)
+        {
+            FileViewModel viewModel = DataContext as FileViewModel;
+            DeleteFileView dialog = new()
+            {
+                XamlRoot = XamlRoot,
+                DataContext = new DeleteFileViewModel(viewModel)
+            };
+            await dialog.ShowAsync();
+        }
     }
 }

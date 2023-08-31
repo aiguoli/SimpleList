@@ -22,7 +22,6 @@ namespace SimpleList.ViewModels
             _file = file;
             ItemType = IsFile ? "File" : "Folder";
             DownloadFileCommand = new RelayCommand<string>(DownloadFile);
-            DeleteFileCommand = new RelayCommand<string>(DeleteFile);
         }
 
         private async void DownloadFile(string itemId)
@@ -50,13 +49,6 @@ namespace SimpleList.ViewModels
                 await manager.AddDownloadTask(itemId, file);
             }
         }
-        private async void DeleteFile(string itemId)
-        {
-            string parrentId = Cloud.ParentItemId;
-            OneDrive drive = Ioc.Default.GetService<OneDrive>();
-            await drive.DeleteItem(itemId);
-            await Cloud.GetFiles(parrentId);
-        }
 
         private readonly DriveItem _file;
 
@@ -70,6 +62,5 @@ namespace SimpleList.ViewModels
         public CloudViewModel Cloud { get; }
         public string ItemType { get; }
         public RelayCommand<string> DownloadFileCommand { get; }
-        public RelayCommand<string> DeleteFileCommand { get; }
     }
 }

@@ -153,6 +153,11 @@ namespace SimpleList.Services
             await graphClient.Drives[driveId].Items[itemId].DeleteAsync();
         }
 
+        public async Task PermanentDeleteItem(string itemId)
+        {
+            await graphClient.Drives[driveId].Items[itemId].PermanentDelete.PostAsync();
+        }
+
         private class TokenProvider : IAccessTokenProvider
         {
             private readonly Func<string[], Task<string>> getTokenDelegate;

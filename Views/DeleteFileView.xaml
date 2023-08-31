@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="SimpleList.Views.DeleteFileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{x:Bind vm:DeleteFileViewModel}"
+    Title="Delete item"
+    PrimaryButtonText="Delete"
+    CloseButtonText="Cancel"
+    PrimaryButtonCommand="{Binding DeleteFileCommand}"
+    DefaultButton="Primary">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock>
+            <Run Text="Are you sure to delete" />
+            <Run Text="{Binding File.Name}" />
+        </TextBlock>
+
+        <CheckBox Grid.Row="1" Content="Permanent Delete" IsChecked="{Binding PermanentDelete, Mode=TwoWay}" />
+    </Grid>
+</ContentDialog>
