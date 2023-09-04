@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
+using Microsoft.Graph.Drives.Item.Items.Item.Restore;
 using Microsoft.Graph.Models;
 using Microsoft.Identity.Client;
 using Microsoft.Kiota.Abstractions.Authentication;
@@ -30,6 +31,11 @@ namespace SimpleList.Services
         {
             if (!IsAuthenticated) await Login();
             return await graphClient.Drives[driveId].Items[parentId].Children.GetAsync();
+        }
+
+        public async Task<ThumbnailSetCollectionResponse> GetThumbNails(string itemId)
+        {
+            return await graphClient.Drives[driveId].Items[itemId].Thumbnails.GetAsync();
         }
 
         public async Task<DriveItem> GetItem(string itemId)
@@ -158,6 +164,31 @@ namespace SimpleList.Services
             await graphClient.Drives[driveId].Items[itemId].PermanentDelete.PostAsync();
         }
 
+        public async Task<DriveItem> RestoreItem(string itemId)
+        {
+            // Restore the original name by default.
+            RestorePostRequestBody requestBody = new()
+            {
+                ParentReference = new ItemReference
+                {
+                    Id = itemId,
+                },
+            };
+            return await graphClient.Drives[driveId].Items[itemId].Restore.PostAsync(requestBody);
+        }
+
+        public async Task<Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse> SearchLocalItems(string query, string itemId)
+        {
+            // According to code, Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse
+            // is same as Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse, so why Microsoft do this?
+            return await graphClient.Drives[driveId].Items[itemId].SearchWithQ(query).GetAsync();
+        }
+
+        public async Task<Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse> SearchGlobalItems(string query)
+        {
+            return await graphClient.Drives[driveId].SearchWithQ(query).GetAsync();
+        }
+
         private class TokenProvider : IAccessTokenProvider
         {
             private readonly Func<string[], Task<string>> getTokenDelegate;
@@ -211,5 +242,10 @@ namespace SimpleList.Services
         private static AuthenticationResult authResult;
         private GraphServiceClient graphClient;
         private string driveId;
+        public enum SearchType
+        {
+            Part,
+            Global,
+        }
     }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SimpleList.ViewModels
 {
@@ -45,6 +46,7 @@ namespace SimpleList.ViewModels
 
         private string _parentItemId = "Root";
         private Visibility _isLoading = Visibility.Collapsed;
+
         public ObservableCollection<FileViewModel> Files { get; } = new();
         public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
         public FileViewModel SelectedItem { get; set; }

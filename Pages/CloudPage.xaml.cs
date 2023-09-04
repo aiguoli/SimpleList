@@ -63,7 +63,7 @@ namespace SimpleList.Pages
             }
         }
 
-        private void ListView_DragOver(object sender, DragEventArgs e)
+        private void DisplayCopyIcon(object sender, DragEventArgs e)
         {
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
@@ -93,6 +93,12 @@ namespace SimpleList.Pages
                     await (DataContext as CloudViewModel).GetFiles(items.Last().ItemId);
                     break;
             }
+        }
+
+        private void ChangeLayout(object sender, RoutedEventArgs e)
+        {
+            string layout = ((MenuFlyoutItem)sender).Text;
+            CloudControl.ContentTemplate = Resources[$"{layout}ViewTemplate"] as DataTemplate;
         }
     }
 }

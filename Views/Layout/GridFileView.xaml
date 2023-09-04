@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="SimpleList.Views.Layout.GridFileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:converter="using:SimpleList.Converters"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{x:Bind vm:FileViewModel}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converter:FileSizeConverter x:Key="FileSizeConverter" />
+        <converter:DateTimeOffsetToStringConverter x:Key="DateTimeOffsetToStringConverter" />
+        <converter:FileNameToCanConvertCommandVisible x:Key="FileNameToCanConvertCommandVisible" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Width="180" DoubleTapped="OpenFolder">
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" IsEnabled="{Binding IsFolder}" />
+                <MenuFlyoutItem Text="Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
+                <MenuFlyoutItem Text="Delete" Click="ShowDeleteFileDialogAsync" />
+                <MenuFlyoutItem Text="Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
+                <MenuFlyoutItem Text="Share" Click="ShowShareFileDialogAsync" />
+                <MenuFlyoutItem Text="Rename" Click="ShowRenameFileDialogAsync" />
+                <MenuFlyoutItem Text="Property" Click="ShowPropertyDialogAsync" />
+            </MenuFlyout>
+        </Grid.ContextFlyout>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Source="/Assets/Folder.png" Height="128" Width="128" Visibility="{Binding IsFolder}" VerticalAlignment="Center" />
+        <Image Grid.Row="0" Source="/Assets/File.png" Height="128" Width="128" Visibility="{Binding IsFile}" VerticalAlignment="Center" />
+        <TextBlock Grid.Row="1" Text="{Binding Name}" HorizontalAlignment="Center" />
+    </Grid>
+</UserControl>

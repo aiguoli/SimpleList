@@ -34,7 +34,7 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.4.0</AssemblyVersion>
+	<AssemblyVersion>1.6.0</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon></PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
@@ -43,6 +43,9 @@
 		<TrimmerRootAssembly Include="Microsoft.Identity.Client" />
 	</ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\EmptyFolder.png" />
+    <None Remove="Assets\File.png" />
+    <None Remove="Assets\Folder.png" />
     <None Remove="Controls\SettingsCard.xaml" />
     <None Remove="Pages\CloudPage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
@@ -52,6 +55,10 @@
     <None Remove="Views\CreateFolderView.xaml" />
     <None Remove="Views\DeleteFileView.xaml" />
     <None Remove="Views\FileView.xaml" />
+    <None Remove="Views\Layout\ColumnCloudView.xaml" />
+    <None Remove="Views\Layout\ColumnFileView.xaml" />
+    <None Remove="Views\Layout\GridCloudView.xaml" />
+    <None Remove="Views\Layout\GridFileView.xaml" />
     <None Remove="Views\PropertyView.xaml" />
     <None Remove="Views\RenameFileView.xaml" />
     <None Remove="Views\ShareFileView.xaml" />
@@ -103,6 +110,21 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <Page Update="Views\Layout\ColumnCloudView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Layout\GridCloudView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Layout\ColumnFileView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Layout\GridFileView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\FileView\Grid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\DeleteFileView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

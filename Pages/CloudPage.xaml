@@ -6,7 +6,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:converter="using:SimpleList.Converters"
     xmlns:vm="using:SimpleList.ViewModels"
-    xmlns:views="using:SimpleList.Views"
+    xmlns:views="using:SimpleList.Views.Layout"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=vm:CloudViewModel}"
     mc:Ignorable="d"
@@ -17,6 +17,13 @@
         <converter:FileSizeConverter x:Key="FileSizeConverter" />
         <converter:DateTimeOffsetToStringConverter x:Key="DateTimeOffsetToStringConverter" />
         <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Collapsed" FalseValue="Visible" />
+
+        <DataTemplate x:Key="ColumnViewTemplate">
+            <views:ColumnCloudView />
+        </DataTemplate>
+        <DataTemplate x:Key="GridViewTemplate">
+            <views:GridCloudView />
+        </DataTemplate>
     </Page.Resources>
 
     <Grid>
@@ -25,11 +32,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.Resources>
-            <DataTemplate x:Key="ListViewItemTemplate" x:DataType="vm:FileViewModel">
-                <views:FileView DataContext="{Binding}" />
-            </DataTemplate>
-        </Grid.Resources>
 
         <ProgressBar 
             Width="200" 
@@ -60,20 +62,64 @@
                 <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
             </Button>
         </RelativePanel>
-        <ListView  Grid.Row="2"
+        <ContentControl Grid.Row="2" 
+                        x:Name="CloudControl"
+                        VerticalContentAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        ContentTemplate="{StaticResource ColumnViewTemplate}"
+                        AllowDrop="True"
+                        DragOver="DisplayCopyIcon"
+                        Drop="DropToUpload"
+                        KeyUp="FileListKeyBoardEvents">
+            <ContentControl.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
+                    <MenuFlyoutItem Text="New Folder" Click="CreateFolderDialogAsync" />
+                    <MenuFlyoutSubItem Text="Layout">
+                        <MenuFlyoutItem Text="Column" Click="ChangeLayout" />
+                        <MenuFlyoutItem Text="Grid" Click="ChangeLayout" />
+                    </MenuFlyoutSubItem>
+                </MenuFlyout>
+            </ContentControl.ContextFlyout>
+        </ContentControl>
+        <!--<ListView  Grid.Row="2"
             ItemsSource="{Binding Files}" 
             ItemTemplate="{StaticResource ListViewItemTemplate}" 
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
             AllowDrop="True"
-            DragOver="ListView_DragOver"
+            DragOver="DisplayCopyIcon"
             Drop="DropToUpload"
             KeyUp="FileListKeyBoardEvents">
             <ListView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
                     <MenuFlyoutItem Text="New Folder" Click="CreateFolderDialogAsync" />
+                    <MenuFlyoutSubItem Text="Layout">
+                        <MenuFlyoutItem Text="Column" />
+                        <MenuFlyoutItem Text="Grid" />
+                    </MenuFlyoutSubItem>
                 </MenuFlyout>
             </ListView.ContextFlyout>
-        </ListView>
+        </ListView>-->
+
+        <!--<GridView Grid.Row="2" 
+            ItemsSource="{Binding Files}" 
+            ItemTemplate="{StaticResource GridViewItemTemplate}"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            AllowDrop="True"
+            DragOver="DisplayCopyIcon"
+            Drop="DropToUpload"
+            KeyUp="FileListKeyBoardEvents">
+            <GridView.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
+                    <MenuFlyoutItem Text="New Folder" Click="CreateFolderDialogAsync"  />
+                    <MenuFlyoutSubItem Text="Layout">
+                        <MenuFlyoutItem Text="Column" />
+                        <MenuFlyoutItem Text="Grid" />
+                    </MenuFlyoutSubItem>
+                </MenuFlyout>
+            </GridView.ContextFlyout>
+        </GridView>-->
     </Grid>
 </Page>
