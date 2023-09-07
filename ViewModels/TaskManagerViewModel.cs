@@ -19,13 +19,13 @@ namespace SimpleList.ViewModels
             await task.StartDownload();
         }
 
-        public void StartAllDownloadTasks()
+        public async Task StartAllDownloadTasks()
         {
             foreach (DownloadTaskViewModel task in DownloadTasks)
             {
                 if (!task.Completed)
                 {
-                    task.ResumeDownload();
+                    await task.ResumeDownload();
                 }
             }
         }

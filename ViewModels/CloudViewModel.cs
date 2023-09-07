@@ -2,24 +2,18 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph.Models;
-using Microsoft.Graph.Models.Security;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
-using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SimpleList.ViewModels
 {
-    public class CloudViewModel : ObservableObject
+    public partial class CloudViewModel : ObservableObject
     {
         public CloudViewModel()
         {
             Drive = Ioc.Default.GetService<OneDrive>();
-            OpenFolderCommand = new AsyncRelayCommand<FileViewModel>(OpenFolder);
-            RefreshCommand = new AsyncRelayCommand(Refresh);
             BreadcrumbItems.Add(new BreadcrumbItem { Name = "Home", ItemId = "Root" });
         }
 
@@ -33,11 +27,13 @@ namespace SimpleList.ViewModels
             IsLoading = Visibility.Collapsed;
         }
 
+        [RelayCommand]
         public async Task Refresh()
         {
             await GetFiles(_parentItemId);
         }
 
+        [RelayCommand]
         public async Task OpenFolder(FileViewModel file)
         {
             BreadcrumbItems.Add(new BreadcrumbItem { Name = file.Name, ItemId = file.Id });
@@ -45,15 +41,12 @@ namespace SimpleList.ViewModels
         }
 
         private string _parentItemId = "Root";
-        private Visibility _isLoading = Visibility.Collapsed;
+        [ObservableProperty] private Visibility _isLoading = Visibility.Collapsed;
 
         public ObservableCollection<FileViewModel> Files { get; } = new();
         public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
         public FileViewModel SelectedItem { get; set; }
         public string ParentItemId => _parentItemId;
-        public AsyncRelayCommand<FileViewModel> OpenFolderCommand { get; }
-        public AsyncRelayCommand RefreshCommand { get; }
-        public Visibility IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
         public OneDrive Drive { get; }
     }
 

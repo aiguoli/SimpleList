@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SimpleList.Helpers;
 using System;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -15,25 +16,30 @@ namespace SimpleList.Pages
         public SettingPage()
         {
             InitializeComponent();
-            //themeMode.SelectedIndex = App.Current.RequestedTheme switch
-            //{
-            //    ApplicationTheme.Light => 1,
-            //    ApplicationTheme.Dark => 2,
-            //    _ => 0,
-            //};
+            Loaded += OnSettingsPageLoaded;
+        }
+
+        private void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
+        {
+            ElementTheme currentTheme = ThemeHelper.RootTheme;
+            switch (currentTheme)
+            {
+                case ElementTheme.Default:
+                    themeMode.SelectedIndex = 0;
+                    break;
+                case ElementTheme.Light:
+                    themeMode.SelectedIndex = 1;
+                    break;
+                case ElementTheme.Dark:
+                    themeMode.SelectedIndex = 2;
+                    break;
+            }
         }
 
         private void themeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Window startUpWindow = App.StartupWindow;
             string selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
-            if (Enum.TryParse(selectedTheme, out ElementTheme theme) is true)
-            {
-                if (startUpWindow.Content is FrameworkElement frameworkElement)
-                {
-                    frameworkElement.RequestedTheme = theme;
-                }
-            }
+            ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
         }
 
         public string Version

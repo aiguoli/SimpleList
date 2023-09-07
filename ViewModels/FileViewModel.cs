@@ -14,17 +14,17 @@ using WinRT.Interop;
 
 namespace SimpleList.ViewModels
 {
-    public class FileViewModel : ObservableObject
+    public partial class FileViewModel : ObservableObject
     {
         public FileViewModel(CloudViewModel cloud, DriveItem file, bool loadThumbnail=false)
         {
             Cloud = cloud;
             _file = file;
             ItemType = IsFile ? "File" : "Folder";
-            DownloadFileCommand = new RelayCommand<string>(DownloadFile);
         }
 
-        private async void DownloadFile(string itemId)
+        [RelayCommand]
+        private async Task DownloadFile(string itemId)
         {
             Window _downloadPathSelectWindow = new();
             IntPtr hwnd = WindowNative.GetWindowHandle(_downloadPathSelectWindow);
@@ -54,6 +54,5 @@ namespace SimpleList.ViewModels
         public int? ChildrenCount { get => _file.Folder?.ChildCount; }
         public CloudViewModel Cloud { get; }
         public string ItemType { get; }
-        public RelayCommand<string> DownloadFileCommand { get; }
     }
 }

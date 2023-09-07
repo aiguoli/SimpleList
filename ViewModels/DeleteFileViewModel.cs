@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace SimpleList.ViewModels
 {
-    public class DeleteFileViewModel : ObservableObject
+    public partial class DeleteFileViewModel : ObservableObject
     {
         public DeleteFileViewModel(FileViewModel file) 
         {
             File = file;
-            DeleteFileCommand = new AsyncRelayCommand(DeleteFile);
         }
 
+        [RelayCommand]
         public async Task DeleteFile()
         {
             OneDrive drive = Ioc.Default.GetService<OneDrive>();
@@ -27,14 +27,8 @@ namespace SimpleList.ViewModels
             await File.Cloud.Refresh();
         }
 
-        private bool _permanentDelete;
+        [ObservableProperty] private bool _permanentDelete;
 
         public FileViewModel File;
-        public AsyncRelayCommand DeleteFileCommand { get; }
-        public bool PermanentDelete
-        {
-            get => _permanentDelete;
-            set => SetProperty(ref _permanentDelete, value);
-        }
     }
 }

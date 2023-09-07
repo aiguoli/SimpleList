@@ -34,7 +34,7 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.6.0</AssemblyVersion>
+	<AssemblyVersion>1.6.1</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon></PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  

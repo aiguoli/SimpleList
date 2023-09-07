@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using SimpleList.Helpers;
 using SimpleList.Services;
 using SimpleList.ViewModels;
 using System;
@@ -33,7 +35,7 @@ namespace SimpleList
         {
             m_window = new MainWindow
             {
-                Title = Assembly.GetEntryAssembly().GetName().Name
+                Title = Assembly.GetEntryAssembly().GetName().Name,
             };
             m_window.Activate();
 
@@ -43,17 +45,17 @@ namespace SimpleList
                     .AddSingleton<TaskManagerViewModel>()
                     .BuildServiceProvider()
             );
+            LoadSettings();
         }
 
-        //static void ConfigureGlobalProvider()
-        //{
-        //    if (ProviderManager.Instance.GlobalProvider == null)
-        //    {
-        //        string clientId = "f3416197-df13-4fd9-a57d-9fb052ba2cdf";
-        //        string[] scopes = new string[] { "User.Read", "Files.ReadWrite.All" };
-        //        ProviderManager.Instance.GlobalProvider = new MsalProvider(clientId, scopes);
-        //    }
-        //}
+        private static void LoadSettings()
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            Current.Resources["Configuration"] = configuration;
+            string selectedTheme = configuration.GetSection("Theme").Value;
+            ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
+        }
+
 
         private static Window m_window;
         public static Window StartupWindow => m_window;

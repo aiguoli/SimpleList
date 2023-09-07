@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Downloader;
-using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
 using SimpleList.Services;
@@ -13,16 +12,13 @@ using Windows.Storage;
 
 namespace SimpleList.ViewModels
 {
-    public class DownloadTaskViewModel : ObservableObject
+    public partial class DownloadTaskViewModel : ObservableObject
     {
         public DownloadTaskViewModel(string itemId, StorageFile file)
         {
             _itemId = itemId;
             _file = file;
             Drive = Ioc.Default.GetService<OneDrive>();
-            CancelCommand = new RelayCommand(CancelTask);
-            PauseCommand = new RelayCommand(PauseDownload);
-            ResumeCommand = new RelayCommand(ResumeDownload);
         }
 
         public async Task StartDownload()
@@ -55,6 +51,7 @@ namespace SimpleList.ViewModels
             _dispatcher.TryEnqueue(() => Progress = (int)e.ProgressPercentage);
         }
 
+        [RelayCommand]
         public void PauseDownload()
         {
             _downloader.Pause();
@@ -63,7 +60,8 @@ namespace SimpleList.ViewModels
             IsDownloading = false;
         }
 
-        public async void ResumeDownload()
+        [RelayCommand]
+        public async Task ResumeDownload()
         {
             IsPaused = false;
             IsDownloading = true;
@@ -85,6 +83,7 @@ namespace SimpleList.ViewModels
             }
         }
 
+        [RelayCommand]
         public void CancelTask()
         {
             if (!Completed)
@@ -102,20 +101,13 @@ namespace SimpleList.ViewModels
         private DownloadService _downloader;
         private DownloadPackage _pack;
         private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
-        private int _progress;
-        private bool _completed = false;
-        private bool _isDownloading = true;
-        private bool _isPaused = false;
+        [ObservableProperty] private int _progress;
+        [ObservableProperty] private bool _completed = false;
+        [ObservableProperty] private bool _isDownloading = true;
+        [ObservableProperty] private bool _isPaused = false;
 
         public DateTime StartTime { get; private set; }
         public DateTime FinishTime { get; private set; }
-        public bool Completed { get => _completed; private set => SetProperty(ref _completed, value); }
         public string Name { get => _file.Name; }
-        public int Progress { get => _progress; private set => SetProperty(ref _progress, value); }
-        public bool IsPaused { get => _isPaused; private set => SetProperty(ref _isPaused, value); }
-        public bool IsDownloading { get => _isDownloading; private set => SetProperty(ref _isDownloading, value); }
-        public RelayCommand CancelCommand { get; }
-        public RelayCommand PauseCommand { get; }
-        public RelayCommand ResumeCommand { get; }
     }
 }

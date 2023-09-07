@@ -143,14 +143,17 @@ namespace SimpleList.Services
 
         public async Task ConvertFileFormat(string itemId, StorageFile file, string format = "pdf")
         {
-            var result = await graphClient.Drives[driveId].Items[itemId].Content.GetAsync(requestConfiguration =>
+            Stream result = await graphClient.Drives[driveId].Items[itemId].Content.GetAsync(requestConfiguration =>
             {
                 // The document is written like this, but there is an error. Upon reviewing the source code, I found that there is no definition for "QueryParameters."
                 // requestConfiguration.QueryParameters.Format = format;
                 requestConfiguration.Headers.Add("Format", format);
             });
-            using var fileStream = File.Create(file.Path);
-            result.Seek(0, SeekOrigin.Begin);
+            using Stream fileStream = await file.OpenStreamForWriteAsync();
+            if (result.CanSeek)
+            {
+                result.Seek(0, SeekOrigin.Begin);
+            }
             await result.CopyToAsync(fileStream);
         }
 
