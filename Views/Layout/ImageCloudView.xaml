@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="SimpleList.Views.Layout.ImageCloudView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{x:Bind vm:CloudViewModel}"
+    Loaded="LoadAllImages">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="ImageTemplate" x:DataType="vm:FileViewModel">
+            <Grid>
+                <Image Source="{Binding Image}" MaxWidth="400" MaxHeight="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock VerticalAlignment="Bottom" Text="{Binding Name}" Foreground="{ThemeResource SystemControlForegroundAltHighBrush}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <!-- This is the ItemsView that I want to use, but it doesn't work -->
+    <!--<ItemsView HorizontalAlignment="Left" ItemTemplate="{StaticResource ImageTemplate}" ItemsSource="{Binding Images}" />-->
+    <GridView ItemsSource="{Binding Images}" ItemTemplate="{StaticResource ImageTemplate}" ContainerContentChanging="LoadIamgeAsync" />
+</UserControl>

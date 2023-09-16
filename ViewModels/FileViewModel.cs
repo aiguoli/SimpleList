@@ -3,13 +3,14 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using WinRT.Interop;
 
 namespace SimpleList.ViewModels
@@ -43,6 +44,21 @@ namespace SimpleList.ViewModels
             }
         }
 
+        public async Task LoadImage()
+        {
+            if (IsFile && _file.Image != null)
+            {
+                using Stream stream = await Cloud.Drive.GetItemContent(_file.Id);
+                var randomAccessStream = new InMemoryRandomAccessStream();
+                await RandomAccessStream.CopyAsync(stream.AsInputStream(), randomAccessStream);
+                randomAccessStream.Seek(0);
+                BitmapImage img = new();
+                await img.SetSourceAsync(randomAccessStream);
+                Image = img;
+            }
+        }
+
+        [ObservableProperty] private BitmapImage _image;
         private readonly DriveItem _file;
 
         public string Id { get => _file.Id; }

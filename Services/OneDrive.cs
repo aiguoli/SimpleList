@@ -43,6 +43,11 @@ namespace SimpleList.Services
             return await graphClient.Drives[driveId].Items[itemId].GetAsync();
         }
 
+        public async Task<Stream> GetItemContent(string itemId)
+        {
+            return await graphClient.Drives[driveId].Items[itemId].Content.GetAsync();
+        }
+
         public async Task<DriveItem> CreateFolder(string parentItemId, string folderName)
         {
             var requestBody = new DriveItem

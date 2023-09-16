@@ -24,6 +24,9 @@
         <DataTemplate x:Key="GridViewTemplate">
             <views:GridCloudView />
         </DataTemplate>
+        <DataTemplate x:Key="ImageViewTemplate">
+            <views:ImageCloudView DataContext="{Binding}" />
+        </DataTemplate>
     </Page.Resources>
 
     <Grid>
@@ -78,48 +81,10 @@
                     <MenuFlyoutSubItem Text="Layout">
                         <MenuFlyoutItem Text="Column" Click="ChangeLayout" />
                         <MenuFlyoutItem Text="Grid" Click="ChangeLayout" />
+                        <MenuFlyoutItem Text="Image" Click="ChangeLayout" />
                     </MenuFlyoutSubItem>
                 </MenuFlyout>
             </ContentControl.ContextFlyout>
         </ContentControl>
-        <!--<ListView  Grid.Row="2"
-            ItemsSource="{Binding Files}" 
-            ItemTemplate="{StaticResource ListViewItemTemplate}" 
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            AllowDrop="True"
-            DragOver="DisplayCopyIcon"
-            Drop="DropToUpload"
-            KeyUp="FileListKeyBoardEvents">
-            <ListView.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
-                    <MenuFlyoutItem Text="New Folder" Click="CreateFolderDialogAsync" />
-                    <MenuFlyoutSubItem Text="Layout">
-                        <MenuFlyoutItem Text="Column" />
-                        <MenuFlyoutItem Text="Grid" />
-                    </MenuFlyoutSubItem>
-                </MenuFlyout>
-            </ListView.ContextFlyout>
-        </ListView>-->
-
-        <!--<GridView Grid.Row="2" 
-            ItemsSource="{Binding Files}" 
-            ItemTemplate="{StaticResource GridViewItemTemplate}"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            AllowDrop="True"
-            DragOver="DisplayCopyIcon"
-            Drop="DropToUpload"
-            KeyUp="FileListKeyBoardEvents">
-            <GridView.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
-                    <MenuFlyoutItem Text="New Folder" Click="CreateFolderDialogAsync"  />
-                    <MenuFlyoutSubItem Text="Layout">
-                        <MenuFlyoutItem Text="Column" />
-                        <MenuFlyoutItem Text="Grid" />
-                    </MenuFlyoutSubItem>
-                </MenuFlyout>
-            </GridView.ContextFlyout>
-        </GridView>-->
     </Grid>
 </Page>

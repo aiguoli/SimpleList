@@ -5,6 +5,7 @@ using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
 using SimpleList.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleList.ViewModels
@@ -23,7 +24,14 @@ namespace SimpleList.ViewModels
             _parentItemId = itemId;
             DriveItemCollectionResponse files = await Drive.GetFiles(_parentItemId);
             Files.Clear();
-            files.Value.ForEach(files => Files.Add(new FileViewModel(this, files)));
+            Images.Clear();
+            files.Value.ForEach(file =>
+            {
+                FileViewModel newFile = new(this, file);
+                Files.Add(newFile);
+                if (file.Image != null)
+                    Images.Add(newFile);
+            });
             IsLoading = Visibility.Collapsed;
         }
 
@@ -44,6 +52,7 @@ namespace SimpleList.ViewModels
         [ObservableProperty] private Visibility _isLoading = Visibility.Collapsed;
 
         public ObservableCollection<FileViewModel> Files { get; } = new();
+        public ObservableCollection<FileViewModel> Images { get; } = new();
         public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
         public FileViewModel SelectedItem { get; set; }
         public string ParentItemId => _parentItemId;

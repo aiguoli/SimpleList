@@ -38,4 +38,5 @@ WinForms，WPF太老了，Avalonia坑太多了用不明白，HTML+CSS+JS的框架又太大，Iced和Sl
 ![GridLayout](./ScreenShots/GridLayout.png)
 ![TaskManager](./ScreenShots/TaskManagerPage.png)
 ![Sahre](./ScreenShots/Share.png)
+![ImageViewing](./ScreenShots/ImageViewing.png)
 ![DarkMode](./ScreenShots/DarkMode.png)
