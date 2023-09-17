@@ -17,21 +17,21 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Settings" FontSize="30" FontWeight="Medium" Margin="0 20 0 0" />
-        <TextBlock Grid.Row="1" Text="Appearance behavior" FontWeight="Bold" Margin="0 10 0 10" />
+        <TextBlock x:Uid="SettingPage_Title" FontSize="30" FontWeight="Medium" Margin="0 20 0 0" />
+        <TextBlock Grid.Row="1" x:Uid="SettingPage_AppearanceTitle" FontWeight="Bold" Margin="0 10 0 10" />
         <StackPanel Grid.Row="2" Orientation="Vertical" >
-            <labs:SettingsCard Header="App Theme">
+            <labs:SettingsCard x:Uid="SettingPage_AppTheme">
                 <labs:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE790;" />
                 </labs:SettingsCard.HeaderIcon>
                 <ComboBox x:Name="themeMode" SelectionChanged="themeMode_SelectionChanged">
-                    <ComboBoxItem Content="Use system setting" Tag="Default" />
-                    <ComboBoxItem Content="Light" Tag="Light" />
-                    <ComboBoxItem Content="Dark" Tag="Dark" />
+                    <ComboBoxItem x:Uid="SettingPage_Theme_Default" Tag="Default" />
+                    <ComboBoxItem x:Uid="SettingPage_Theme_Light" Tag="Light" />
+                    <ComboBoxItem x:Uid="SettingPage_Theme_Dark" Tag="Dark" />
                 </ComboBox>
             </labs:SettingsCard>
 
-            <TextBlock Text="About" FontWeight="Bold" Margin="0 10 0 10" />
+            <TextBlock x:Uid="SettingPage_AboutTitle" FontWeight="Bold" Margin="0 10 0 10" />
             <labs:SettingsExpander Header="SimpleList" Description="All free for you">
                 <labs:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE753;" />

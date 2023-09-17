@@ -25,6 +25,7 @@ Unzip and then double click
 - [ ] Open in new tab
 - [ ] Custom theme
 - [ ] Multiple accounts
+- [x] i18n
 
 # Screenshots
 

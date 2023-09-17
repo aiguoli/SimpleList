@@ -3,9 +3,10 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
+using SimpleList.Helpers;
+using SimpleList.Models;
 using SimpleList.Services;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleList.ViewModels
@@ -15,7 +16,7 @@ namespace SimpleList.ViewModels
         public CloudViewModel()
         {
             Drive = Ioc.Default.GetService<OneDrive>();
-            BreadcrumbItems.Add(new BreadcrumbItem { Name = "Home", ItemId = "Root" });
+            BreadcrumbItems.Add(new BreadcrumbItem { Name = "RootFileName".GetLocalized(), ItemId = "Root" });
         }
 
         public async Task GetFiles(string itemId = "Root")
@@ -57,11 +58,5 @@ namespace SimpleList.ViewModels
         public FileViewModel SelectedItem { get; set; }
         public string ParentItemId => _parentItemId;
         public OneDrive Drive { get; }
-    }
-
-    public class BreadcrumbItem
-    {
-        public string Name { get; set; }
-        public string ItemId { get; set; }
     }
 }

@@ -6,6 +6,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:converter="using:SimpleList.Converters"
     xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:models="using:SimpleList.Models"
     xmlns:views="using:SimpleList.Views.Layout"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=vm:CloudViewModel}"
@@ -47,7 +48,7 @@
         <RelativePanel Grid.Row="1" Margin="10 5 10 5">
             <BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked">
                 <BreadcrumbBar.ItemTemplate>
-                    <DataTemplate x:DataType="vm:BreadcrumbItem">
+                    <DataTemplate x:DataType="models:BreadcrumbItem">
                         <BreadcrumbBarItem Content="{Binding}" AutomationProperties.Name="{Binding Name}" Tag="{Binding ItemId}">
                             <BreadcrumbBarItem.ContentTemplate>
                                 <DataTemplate>
@@ -76,12 +77,12 @@
                         KeyUp="FileListKeyBoardEvents">
             <ContentControl.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem Text="Refresh" Command="{Binding RefreshCommand}" />
-                    <MenuFlyoutItem Text="New Folder" Click="CreateFolderDialogAsync" />
-                    <MenuFlyoutSubItem Text="Layout">
-                        <MenuFlyoutItem Text="Column" Click="ChangeLayout" />
-                        <MenuFlyoutItem Text="Grid" Click="ChangeLayout" />
-                        <MenuFlyoutItem Text="Image" Click="ChangeLayout" />
+                    <MenuFlyoutItem x:Uid="CloudPage_Refresh" Command="{Binding RefreshCommand}" />
+                    <MenuFlyoutItem x:Uid="CloudPage_CreateFolder" Click="CreateFolderDialogAsync" />
+                    <MenuFlyoutSubItem x:Uid="CloudPage_Layout">
+                        <MenuFlyoutItem x:Uid="CloudPage_Layout_Column" Tag="Column" Click="ChangeLayout" />
+                        <MenuFlyoutItem x:Uid="CloudPage_Layout_Grid" Tag="Grid" Click="ChangeLayout" />
+                        <MenuFlyoutItem x:Uid="CloudPage_Layout_Image" Tag="Image" Click="ChangeLayout" />
                     </MenuFlyoutSubItem>
                 </MenuFlyout>
             </ContentControl.ContextFlyout>

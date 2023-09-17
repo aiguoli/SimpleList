@@ -22,9 +22,9 @@
         <TextBlock Grid.Row="0" FontSize="25" Margin="20" Text="Hello, Guest" x:Name="GreetingText" />
         <TextBlock Grid.Row="1" x:Name="StorageText" Margin="20 0 0 20" FontSize="15" />
         <StackPanel Orientation="Vertical" Grid.Row="2" Margin="20 0 20 0">
-            <TextBlock Text="Quick Start" FontSize="25" />
+            <TextBlock x:Uid="HomePage_QuickStart_Title" FontSize="25" />
             <TextBlock 
-                Text="Click on Files in the left navigation menu, then click the refresh button (or press F5), log in to OneDrive, and list the root directory files."
+                x:Uid="HomePage_QuickStart_Content"
                 FontSize="16"
                 Margin="0 20 0 5" />
         </StackPanel>

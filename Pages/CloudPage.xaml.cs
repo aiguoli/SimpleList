@@ -11,15 +11,10 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using SimpleList.Models;
 
 namespace SimpleList.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class CloudPage : Page
     {
         public CloudPage()
@@ -97,7 +92,7 @@ namespace SimpleList.Pages
 
         private void ChangeLayout(object sender, RoutedEventArgs e)
         {
-            string layout = ((MenuFlyoutItem)sender).Text;
+            string layout = ((MenuFlyoutItem)sender).Tag.ToString();
             CloudControl.ContentTemplate = Resources[$"{layout}ViewTemplate"] as DataTemplate;
         }
     }

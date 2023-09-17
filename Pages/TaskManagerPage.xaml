@@ -3,7 +3,6 @@
     x:Class="SimpleList.Pages.TaskManagerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SimpleList.Pages"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:vm="using:SimpleList.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,8 +19,8 @@
                 <Grid Margin="0 10 0 10">
                     <Grid.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="Resume" Command="{Binding ResumeCommand}" IsEnabled="{Binding IsPaused}" />
-                            <MenuFlyoutItem Text="Remove" Command="{Binding CancelCommand}" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_Resume" Command="{Binding ResumeCommand}" IsEnabled="{Binding IsPaused}" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_Remove" Command="{Binding CancelCommand}" />
                         </MenuFlyout>
                     </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
@@ -51,7 +50,7 @@
                 <Grid Margin="0 10 0 10">
                     <Grid.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="Resume" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_Resume" />
                         </MenuFlyout>
                     </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
@@ -77,10 +76,10 @@
         </Grid.Resources>
         
         <Pivot>
-            <PivotItem Header="Download">
+            <PivotItem x:Uid="TaskManagerPage_Pivot_Download">
                 <ListView ItemsSource="{Binding DownloadTasks}" ItemTemplate="{StaticResource DownloadTaskTemplate}" />
             </PivotItem>
-            <PivotItem Header="Upload">
+            <PivotItem x:Uid="TaskManagerPage_Pivot_Upload">
                 <ListView ItemsSource="{Binding UploadTasks}" ItemTemplate="{StaticResource UploadTaskTemplate}" />
             </PivotItem>
         </Pivot>

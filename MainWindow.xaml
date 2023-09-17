@@ -40,9 +40,9 @@
             IsTabStop="False">
 
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Tag="HomePage" x:Name="HomePageItem" Icon="Home" IsSelected="True" />
-                <NavigationViewItem Content="Files" Tag="CloudPage" x:Name="CloudPageItem" Icon="Document" />
-                <NavigationViewItem Content="Tasks" Tag="TaskManagerPage" x:Name="TaskManagerItem" Icon="Sort" />
+                <NavigationViewItem x:Uid="NavigationBar_Home" Tag="HomePage" x:Name="HomePageItem" Icon="Home" IsSelected="True" />
+                <NavigationViewItem x:Uid="NavigationBar_Files" Tag="CloudPage" x:Name="CloudPageItem" Icon="Document" />
+                <NavigationViewItem x:Uid="NavigationBar_Tasks" Tag="TaskManagerPage" x:Name="TaskManagerItem" Icon="Sort" />
             </NavigationView.MenuItems>
 
             <Frame x:Name="contentFrame" />

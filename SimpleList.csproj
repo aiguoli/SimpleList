@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
@@ -34,7 +34,7 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.7.0</AssemblyVersion>
+	<AssemblyVersion>1.8.0</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon></PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
@@ -187,7 +187,7 @@
     </Page>
   </ItemGroup>
 
-  <!-- 
+	<!-- 
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
     Explorer "Package and Publish" context menu entry to be enabled for this project even if 
     the Windows App SDK Nuget package has not yet been restored.
@@ -213,4 +213,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <DebugType>portable</DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <PRIResource Update="Strings\zh-CN\Resources.resw">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </PRIResource>
+  </ItemGroup>
 </Project>
