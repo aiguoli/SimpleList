@@ -3,9 +3,7 @@
     x:Class="SimpleList.Pages.SettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SimpleList.Pages"
-    xmlns:uc="using:SimpleList.Controls"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -20,32 +18,32 @@
         <TextBlock x:Uid="SettingPage_Title" FontSize="30" FontWeight="Medium" Margin="0 20 0 0" />
         <TextBlock Grid.Row="1" x:Uid="SettingPage_AppearanceTitle" FontWeight="Bold" Margin="0 10 0 10" />
         <StackPanel Grid.Row="2" Orientation="Vertical" >
-            <labs:SettingsCard x:Uid="SettingPage_AppTheme">
-                <labs:SettingsCard.HeaderIcon>
+            <controls:SettingsCard x:Uid="SettingPage_AppTheme">
+                <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE790;" />
-                </labs:SettingsCard.HeaderIcon>
+                </controls:SettingsCard.HeaderIcon>
                 <ComboBox x:Name="themeMode" SelectionChanged="themeMode_SelectionChanged">
                     <ComboBoxItem x:Uid="SettingPage_Theme_Default" Tag="Default" />
                     <ComboBoxItem x:Uid="SettingPage_Theme_Light" Tag="Light" />
                     <ComboBoxItem x:Uid="SettingPage_Theme_Dark" Tag="Dark" />
                 </ComboBox>
-            </labs:SettingsCard>
+            </controls:SettingsCard>
 
             <TextBlock x:Uid="SettingPage_AboutTitle" FontWeight="Bold" Margin="0 10 0 10" />
-            <labs:SettingsExpander Header="SimpleList" Description="All free for you">
-                <labs:SettingsExpander.HeaderIcon>
+            <controls:SettingsExpander Header="SimpleList" Description="All free for you">
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE753;" />
-                </labs:SettingsExpander.HeaderIcon>
+                </controls:SettingsExpander.HeaderIcon>
                 <TextBlock
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         Text="{x:Bind Version}" />
-                <labs:SettingsExpander.Items>
-                    <labs:SettingsCard Header="Github">
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard Header="Github">
                         <HyperlinkButton Content="https://github.com/aiguoli/SimpleList" NavigateUri="https://github.com/aiguoli/SimpleList" />
-                    </labs:SettingsCard>
-                </labs:SettingsExpander.Items>
-            </labs:SettingsExpander>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
             
         </StackPanel>
     </Grid>

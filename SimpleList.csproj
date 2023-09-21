@@ -34,7 +34,7 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.8.0</AssemblyVersion>
+	<AssemblyVersion>1.8.1</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon></PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
@@ -74,8 +74,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.230907" />
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
     <PackageReference Include="Downloader" Version="3.0.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
