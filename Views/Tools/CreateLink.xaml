@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="SimpleList.Views.Tools.CreateLink"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:SimpleList.ViewModels.Tools"
+    mc:Ignorable="d"
+    d:DataContext="{x:Bind vm:CreateLinkViewModel}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Title="Share your link"
+    PrimaryButtonText="OK"
+    PrimaryButtonCommand="{Binding CreateLinkCommand}"
+    CloseButtonText="Close"
+    DefaultButton="Primary">
+
+    <StackPanel Orientation="Vertical">
+        <TextBox x:Uid="ShareCommunityCreateLinkPage_Title" PlaceholderText="My photos" Text="{Binding Title, Mode=TwoWay}" />
+        <TextBox x:Uid="ShareCommunityCreateLinkPage_Content" Height="100" TextWrapping="Wrap" Text="{Binding Content, Mode=TwoWay}" />
+        <TextBox x:Uid="ShareCommunityCreateLinkPage_Password" Text="{Binding Password, Mode=TwoWay}" />
+        <CalendarDatePicker x:Uid="ShareCommunityCreateLinkPage_ExpirationDate" PlaceholderText="Pick a date" MinDate="{Binding Today}" Date="{Binding Expiration, Mode=TwoWay}" />
+        <ComboBox x:Uid="ShareCommunityCreateLinkPage_Category" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category, Mode=TwoWay}" />
+    </StackPanel>
+</ContentDialog>

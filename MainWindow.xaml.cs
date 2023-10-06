@@ -1,6 +1,7 @@
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using SimpleList.Pages;
 using System;
 using System.Runtime.InteropServices;
@@ -41,6 +42,11 @@ namespace SimpleList
                 Type pageType = Type.GetType(pageName);
                 contentFrame.Navigate(pageType);
             }
+        }
+
+        public void Navigate(Type pageType, object targetPageArguments = null, NavigationTransitionInfo navigationTransitionInfo = null)
+        {
+            RootFrame.Navigate(pageType, targetPageArguments, navigationTransitionInfo);
         }
 
         public enum BackdropType
@@ -175,7 +181,7 @@ namespace SimpleList
                 m_micaController.Dispose();
                 m_micaController = null;
             }
-            this.Activated -= Window_Activated;
+            Activated -= Window_Activated;
             m_configurationSource = null;
         }
 
@@ -191,9 +197,9 @@ namespace SimpleList
         {
             switch (((FrameworkElement)this.Content).ActualTheme)
             {
-                case ElementTheme.Dark: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Dark; break;
-                case ElementTheme.Light: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Light; break;
-                case ElementTheme.Default: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Default; break;
+                case ElementTheme.Dark: m_configurationSource.Theme = SystemBackdropTheme.Dark; break;
+                case ElementTheme.Light: m_configurationSource.Theme = SystemBackdropTheme.Light; break;
+                case ElementTheme.Default: m_configurationSource.Theme = SystemBackdropTheme.Default; break;
             }
         }
 

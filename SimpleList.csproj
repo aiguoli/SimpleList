@@ -7,18 +7,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
+    <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>32CB264851E8BF923F1ED3C1843A4BB405767DFD</PackageCertificateThumbprint>
-    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Never</AppxBundle>
-    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+
 	<WindowsPackageType>None</WindowsPackageType>
 	<PublishTrimmed>true</PublishTrimmed>
 	<!--If this line is removed, the package size will be smaller, but it will not function properly in the release mode.-->
@@ -31,10 +23,11 @@
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<PlatformTarget>AnyCPU</PlatformTarget>
+
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.8.1</AssemblyVersion>
+	<AssemblyVersion>1.9.0</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon></PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
@@ -46,11 +39,14 @@
     <None Remove="Assets\EmptyFolder.png" />
     <None Remove="Assets\File.png" />
     <None Remove="Assets\Folder.png" />
-    <None Remove="Controls\SettingsCard.xaml" />
+    <None Remove="Assets\link-share.png" />
+    <None Remove="Controls\ItemCard.xaml" />
     <None Remove="Pages\CloudPage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
     <None Remove="Pages\SettingPage.xaml" />
     <None Remove="Pages\TaskManagerPage.xaml" />
+    <None Remove="Pages\ToolPage.xaml" />
+    <None Remove="Pages\Tools\ShareCommunity.xaml" />
     <None Remove="Views\ConvertFileFormatView.xaml" />
     <None Remove="Views\CreateFolderView.xaml" />
     <None Remove="Views\DeleteFileView.xaml" />
@@ -63,6 +59,8 @@
     <None Remove="Views\PropertyView.xaml" />
     <None Remove="Views\RenameFileView.xaml" />
     <None Remove="Views\ShareFileView.xaml" />
+    <None Remove="Views\Tools\CreateLink.xaml" />
+    <None Remove="Views\Tools\LinkDetails.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,7 +80,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Graph" Version="5.24.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.55.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230822000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
 	<Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -111,6 +109,24 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <Page Update="Views\Tools\CreateLink.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Tools\LinkDetails.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Pages\Tools\ShareCommunity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Content Update="Assets\link-share.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Page Update="Controls\ItemCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Pages\ToolPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Layout\ImageCloudView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,11 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CloudPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\SettingsCard.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

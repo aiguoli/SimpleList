@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SimpleList.Pages.Tools.ShareCommunity"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:SimpleList.ViewModels.Tools"
+    xmlns:models="using:SimpleList.Models"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{x:Bind vm:ShareCommunityViewModel}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="LinkTemplate" x:DataType="models:Link">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding title}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding expire_date}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="2" Text="{Binding views}" VerticalAlignment="Center" />
+                <Button Grid.Column="3" x:Uid="ShareCommunityPage_Details" Style="{StaticResource AccentButtonStyle}" Click="ShowLinkDetailsDialogAsync" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem x:Uid="ShareCommunityPage_Flyout_Refresh" Command="{Binding RefreshCommand}" />
+                <MenuFlyoutItem x:Uid="ShareCommunityPage_Flyout_CreateLink" Click="ShowCreateLinkDialogAsync" />
+            </MenuFlyout>
+        </Grid.ContextFlyout>
+        <ListView
+            ItemsSource="{Binding Links}"
+            ItemTemplate="{StaticResource LinkTemplate}" />
+    </Grid>
+</Page>

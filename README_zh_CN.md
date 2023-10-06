@@ -2,6 +2,8 @@
 
 [English](./README.md) | 简体中文
 
+![simplelist](https://socialify.git.ci/aiguoli/simplelist/image?description=1&font=Raleway&language=1&name=1&stargazers=1&theme=Light)
+
 OneDrive列表程序，使用WinUI3开发
 
 # 使用方法
@@ -26,6 +28,7 @@ OneDrive列表程序，使用WinUI3开发
 - [ ] 自定义主题
 - [ ] 多账户
 - [x] 多语言
+- [x] 工具页 
 
 # 技术选型
 
@@ -40,4 +43,6 @@ WinForms，WPF太老了，Avalonia坑太多了用不明白，HTML+CSS+JS的框架又太大，Iced和Sl
 ![TaskManager](./ScreenShots/TaskManagerPage.png)
 ![Sahre](./ScreenShots/Share.png)
 ![ImageViewing](./ScreenShots/ImageViewing.png)
+![ToolsPage](./ScreenShots/ToolsPage.png)
+![ShareCommunityLinkDetails](./ScreenShots/ShareCommunityLinkDetails.png)
 ![DarkMode](./ScreenShots/DarkMode.png)
