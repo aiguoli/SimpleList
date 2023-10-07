@@ -58,12 +58,10 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: win10-x64
-        path: |
-          bin/win10-x64
+        path: SimpleList/bin/win10-x64
 
     - name: Upload win10-x86
       uses: actions/upload-artifact@v3
       with:
         name: win10-x86
-        path: |
-          bin/win10-x86
+        path: SimpleList/bin/win10-x86

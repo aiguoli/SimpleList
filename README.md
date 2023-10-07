@@ -32,13 +32,13 @@ Unzip and then double click
 
 # Screenshots
 
-![HomePage](./ScreenShots/HomePage.png)
-![CloudPage](./ScreenShots/CloudPage.png)
-![CreateFolder](./ScreenShots/newFolder.png)
-![GridLayout](./ScreenShots/GridLayout.png)
-![TaskManager](./ScreenShots/TaskManagerPage.png)
-![Sahre](./ScreenShots/Share.png)
-![ImageViewing](./ScreenShots/ImageViewing.png)
-![ToolsPage](./ScreenShots/ToolsPage.png)
-![ShareCommunityLinkDetails](./ScreenShots/ShareCommunityLinkDetails.png)
-![DarkMode](./ScreenShots/DarkMode.png)
+![HomePage](./SimpleList/ScreenShots/HomePage.png)
+![CloudPage](./SimpleList/ScreenShots/CloudPage.png)
+![CreateFolder](./SimpleList/ScreenShots/newFolder.png)
+![GridLayout](./SimpleList/ScreenShots/GridLayout.png)
+![TaskManager](./SimpleList/ScreenShots/TaskManagerPage.png)
+![Sahre](./SimpleList/ScreenShots/Share.png)
+![ImageViewing](./SimpleList/ScreenShots/ImageViewing.png)
+![ToolsPage](./SimpleList/ScreenShots/ToolsPage.png)
+![ShareCommunityLinkDetails](./SimpleList/ScreenShots/ShareCommunityLinkDetails.png)
+![DarkMode](./SimpleList/ScreenShots/DarkMode.png)
