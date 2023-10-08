@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using SimpleList.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -18,12 +16,11 @@ namespace SimpleList.ViewModels
         private async Task<string> ShareFile()
         {
             PreventClose = true;
-            ShareLink = await _drive.CreateLink(_file.Id, ExpirationDateTime, Password, Type == 0 ? "view" : "edit");
+            ShareLink = await _file.Drive.Provider.CreateLink(_file.Id, ExpirationDateTime, Password, Type == 0 ? "view" : "edit");
             Finished = true;
             return ShareLink;
         }
 
-        private readonly OneDrive _drive = Ioc.Default.GetService<OneDrive>();
         private readonly FileViewModel _file;
         [ObservableProperty] private string _password;
         [ObservableProperty] private DateTimeOffset _expirationDateTime;

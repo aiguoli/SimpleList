@@ -1,13 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Graph.Models;
-using Microsoft.UI.Xaml;
-using SimpleList.Helpers;
-using SimpleList.Models;
-using SimpleList.Services;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace SimpleList.ViewModels
 {
@@ -15,48 +8,18 @@ namespace SimpleList.ViewModels
     {
         public CloudViewModel()
         {
-            Drive = Ioc.Default.GetService<OneDrive>();
-            BreadcrumbItems.Add(new BreadcrumbItem { Name = "RootFileName".GetLocalized(), ItemId = "Root" });
         }
 
-        public async Task GetFiles(string itemId = "Root")
+        public void AddDrive(DriveViewModel drive)
         {
-            IsLoading = Visibility.Visible;
-            _parentItemId = itemId;
-            DriveItemCollectionResponse files = await Drive.GetFiles(_parentItemId);
-            Files.Clear();
-            Images.Clear();
-            files.Value.ForEach(file =>
-            {
-                FileViewModel newFile = new(this, file);
-                Files.Add(newFile);
-                if (file.Image != null)
-                    Images.Add(newFile);
-            });
-            IsLoading = Visibility.Collapsed;
+            Drives.Add(drive);
         }
 
-        [RelayCommand]
-        public async Task Refresh()
+        public DriveViewModel GetDrive(string name)
         {
-            await GetFiles(_parentItemId);
+            return Drives.FirstOrDefault(d => d.DisplayName == name);
         }
 
-        [RelayCommand]
-        public async Task OpenFolder(FileViewModel file)
-        {
-            BreadcrumbItems.Add(new BreadcrumbItem { Name = file.Name, ItemId = file.Id });
-            await GetFiles(file.Id);
-        }
-
-        private string _parentItemId = "Root";
-        [ObservableProperty] private Visibility _isLoading = Visibility.Collapsed;
-
-        public ObservableCollection<FileViewModel> Files { get; } = new();
-        public ObservableCollection<FileViewModel> Images { get; } = new();
-        public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
-        public FileViewModel SelectedItem { get; set; }
-        public string ParentItemId => _parentItemId;
-        public OneDrive Drive { get; }
+        public ObservableCollection<DriveViewModel> Drives { get; set; } = new();
     }
 }

@@ -6,19 +6,19 @@ namespace SimpleList.ViewModels
 {
     public partial class CreateFolderViewModel : ObservableObject
     {
-        public CreateFolderViewModel(CloudViewModel cloud)
+        public CreateFolderViewModel(DriveViewModel drive)
         {
-            Cloud = cloud;
+            Drive = drive;
         }
 
         [RelayCommand]
         private async Task CreateFolder()
         {
-            await Cloud.Drive.CreateFolder(Cloud.ParentItemId, FolderName);
-            await Cloud.Refresh();
+            await Drive.Provider.CreateFolder(Drive.ParentItemId, FolderName);
+            await Drive.Refresh();
         }
 
         [ObservableProperty] private string _folderName;
-        public CloudViewModel Cloud;
+        public DriveViewModel Drive;
     }
 }

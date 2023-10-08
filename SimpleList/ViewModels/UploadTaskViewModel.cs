@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Dispatching;
-using SimpleList.Services;
 using System;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -10,11 +9,11 @@ namespace SimpleList.ViewModels
 {
     public partial class UploadTaskViewModel : ObservableObject
     {
-        public UploadTaskViewModel(string itemId, IStorageItem item)
+        public UploadTaskViewModel(DriveViewModel drive,string itemId, IStorageItem item)
         {
             _itemId = itemId;
             _item = item;
-            Drive = Ioc.Default.GetService<OneDrive>();
+            Drive = drive;
         }
         
         public async Task StartUpload()
@@ -30,10 +29,10 @@ namespace SimpleList.ViewModels
             if (_item is StorageFile file)
             {
 
-                await Drive.UploadFileAsync(file, _itemId, progress);
+                await Drive.Provider.UploadFileAsync(file, _itemId, progress);
             } else if (_item is StorageFolder folder)
             {
-                await Drive.UploadFolderAsync(folder, _itemId, progress);
+                await Drive.Provider.UploadFolderAsync(folder, _itemId, progress);
             }
             Completed = true;
             IsUploading = false;
@@ -61,7 +60,7 @@ namespace SimpleList.ViewModels
         [ObservableProperty] private bool _completed = false;
         [ObservableProperty] private bool _isUploading = true;
 
-        public OneDrive Drive;
+        public DriveViewModel Drive;
         public string Name => _item.Name;
     }
 }

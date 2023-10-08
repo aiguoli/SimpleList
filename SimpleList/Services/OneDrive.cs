@@ -30,22 +30,22 @@ namespace SimpleList.Services
         public async Task<DriveItemCollectionResponse> GetFiles(string parentId = "Root")
         {
             if (!IsAuthenticated) await Login();
-            return await graphClient.Drives[driveId].Items[parentId].Children.GetAsync();
+            return await graphClient.Drives[DriveId].Items[parentId].Children.GetAsync();
         }
 
         public async Task<ThumbnailSetCollectionResponse> GetThumbNails(string itemId)
         {
-            return await graphClient.Drives[driveId].Items[itemId].Thumbnails.GetAsync();
+            return await graphClient.Drives[DriveId].Items[itemId].Thumbnails.GetAsync();
         }
 
         public async Task<DriveItem> GetItem(string itemId)
         {
-            return await graphClient.Drives[driveId].Items[itemId].GetAsync();
+            return await graphClient.Drives[DriveId].Items[itemId].GetAsync();
         }
 
         public async Task<Stream> GetItemContent(string itemId)
         {
-            return await graphClient.Drives[driveId].Items[itemId].Content.GetAsync();
+            return await graphClient.Drives[DriveId].Items[itemId].Content.GetAsync();
         }
 
         public async Task<DriveItem> CreateFolder(string parentItemId, string folderName)
@@ -61,7 +61,7 @@ namespace SimpleList.Services
                     },
                 },
             };
-            return await graphClient.Drives[driveId].Items[parentItemId].Children.PostAsync(requestBody);
+            return await graphClient.Drives[DriveId].Items[parentItemId].Children.PostAsync(requestBody);
         }
 
         public async Task<DriveItem> RenameFile(string itemId, string newName)
@@ -70,7 +70,7 @@ namespace SimpleList.Services
             {
                 Name = newName,
             };
-            return await graphClient.Drives[driveId].Items[itemId].PatchAsync(requestBody);
+            return await graphClient.Drives[DriveId].Items[itemId].PatchAsync(requestBody);
         }
 
         public async Task UploadFileAsync(StorageFile file, string itemId, IProgress<long> progress = null)
@@ -79,7 +79,7 @@ namespace SimpleList.Services
             if ((await file.GetBasicPropertiesAsync()).Size == 0)
             {
                 // Upload an empty file
-                await graphClient.Drives[driveId].Items[itemId].ItemWithPath(file.Name).Content.PutAsync(new MemoryStream());
+                await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).Content.PutAsync(new MemoryStream());
                 return;
             }
             var uploadSessionRequestBody = new Microsoft.Graph.Drives.Item.Items.Item.CreateUploadSession.CreateUploadSessionPostRequestBody
@@ -92,7 +92,7 @@ namespace SimpleList.Services
                     },
                 },
             };
-            UploadSession uploadSession = await graphClient.Drives[driveId].Items[itemId].ItemWithPath(file.Name).CreateUploadSession.PostAsync(uploadSessionRequestBody);
+            UploadSession uploadSession = await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).CreateUploadSession.PostAsync(uploadSessionRequestBody);
             int maxChunckSize = 320 * 1024;
             LargeFileUploadTask<DriveItem> fileUploadTask = new(uploadSession, stream, maxChunckSize, graphClient.RequestAdapter);
 
@@ -130,7 +130,7 @@ namespace SimpleList.Services
                 RetainInheritedPermissions = false,
                 ExpirationDateTime = expirationDateTime,
             };
-            Permission result = await graphClient.Drives[driveId].Items[itemId].CreateLink.PostAsync(requestBody);
+            Permission result = await graphClient.Drives[DriveId].Items[itemId].CreateLink.PostAsync(requestBody);
             return result.Link.WebUrl;
         }
 
@@ -142,13 +142,13 @@ namespace SimpleList.Services
 
         public async Task<Quota> GetStorageInfo()
         {
-            Drive drive = await graphClient.Drives[driveId].GetAsync();
+            Drive drive = await graphClient.Drives[DriveId].GetAsync();
             return drive.Quota;
         }
 
         public async Task ConvertFileFormat(string itemId, StorageFile file, string format = "pdf")
         {
-            Stream result = await graphClient.Drives[driveId].Items[itemId].Content.GetAsync(requestConfiguration =>
+            Stream result = await graphClient.Drives[DriveId].Items[itemId].Content.GetAsync(requestConfiguration =>
             {
                 // The document is written like this, but there is an error. Upon reviewing the source code, I found that there is no definition for "QueryParameters."
                 // requestConfiguration.QueryParameters.Format = format;
@@ -164,12 +164,12 @@ namespace SimpleList.Services
 
         public async Task DeleteItem(string itemId)
         {
-            await graphClient.Drives[driveId].Items[itemId].DeleteAsync();
+            await graphClient.Drives[DriveId].Items[itemId].DeleteAsync();
         }
 
         public async Task PermanentDeleteItem(string itemId)
         {
-            await graphClient.Drives[driveId].Items[itemId].PermanentDelete.PostAsync();
+            await graphClient.Drives[DriveId].Items[itemId].PermanentDelete.PostAsync();
         }
 
         public async Task<DriveItem> RestoreItem(string itemId)
@@ -182,19 +182,19 @@ namespace SimpleList.Services
                     Id = itemId,
                 },
             };
-            return await graphClient.Drives[driveId].Items[itemId].Restore.PostAsync(requestBody);
+            return await graphClient.Drives[DriveId].Items[itemId].Restore.PostAsync(requestBody);
         }
 
         public async Task<Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse> SearchLocalItems(string query, string itemId)
         {
             // According to code, Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse
             // is same as Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse, so why Microsoft do this?
-            return await graphClient.Drives[driveId].Items[itemId].SearchWithQ(query).GetAsync();
+            return await graphClient.Drives[DriveId].Items[itemId].SearchWithQ(query).GetAsync();
         }
 
         public async Task<Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse> SearchGlobalItems(string query)
         {
-            return await graphClient.Drives[driveId].SearchWithQ(query).GetAsync();
+            return await graphClient.Drives[DriveId].SearchWithQ(query).GetAsync();
         }
 
         private class TokenProvider : IAccessTokenProvider
@@ -240,7 +240,7 @@ namespace SimpleList.Services
             await Task.FromResult(graphClient);
             IsAuthenticated = true;
             Drive driveItem = await graphClient.Me.Drive.GetAsync();
-            driveId = driveItem.Id;
+            DriveId = driveItem.Id;
         }
 
         public bool IsAuthenticated = false;
@@ -249,7 +249,8 @@ namespace SimpleList.Services
         private readonly string[] scopes = new string[] { "User.Read", "Files.ReadWrite.All" };
         private static AuthenticationResult authResult;
         private GraphServiceClient graphClient;
-        private string driveId;
+        public string DriveId;
+
         public enum SearchType
         {
             Part,

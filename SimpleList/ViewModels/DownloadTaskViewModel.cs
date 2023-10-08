@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using Downloader;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
-using SimpleList.Services;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -14,16 +13,16 @@ namespace SimpleList.ViewModels
 {
     public partial class DownloadTaskViewModel : ObservableObject
     {
-        public DownloadTaskViewModel(string itemId, StorageFile file)
+        public DownloadTaskViewModel(DriveViewModel drive, string itemId, StorageFile file)
         {
             _itemId = itemId;
             _file = file;
-            Drive = Ioc.Default.GetService<OneDrive>();
+            Drive = drive;
         }
 
         public async Task StartDownload()
         {
-            DriveItem item = await Drive.GetItem(_itemId);
+            DriveItem item = await Drive.Provider.GetItem(_itemId);
             string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
 
             StartTime = DateTime.Now;
@@ -70,7 +69,7 @@ namespace SimpleList.ViewModels
             if ((DateTime.Now - StartTime).TotalHours >= 1)
             {
                 // Refresh the download URL
-                DriveItem item = await Drive.GetItem(_itemId);
+                DriveItem item = await Drive.Provider.GetItem(_itemId);
                 string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
                 _pack.Address = downloadUrl;
             }
@@ -96,7 +95,7 @@ namespace SimpleList.ViewModels
         public static readonly int chunkSize = 1024 * 1024;  // 1MB chunks
         private readonly string _itemId;
         private readonly StorageFile _file;
-        private OneDrive Drive { get; }
+        private DriveViewModel Drive { get; }
         private readonly TaskManagerViewModel _manager = Ioc.Default.GetService<TaskManagerViewModel>();
         private DownloadService _downloader;
         private DownloadPackage _pack;

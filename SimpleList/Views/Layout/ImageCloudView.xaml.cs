@@ -1,8 +1,6 @@
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.ViewModels;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SimpleList.Views.Layout
 {
@@ -24,7 +22,7 @@ namespace SimpleList.Views.Layout
 
         private async void LoadAllImages(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            foreach (FileViewModel image in (DataContext as CloudViewModel).Images.ToList())
+            foreach (FileViewModel image in (DataContext as DriveViewModel).Images.ToList())
             {
                 await image.LoadImage();
             }

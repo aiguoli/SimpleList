@@ -26,7 +26,7 @@ OneDrive列表程序，使用WinUI3开发
 - [x] 转换为PDF文件
 - [ ] 新tab打开
 - [ ] 自定义主题
-- [ ] 多账户
+- [x] 多账户
 - [x] 多语言
 - [x] 工具页 
 
@@ -36,13 +36,14 @@ WinForms，WPF太老了，Avalonia坑太多了用不明白，HTML+CSS+JS的框架又太大，Iced和Sl
 
 # 截图
 
-![HomePage](./SimpleList/ScreenShots/HomePage.png)
-![CloudPage](./SimpleList/ScreenShots/CloudPage.png)
-![CreateFolder](./SimpleList/ScreenShots/newFolder.png)
-![GridLayout](./SimpleList/ScreenShots/GridLayout.png)
-![TaskManager](./SimpleList/ScreenShots/TaskManagerPage.png)
-![Sahre](./SimpleList/ScreenShots/Share.png)
-![ImageViewing](./SimpleList/ScreenShots/ImageViewing.png)
-![ToolsPage](./SimpleList/ScreenShots/ToolsPage.png)
-![ShareCommunityLinkDetails](./SimpleList/ScreenShots/ShareCommunityLinkDetails.png)
-![DarkMode](./SimpleList/ScreenShots/DarkMode.png)
+![HomePage](./ScreenShots/HomePage.png)
+![CloudPage](./ScreenShots/CloudPage.png)
+![DrivePage](./ScreenShots/DrivePage.png)
+![CreateFolder](./ScreenShots/CreateFolder.png)
+![GridLayout](./ScreenShots/GridLayout.png)
+![Download](./ScreenShots/Download.png)
+![Sahre](./ScreenShots/Share.png)
+![ImageViewing](./ScreenShots/ImageViewing.png)
+![ToolsPage](./ScreenShots/ToolsPage.png)
+![ShareCommunityLinkDetails](./ScreenShots/ShareCommunityLinkDetails.png)
+![DarkMode](./ScreenShots/DarkMode.png)

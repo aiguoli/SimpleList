@@ -41,7 +41,7 @@ namespace SimpleList
 
             Ioc.Default.ConfigureServices(
                 new ServiceCollection()
-                    .AddSingleton<OneDrive>()
+                    .AddSingleton<AccountService>()
                     .AddSingleton<TaskManagerViewModel>()
                     .BuildServiceProvider()
             );

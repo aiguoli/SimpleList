@@ -26,19 +26,20 @@ Unzip and then double click
 - [x] Convert to PDF
 - [ ] Open in new tab
 - [ ] Custom theme
-- [ ] Multiple accounts
+- [x] Multiple accounts
 - [x] i18n
 - [x] Tools page
 
 # Screenshots
 
-![HomePage](./SimpleList/ScreenShots/HomePage.png)
-![CloudPage](./SimpleList/ScreenShots/CloudPage.png)
-![CreateFolder](./SimpleList/ScreenShots/newFolder.png)
-![GridLayout](./SimpleList/ScreenShots/GridLayout.png)
-![TaskManager](./SimpleList/ScreenShots/TaskManagerPage.png)
-![Sahre](./SimpleList/ScreenShots/Share.png)
-![ImageViewing](./SimpleList/ScreenShots/ImageViewing.png)
-![ToolsPage](./SimpleList/ScreenShots/ToolsPage.png)
-![ShareCommunityLinkDetails](./SimpleList/ScreenShots/ShareCommunityLinkDetails.png)
-![DarkMode](./SimpleList/ScreenShots/DarkMode.png)
+![HomePage](./ScreenShots/HomePage.png)
+![CloudPage](./ScreenShots/CloudPage.png)
+![DrivePage](./ScreenShots/DrivePage.png)
+![CreateFolder](./ScreenShots/CreateFolder.png)
+![GridLayout](./ScreenShots/GridLayout.png)
+![Download](./ScreenShots/Download.png)
+![Sahre](./ScreenShots/Share.png)
+![ImageViewing](./ScreenShots/ImageViewing.png)
+![ToolsPage](./ScreenShots/ToolsPage.png)
+![ShareCommunityLinkDetails](./ScreenShots/ShareCommunityLinkDetails.png)
+![DarkMode](./ScreenShots/DarkMode.png)

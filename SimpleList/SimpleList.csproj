@@ -27,7 +27,7 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.9.0</AssemblyVersion>
+	<AssemblyVersion>1.10.0</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon>128.png</PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
@@ -42,12 +42,14 @@
     <None Remove="Assets\link-share.png" />
     <None Remove="Controls\ItemCard.xaml" />
     <None Remove="Pages\CloudPage.xaml" />
+    <None Remove="Pages\DrivePage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
     <None Remove="Pages\SettingPage.xaml" />
     <None Remove="Pages\TaskManagerPage.xaml" />
     <None Remove="Pages\ToolPage.xaml" />
     <None Remove="Pages\Tools\ShareCommunity.xaml" />
     <None Remove="Views\ConvertFileFormatView.xaml" />
+    <None Remove="Views\CreateDrive.xaml" />
     <None Remove="Views\CreateFolderView.xaml" />
     <None Remove="Views\DeleteFileView.xaml" />
     <None Remove="Views\FileView.xaml" />
@@ -109,6 +111,12 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <Page Update="Views\CreateDrive.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Pages\DrivePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Tools\CreateLink.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,9 +126,6 @@
     <Page Update="Pages\Tools\ShareCommunity.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Content Update="Assets\link-share.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
     <Page Update="Controls\ItemCard.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

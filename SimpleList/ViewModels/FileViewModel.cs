@@ -17,9 +17,9 @@ namespace SimpleList.ViewModels
 {
     public partial class FileViewModel : ObservableObject
     {
-        public FileViewModel(CloudViewModel cloud, DriveItem file, bool loadThumbnail=false)
+        public FileViewModel(DriveViewModel drive, DriveItem file, bool loadThumbnail=false)
         {
-            Cloud = cloud;
+            Drive = drive;
             _file = file;
             ItemType = IsFile ? "File" : "Folder";
         }
@@ -40,7 +40,7 @@ namespace SimpleList.ViewModels
             if (file != null)
             {
                 TaskManagerViewModel manager = Ioc.Default.GetService<TaskManagerViewModel>();
-                await manager.AddDownloadTask(itemId, file);
+                await manager.AddDownloadTask(Drive, itemId, file);
             }
         }
 
@@ -48,7 +48,7 @@ namespace SimpleList.ViewModels
         {
             if (IsFile && _file.Image != null)
             {
-                using Stream stream = await Cloud.Drive.GetItemContent(_file.Id);
+                using Stream stream = await Drive.Provider.GetItemContent(_file.Id);
                 var randomAccessStream = new InMemoryRandomAccessStream();
                 await RandomAccessStream.CopyAsync(stream.AsInputStream(), randomAccessStream);
                 randomAccessStream.Seek(0);
@@ -68,7 +68,7 @@ namespace SimpleList.ViewModels
         public bool IsFile { get => _file.Folder == null; }
         public bool IsFolder { get => !IsFile; }
         public int? ChildrenCount { get => _file.Folder?.ChildCount; }
-        public CloudViewModel Cloud { get; }
+        public DriveViewModel Drive { get; }
         public string ItemType { get; }
     }
 }

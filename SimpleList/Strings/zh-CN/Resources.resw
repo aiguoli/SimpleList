@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CloudPage_CreateDrive.Content" xml:space="preserve">
+    <value>添加网盘</value>
+  </data>
   <data name="CloudPage_CreateFolder.Text" xml:space="preserve">
     <value>新建文件夹</value>
   </data>
@@ -135,6 +138,9 @@
   <data name="CloudPage_Refresh.Text" xml:space="preserve">
     <value>刷新</value>
   </data>
+  <data name="CloudPage_Title.Text" xml:space="preserve">
+    <value>你的网盘</value>
+  </data>
   <data name="HomePage_Capacity" xml:space="preserve">
     <value>容量: </value>
   </data>
@@ -142,7 +148,7 @@
     <value>你好, </value>
   </data>
   <data name="HomePage_QuickStart_Content.Text" xml:space="preserve">
-    <value>点击左侧菜单栏的Files，然后按刷新按钮(或按F5)，登录到OneDrive</value>
+    <value>点击左侧菜单栏的文件，然后点击添加网盘登录到OneDrive，进入添加好的网盘，按刷新按钮(或按F5)查看文件</value>
   </data>
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
     <value>快速开始</value>

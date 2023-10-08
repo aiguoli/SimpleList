@@ -18,7 +18,7 @@ namespace SimpleList.Views.Layout
             RenameFileView dialog = new()
             {
                 XamlRoot = XamlRoot,
-                DataContext = new RenameFileViewModel(viewModel.Cloud, viewModel)
+                DataContext = new RenameFileViewModel(viewModel.Drive, viewModel)
             };
             await dialog.ShowAsync();
         }
@@ -50,7 +50,7 @@ namespace SimpleList.Views.Layout
             FileViewModel viewModel = DataContext as FileViewModel;
             if (viewModel.IsFolder)
             {
-                await viewModel.Cloud.OpenFolder(viewModel);
+                await viewModel.Drive.OpenFolder(viewModel);
             }
         }
 

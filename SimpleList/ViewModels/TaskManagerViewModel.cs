@@ -12,9 +12,9 @@ namespace SimpleList.ViewModels
         public ObservableCollection<DownloadTaskViewModel> DownloadTasks { get; } = new();
         public ObservableCollection<UploadTaskViewModel> UploadTasks { get; } = new();
 
-        public async Task AddDownloadTask(string itemId, StorageFile file)
+        public async Task AddDownloadTask(DriveViewModel drive, string itemId, StorageFile file)
         {
-            DownloadTaskViewModel task = new(itemId, file);
+            DownloadTaskViewModel task = new(drive, itemId, file);
             DownloadTasks.Add(task);
             await task.StartDownload();
         }
@@ -44,9 +44,9 @@ namespace SimpleList.ViewModels
         }
 
 
-        public async Task AddUploadTask(string itemId, IStorageItem item)
+        public async Task AddUploadTask(DriveViewModel drive, string itemId, IStorageItem item)
         {
-            UploadTaskViewModel task = new(itemId, item);
+            UploadTaskViewModel task = new(drive, itemId, item);
             UploadTasks.Add(task);
             await task.StartUpload();
         }

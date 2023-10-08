@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CloudPage_CreateDrive.Content" xml:space="preserve">
+    <value>Add drive</value>
+  </data>
   <data name="CloudPage_CreateFolder.Text" xml:space="preserve">
     <value>New Folder</value>
   </data>
@@ -135,6 +138,9 @@
   <data name="CloudPage_Refresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="CloudPage_Title.Text" xml:space="preserve">
+    <value>Your drive</value>
+  </data>
   <data name="HomePage_Capacity" xml:space="preserve">
     <value>Capacity：</value>
   </data>
@@ -142,7 +148,7 @@
     <value>Hello, </value>
   </data>
   <data name="HomePage_QuickStart_Content.Text" xml:space="preserve">
-    <value>Click on Files in the left navigation menu, then click the refresh button (or press F5), log in to OneDrive, and list the root directory files.</value>
+    <value>Click on Files in the left navigation menu, then click the "Add drive" button to log in to OneDrive. Enter your drive, click "refresh" button(or press F5) to manage your directory files.</value>
   </data>
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
     <value>QuickStart</value>

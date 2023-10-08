@@ -6,9 +6,9 @@ namespace SimpleList.ViewModels
 {
     public partial class RenameFileViewModel : ObservableObject
     {
-        public RenameFileViewModel(CloudViewModel cloud, FileViewModel file)
+        public RenameFileViewModel(DriveViewModel drive, FileViewModel file)
         {
-            Cloud = cloud;
+            Drive = drive;
             _file = file;
             _fileName = file.Name;
         }
@@ -16,12 +16,12 @@ namespace SimpleList.ViewModels
         [RelayCommand]
         private async Task RenameFile()
         {
-            await Cloud.Drive.RenameFile(_file.Id, FileName);
-            await Cloud.Refresh();
+            await Drive.Provider.RenameFile(_file.Id, FileName);
+            await Drive.Refresh();
         }
 
         [ObservableProperty] private string _fileName;
         private readonly FileViewModel _file;
-        public CloudViewModel Cloud { get; }
+        public DriveViewModel Drive { get; }
     }
 }

@@ -3,11 +3,7 @@
     x:Class="SimpleList.Pages.CloudPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
-    xmlns:converter="using:SimpleList.Converters"
     xmlns:vm="using:SimpleList.ViewModels"
-    xmlns:models="using:SimpleList.Models"
-    xmlns:views="using:SimpleList.Views.Layout"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=vm:CloudViewModel}"
     mc:Ignorable="d"
@@ -15,77 +11,28 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <converter:FileSizeConverter x:Key="FileSizeConverter" />
-        <converter:DateTimeOffsetToStringConverter x:Key="DateTimeOffsetToStringConverter" />
-        <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Collapsed" FalseValue="Visible" />
-
-        <DataTemplate x:Key="ColumnViewTemplate">
-            <views:ColumnCloudView />
-        </DataTemplate>
-        <DataTemplate x:Key="GridViewTemplate">
-            <views:GridCloudView />
-        </DataTemplate>
-        <DataTemplate x:Key="ImageViewTemplate">
-            <views:ImageCloudView DataContext="{Binding}" />
+        <DataTemplate x:Key="DriveItemTemplate" x:DataType="vm:DriveViewModel">
+            <Grid Tag="{Binding DisplayName}" DoubleTapped="NavigateToDrive">
+                <TextBlock Text="{Binding DisplayName}" />
+            </Grid>
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <ProgressBar 
-            Width="200" 
-            IsIndeterminate="True" 
-            ShowPaused="False" 
-            ShowError="False" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top" 
-            Visibility="{Binding IsLoading}" />
-        <RelativePanel Grid.Row="1" Margin="10 5 10 5">
-            <BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked">
-                <BreadcrumbBar.ItemTemplate>
-                    <DataTemplate x:DataType="models:BreadcrumbItem">
-                        <BreadcrumbBarItem Content="{Binding}" AutomationProperties.Name="{Binding Name}" Tag="{Binding ItemId}">
-                            <BreadcrumbBarItem.ContentTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" Margin="5 0 5 0" />
-                                </DataTemplate>
-                            </BreadcrumbBarItem.ContentTemplate>
-                        </BreadcrumbBarItem>
-                    </DataTemplate>
-                </BreadcrumbBar.ItemTemplate>
-            </BreadcrumbBar>
-            <Button Command="{Binding RefreshCommand}" RelativePanel.AlignRightWithPanel="True">
-                <Button.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="F5" />
-                </Button.KeyboardAccelerators>
-                <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
-            </Button>
-        </RelativePanel>
-        <ContentControl Grid.Row="2" 
-                        x:Name="CloudControl"
-                        VerticalContentAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        ContentTemplate="{StaticResource ColumnViewTemplate}"
-                        AllowDrop="True"
-                        DragOver="DisplayCopyIcon"
-                        Drop="DropToUpload"
-                        KeyUp="FileListKeyBoardEvents">
-            <ContentControl.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem x:Uid="CloudPage_Refresh" Command="{Binding RefreshCommand}" />
-                    <MenuFlyoutItem x:Uid="CloudPage_CreateFolder" Click="CreateFolderDialogAsync" />
-                    <MenuFlyoutSubItem x:Uid="CloudPage_Layout">
-                        <MenuFlyoutItem x:Uid="CloudPage_Layout_Column" Tag="Column" Click="ChangeLayout" />
-                        <MenuFlyoutItem x:Uid="CloudPage_Layout_Grid" Tag="Grid" Click="ChangeLayout" />
-                        <MenuFlyoutItem x:Uid="CloudPage_Layout_Image" Tag="Image" Click="ChangeLayout" />
-                    </MenuFlyoutSubItem>
-                </MenuFlyout>
-            </ContentControl.ContextFlyout>
-        </ContentControl>
+        <TextBlock x:Uid="CloudPage_Title" />
+        <Button 
+            Grid.Row="1"
+            x:Uid="CloudPage_CreateDrive"
+            Margin="0 10 0 10"
+            Click="ShowCreateDriveDialogAsync" />
+        <ListView 
+            Grid.Row="2"
+            ItemTemplate="{StaticResource DriveItemTemplate}"
+            ItemsSource="{Binding Drives}" />
     </Grid>
 </Page>

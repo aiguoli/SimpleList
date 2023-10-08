@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using SimpleList.Services;
 using System.Threading.Tasks;
 
 namespace SimpleList.ViewModels
@@ -10,23 +8,24 @@ namespace SimpleList.ViewModels
     {
         public DeleteFileViewModel(FileViewModel file) 
         {
+            _drive = file.Drive;
             File = file;
         }
 
         [RelayCommand]
         public async Task DeleteFile()
         {
-            OneDrive drive = Ioc.Default.GetService<OneDrive>();
             if (PermanentDelete)
             {
-                await drive.PermanentDeleteItem(File.Id);
+                await _drive.Provider.PermanentDeleteItem(File.Id);
             } else
             {
-                await drive.DeleteItem(File.Id);
+                await _drive.Provider.DeleteItem(File.Id);
             }
-            await File.Cloud.Refresh();
+            await File.Drive.Refresh();
         }
 
+        private readonly DriveViewModel _drive;
         [ObservableProperty] private bool _permanentDelete;
 
         public FileViewModel File;
