@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using SimpleList.Helpers;
-using SimpleList.Services;
 using SimpleList.ViewModels;
 using System;
 using System.Reflection;
@@ -41,7 +40,6 @@ namespace SimpleList
 
             Ioc.Default.ConfigureServices(
                 new ServiceCollection()
-                    .AddSingleton<AccountService>()
                     .AddSingleton<TaskManagerViewModel>()
                     .BuildServiceProvider()
             );
