@@ -13,7 +13,14 @@
     <Page.Resources>
         <DataTemplate x:Key="DriveItemTemplate" x:DataType="vm:DriveViewModel">
             <Grid Tag="{Binding DisplayName}" DoubleTapped="NavigateToDrive">
+                <Grid.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Check Storage" Command="{Binding GetCapacityCommand}" />
+                    </MenuFlyout>
+                </Grid.ContextFlyout>
+
                 <TextBlock Text="{Binding DisplayName}" />
+                <TextBlock Text="{Binding StorageInfo}" HorizontalAlignment="Right" />
             </Grid>
         </DataTemplate>
     </Page.Resources>

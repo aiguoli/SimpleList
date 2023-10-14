@@ -19,6 +19,8 @@
 	<SelfContained>true</SelfContained>
 	<PublishSingleFile>true</PublishSingleFile>
 	<PublishReadyToRun>false</PublishReadyToRun>
+	<!--这里能写true吗？-->
+	<WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<PlatformTarget>AnyCPU</PlatformTarget>
@@ -26,16 +28,18 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.10.1</AssemblyVersion>
+	<AssemblyVersion>1.10.0</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon>128.png</PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="Assets\favicon.ico" />
+  </ItemGroup>
 	<ItemGroup>
 		<TrimmerRootAssembly Include="Microsoft.Identity.Client" />
 	</ItemGroup>
   <ItemGroup>
-	<None Remove="Assets\favicon.ico" />
     <None Remove="Assets\EmptyFolder.png" />
     <None Remove="Assets\File.png" />
     <None Remove="Assets\Folder.png" />

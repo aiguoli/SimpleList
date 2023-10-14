@@ -15,10 +15,10 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="AppTitleBar">
-            <Image Source="ms-appx:///Assets/TitlebarLogo.png"
+            <Image Source="ms-appx:///Assets/Square44x44Logo.png"
                    HorizontalAlignment="Left" 
                    Width="16" Height="16" 
-                   Margin="8,0"/>
+                   Margin="8, 0"/>
             <TextBlock x:Name="AppTitleTextBlock" 
                        Text="SimpleList"
                        TextWrapping="NoWrap"

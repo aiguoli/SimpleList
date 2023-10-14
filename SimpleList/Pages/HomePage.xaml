@@ -13,15 +13,13 @@
         <converter:FileSizeConverter x:Key="FileSizeConverter" />
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontSize="25" Margin="20" Text="Hello, Guest" x:Name="GreetingText" />
-        <TextBlock Grid.Row="1" x:Name="StorageText" Margin="20 0 0 20" FontSize="15" />
-        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="20 0 20 0">
+        <TextBlock Grid.Row="1" x:Name="StorageText" FontSize="15" />
+        <StackPanel Orientation="Vertical" Grid.Row="2">
             <TextBlock x:Uid="HomePage_QuickStart_Title" FontSize="25" />
             <TextBlock 
                 x:Uid="HomePage_QuickStart_Content"

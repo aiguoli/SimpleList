@@ -26,8 +26,18 @@
             <x:String>View</x:String>
             <x:String>Edit</x:String>
         </ComboBox>
-        <CalendarDatePicker PlaceholderText="Pick expiration date" Header="Expiration date" x:Name="ExpirationDateTime" Date="{Binding ExpirationDateTime, Mode=TwoWay}" />
+        <CalendarDatePicker 
+            PlaceholderText="Pick expiration date" 
+            Header="Expiration date" 
+            x:Name="ExpirationDateTime" 
+            Date="{Binding ExpirationDateTime, Mode=TwoWay}" />
         <TextBox Header="Password" PlaceholderText="Optional" Text="{Binding Password, Mode=TwoWay}" />
-        <TextBox Header="Share Link" Text="{Binding ShareLink}" Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+        <StackPanel 
+            Orientation="Horizontal" 
+            Spacing="10"
+            Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
+            <TextBox Header="Share Link" Text="{Binding ShareLink}" MaxWidth="200" />
+            <Button x:Name="CopyButton" Content="Copy" VerticalAlignment="Bottom" Command="{Binding CopyToClipboardCommand}" />
+        </StackPanel>
     </StackPanel>
 </ContentDialog>

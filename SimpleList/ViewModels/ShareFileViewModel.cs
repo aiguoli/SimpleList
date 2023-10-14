@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace SimpleList.ViewModels
 {
@@ -19,6 +20,14 @@ namespace SimpleList.ViewModels
             ShareLink = await _file.Drive.Provider.CreateLink(_file.Id, ExpirationDateTime, Password, Type == 0 ? "view" : "edit");
             Finished = true;
             return ShareLink;
+        }
+
+        [RelayCommand]
+        private async Task CopyToClipboard()
+        {
+            DataPackage package = new();
+            package.SetText(ShareLink);
+            Clipboard.SetContent(package);
         }
 
         private readonly FileViewModel _file;

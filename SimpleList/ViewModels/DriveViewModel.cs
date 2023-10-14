@@ -36,6 +36,14 @@ namespace SimpleList.ViewModels
             IsLoading = Visibility.Collapsed;
         }
 
+
+        [RelayCommand]
+        private async Task GetCapacity()
+        {
+            Quota quota = await Provider.GetStorageInfo();
+            StorageInfo = Utils.ReadableFileSize(quota.Used) + " / " + Utils.ReadableFileSize(quota.Total);
+        }
+
         [RelayCommand]
         public async Task Refresh()
         {
@@ -51,6 +59,7 @@ namespace SimpleList.ViewModels
 
         private string _parentItemId = "Root";
         [ObservableProperty] private Visibility _isLoading = Visibility.Collapsed;
+        [ObservableProperty] private string _storageInfo;
 
         public ObservableCollection<FileViewModel> Files { get; } = new();
         public ObservableCollection<FileViewModel> Images { get; } = new();

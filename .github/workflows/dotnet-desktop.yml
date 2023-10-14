@@ -54,14 +54,10 @@ jobs:
         Configuration: ${{ matrix.configuration }}
         Platform: ${{ matrix.platform }}
 
-    - name: Upload win10-x64
+    - name: Upload
       uses: actions/upload-artifact@v3
       with:
-        name: win10-x64
-        path: SimpleList/bin/win10-x64
-
-    - name: Upload win10-x86
-      uses: actions/upload-artifact@v3
-      with:
-        name: win10-x86
-        path: SimpleList/bin/win10-x86
+        name: win10-publish
+        path: |
+            SimpleList/bin/win10-x64
+            SimpleList/bin/win10-x86
