@@ -1,7 +1,11 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SimpleList.Models;
+using SimpleList.Services;
 using SimpleList.ViewModels;
+using SimpleList.Views.Preview;
 using System;
+using System.IO;
 
 namespace SimpleList.Views.Layout
 {
@@ -77,6 +81,45 @@ namespace SimpleList.Views.Layout
                 DataContext = new DeleteFileViewModel(viewModel)
             };
             await dialog.ShowAsync();
+        }
+
+        private async void ShowPreviewDialogAsync(object sender, RoutedEventArgs e)
+        {
+            FileViewModel viewModel = DataContext as FileViewModel;
+            switch (Utils.GetFileType(Path.GetExtension(viewModel.Name).ToLower()))
+            {
+                case FileType.Markdown:
+                    {
+                        MarkdownPreviewView dialog = new()
+                        {
+                            XamlRoot = XamlRoot,
+                            DataContext = new PreviewViewModel(viewModel)
+                        };
+                        await dialog.ShowAsync();
+                        break;
+                    }
+                case FileType.Image:
+                    {
+                        ImagePreviewView dialog = new()
+                        {
+                            XamlRoot = XamlRoot,
+                            DataContext = new PreviewViewModel(viewModel)
+                        };
+                        await dialog.ShowAsync();
+                        break;
+                    }
+                case FileType.Media:
+                    {
+                        MediaPreviewView dialog = new()
+                        {
+                            XamlRoot = XamlRoot,
+                            DataContext = new PreviewViewModel(viewModel)
+                        };
+                        await dialog.ShowAsync();
+                        break;
+                    }
+            }
+            
         }
     }
 

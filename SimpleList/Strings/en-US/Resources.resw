@@ -141,6 +141,27 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>Your drive</value>
   </data>
+  <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
+    <value>Convert</value>
+  </data>
+  <data name="FileView_Flyout_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="FileView_Flyout_Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="FileView_Flyout_Open.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="FileView_Flyout_Property.Text" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="FileView_Flyout_Rename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="FileView_Flyout_Share.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
   <data name="HomePage_Capacity" xml:space="preserve">
     <value>Capacity：</value>
   </data>

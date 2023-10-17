@@ -141,6 +141,27 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>你的网盘</value>
   </data>
+  <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
+    <value>转换</value>
+  </data>
+  <data name="FileView_Flyout_Delete.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="FileView_Flyout_Download.Text" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="FileView_Flyout_Open.Text" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="FileView_Flyout_Property.Text" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="FileView_Flyout_Rename.Text" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="FileView_Flyout_Share.Text" xml:space="preserve">
+    <value>分享</value>
+  </data>
   <data name="HomePage_Capacity" xml:space="preserve">
     <value>容量: </value>
   </data>

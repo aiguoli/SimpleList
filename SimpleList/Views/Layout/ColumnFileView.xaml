@@ -21,13 +21,23 @@
     <Grid DoubleTapped="OpenFolder">
         <Grid.ContextFlyout>
             <MenuFlyout>
-                <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" IsEnabled="{Binding IsFolder}" />
-                <MenuFlyoutItem Text="Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
-                <MenuFlyoutItem Text="Delete" Click="ShowDeleteFileDialogAsync" />
-                <MenuFlyoutItem Text="Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
-                <MenuFlyoutItem Text="Share" Click="ShowShareFileDialogAsync" />
-                <MenuFlyoutItem Text="Rename" Click="ShowRenameFileDialogAsync" />
-                <MenuFlyoutItem Text="Property" Click="ShowPropertyDialogAsync" />
+                <MenuFlyoutItem 
+                    x:Uid="FileView_Flyout_Open" 
+                    Command="{Binding Drive.OpenFolderCommand}" 
+                    CommandParameter="{Binding}" 
+                    IsEnabled="{Binding IsFolder}" 
+                    Visibility="{Binding IsFolder, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <MenuFlyoutItem 
+                    x:Uid="FileView_Flyout_Open"  
+                    Click="ShowPreviewDialogAsync" 
+                    IsEnabled="{Binding CanPreview}"
+                    Visibility="{Binding CanPreview, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Delete" Click="ShowDeleteFileDialogAsync" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Share" Click="ShowShareFileDialogAsync" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Rename" Click="ShowRenameFileDialogAsync" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Property" Click="ShowPropertyDialogAsync" />
             </MenuFlyout>
         </Grid.ContextFlyout>
         <Grid.ColumnDefinitions>

@@ -4,6 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
+using SimpleList.Models;
+using SimpleList.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,7 +60,17 @@ namespace SimpleList.ViewModels
             }
         }
 
+        [RelayCommand]
+        public async Task LoadContent()
+        {
+            if (IsFile)
+            {
+                Content = (await Drive.Provider.GetItemContent(Id)).ToString();
+            } 
+        }
+
         [ObservableProperty] private BitmapImage _image;
+        [ObservableProperty] private string _content;
         private readonly DriveItem _file;
 
         public string Id { get => _file.Id; }
@@ -70,5 +82,7 @@ namespace SimpleList.ViewModels
         public int? ChildrenCount { get => _file.Folder?.ChildCount; }
         public DriveViewModel Drive { get; }
         public string ItemType { get; }
+        public string DownloadUrl { get => _file.AdditionalData["@microsoft.graph.downloadUrl"].ToString(); }
+        public bool CanPreview { get => IsFile && Utils.GetFileType(Path.GetExtension(Name)) != FileType.Unknown; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SimpleList.Models;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -60,5 +62,20 @@ namespace SimpleList.Services
             }
             return "0";
         }
+
+        public static FileType GetFileType(string ext)
+        {
+            return ext switch
+            {
+                ".txt" => FileType.Text,
+                ".md" => FileType.Markdown,
+                string _ when ImageType.Contains(ext) => FileType.Image,// https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image?view=windows-app-sdk-1.4#image-file-formats
+                string _ when MediaType.Contains(ext) => FileType.Media,
+                _ => FileType.Unknown,
+            };
+        }
+
+        public static readonly string[] ImageType = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".ico", ".svg" };
+        public static readonly string[] MediaType = { "mp3", ".mp4", ".wma", ".3gp", ".aac", ".flac", ".wax", ".wav", ".wmx", ".wpl", ".avi" };
     }
 }

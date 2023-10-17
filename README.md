@@ -15,7 +15,7 @@ Unzip and then double click
 - [x] Index
 - [x] Download
 - [x] Share
-- [ ] Preview
+- [x] Preview
 - [x] Download progress
 - [x] Upload
 - [ ] Automatic synchronization

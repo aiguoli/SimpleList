@@ -7,7 +7,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-    <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
+	<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
 
@@ -58,6 +58,9 @@
     <None Remove="Views\Layout\GridCloudView.xaml" />
     <None Remove="Views\Layout\GridFileView.xaml" />
     <None Remove="Views\Layout\ImageCloudView.xaml" />
+    <None Remove="Views\Preview\ImagePreviewView.xaml" />
+    <None Remove="Views\Preview\MarkdownPreviewView.xaml" />
+    <None Remove="Views\Preview\MediaPreviewView.xaml" />
     <None Remove="Views\PropertyView.xaml" />
     <None Remove="Views\RenameFileView.xaml" />
     <None Remove="Views\ShareFileView.xaml" />
@@ -77,6 +80,7 @@
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 	<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.230907" />
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
     <PackageReference Include="Downloader" Version="3.0.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
@@ -111,6 +115,15 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <Page Update="Views\Preview\MediaPreviewView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Preview\ImagePreviewView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Preview\MarkdownPreviewView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\CreateDrive.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

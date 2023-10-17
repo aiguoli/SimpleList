@@ -19,6 +19,7 @@ namespace SimpleList.ViewModels
             BreadcrumbItems.Add(new BreadcrumbItem { Name = "RootFileName".GetLocalized(), ItemId = "Root" });
         }
 
+        [RelayCommand]
         public async Task GetFiles(string itemId = "Root")
         {
             IsLoading = Visibility.Visible;

@@ -23,7 +23,7 @@ namespace SimpleList.ViewModels
         }
 
         [RelayCommand]
-        private async Task CopyToClipboard()
+        private void CopyToClipboard()
         {
             DataPackage package = new();
             package.SetText(ShareLink);
