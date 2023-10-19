@@ -3,24 +3,21 @@ using Microsoft.UI.Xaml.Controls;
 using SimpleList.ViewModels;
 using SimpleList.Views;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.System;
-using SimpleList.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SimpleList.Pages
 {
     public sealed partial class CloudPage : Page
     {
+        [RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Serialize<TValue>(TValue, JsonSerializerOptions)")]
         public CloudPage()
         {
             InitializeComponent();
             DataContext = new CloudViewModel();
+            Loaded += async (sender, args) =>
+            {
+                await (DataContext as CloudViewModel).LoadDrivesFromDisk();
+            };
         }
 
         private async void ShowCreateDriveDialogAsync(object sender, RoutedEventArgs e)
