@@ -2,6 +2,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.Helpers;
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -42,6 +47,19 @@ namespace SimpleList.Pages
             ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
         }
 
+        [RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Deserialize<TValue>(String, JsonSerializerOptions)")]
+        private async Task checkForUpdate()
+        {
+            string url = "https://api.github.com/repos/aiguoli/simplelist/releases/latest";
+            HttpClient client = new();
+            HttpResponseMessage response = await client.GetAsync(url);
+            dynamic latestVersion = JsonSerializer.Deserialize<dynamic>(await response.Content.ReadAsStringAsync());
+            if (latestVersion != Version)
+            {
+                IsUpdateAvailable = true;
+            }
+        }
+
         public string Version
         {
             get
@@ -50,5 +68,7 @@ namespace SimpleList.Pages
                 return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
             }
         }
+
+        public bool IsUpdateAvailable { get; set; } = false;
     }
 }
