@@ -38,6 +38,12 @@
             Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
             <TextBox Header="Share Link" Text="{Binding ShareLink}" MaxWidth="200" />
             <Button x:Name="CopyButton" Content="Copy" VerticalAlignment="Bottom" Command="{Binding CopyToClipboardCommand}" />
+            <Button x:Name="QRCodeButton" VerticalAlignment="Bottom" Click="ShowQRCode">
+                <FontIcon Glyph="&#xED14;" />
+            </Button>
+            <TeachingTip x:Name="QRCodeTip" Target="{x:Bind QRCodeButton}">
+                <Image Source="{Binding QRCodeImage}" Margin="25" />
+            </TeachingTip>
         </StackPanel>
     </StackPanel>
 </ContentDialog>

@@ -21,5 +21,10 @@ namespace SimpleList.Views
                 vm.PreventClose = false;
             }
         }
+
+        private void ShowQRCode(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            QRCodeTip.IsOpen = true;
+        }
     }
 }

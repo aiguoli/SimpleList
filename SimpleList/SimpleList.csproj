@@ -13,7 +13,7 @@
 
 	<WindowsPackageType>None</WindowsPackageType>
 	<!-- error with no reason -->
-	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	<WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
 	<PublishTrimmed>true</PublishTrimmed>
 	<!--If this line is removed, the package size will be smaller, but it will not function properly in the release mode.-->
 	<TrimMode>partial</TrimMode>
@@ -28,7 +28,7 @@
 	<AssemblyName>SimpleList</AssemblyName>
 	<Authors>Thawne</Authors>
 	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.11.2</AssemblyVersion>
+	<AssemblyVersion>1.11.3</AssemblyVersion>
 	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
 	<PackageIcon>128.png</PackageIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
@@ -90,6 +90,9 @@
     <PackageReference Include="Microsoft.Identity.Client" Version="4.55.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+    <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.4" />
+    <PackageReference Include="QRCoder" Version="1.4.3" />
+    <PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
 	<Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 

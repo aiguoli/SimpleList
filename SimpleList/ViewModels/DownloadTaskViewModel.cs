@@ -83,11 +83,15 @@ namespace SimpleList.ViewModels
         }
 
         [RelayCommand]
-        public void CancelTask()
+        public async Task CancelTaskAsync()
         {
             if (!Completed)
             {
                 _downloader.CancelAsync();
+            }
+            if (!Completed)
+            {
+                await _file.DeleteAsync();
             }
             _manager.RemoveSelectedDownloadTasks(this);
         }
