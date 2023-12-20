@@ -15,7 +15,8 @@
             <Grid Tag="{Binding DisplayName}" DoubleTapped="NavigateToDrive">
                 <Grid.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="Check Storage" Command="{Binding GetCapacityCommand}" />
+                        <MenuFlyoutItem x:Uid="CloudPage_Flyout_GetCapacity" Command="{Binding GetCapacityCommand}" />
+                        <!--<MenuFlyoutItem x:Uid="CloudPage_Flyout_RemoveDrive" Command="{Binding Cloud.RemoveDriveCommand}" CommandParameter="{Binding}" />-->
                     </MenuFlyout>
                 </Grid.ContextFlyout>
 

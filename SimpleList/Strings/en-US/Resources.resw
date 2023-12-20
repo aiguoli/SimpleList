@@ -123,6 +123,12 @@
   <data name="CloudPage_CreateFolder.Text" xml:space="preserve">
     <value>New Folder</value>
   </data>
+  <data name="CloudPage_Flyout_GetCapacity.Text" xml:space="preserve">
+    <value>Check Storage</value>
+  </data>
+  <data name="CloudPage_Flyout_RemoveDrive.Text" xml:space="preserve">
+    <value>Remove Drive</value>
+  </data>
   <data name="CloudPage_Layout.Text" xml:space="preserve">
     <value>Layout</value>
   </data>

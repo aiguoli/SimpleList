@@ -87,7 +87,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Graph" Version="5.24.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.55.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.56.0" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.56.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.4" />

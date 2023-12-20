@@ -123,6 +123,12 @@
   <data name="CloudPage_CreateFolder.Text" xml:space="preserve">
     <value>新建文件夹</value>
   </data>
+  <data name="CloudPage_Flyout_GetCapacity.Text" xml:space="preserve">
+    <value>查看容量</value>
+  </data>
+  <data name="CloudPage_Flyout_RemoveDrive.Text" xml:space="preserve">
+    <value>移除网盘</value>
+  </data>
   <data name="CloudPage_Layout.Text" xml:space="preserve">
     <value>布局</value>
   </data>
@@ -254,6 +260,9 @@
   </data>
   <data name="ShareCommunityPage_Flyout_Refresh.Text" xml:space="preserve">
     <value>刷新</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
   <data name="TaskManagerPage_Pivot_Download.Header" xml:space="preserve">
     <value>下载</value>

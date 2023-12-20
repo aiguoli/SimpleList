@@ -10,6 +10,10 @@ OneDrive列表程序，使用WinUI3开发
 
 解压后双击打开
 
+# Sttings
+
+修改`SimpleList/appsettings.json`可以自定义ClientID等配置。 
+
 # 功能
 
 - [x] 列表
@@ -47,3 +51,7 @@ WinForms，WPF太老了，Avalonia坑太多了用不明白，HTML+CSS+JS的框架又太大，Iced和Sl
 ![ToolsPage](./ScreenShots/ToolsPage.png)
 ![ShareCommunityLinkDetails](./ScreenShots/ShareCommunityLinkDetails.png)
 ![DarkMode](./ScreenShots/DarkMode.png)
+
+# Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/aiguoli/SimpleList.svg)](https://starchart.cc/aiguoli/SimpleList)

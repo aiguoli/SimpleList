@@ -1,4 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Identity.Client.Extensions.Msal;
+using SimpleList.Models.DTO;
+using SimpleList.Services;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -29,30 +34,53 @@ namespace SimpleList.ViewModels
             return Drives.FirstOrDefault(d => d.DisplayName == name);
         }
 
+        [RelayCommand]
+        public void RemoveDrive(DriveViewModel drive)
+        {
+            Drives.Remove(drive);
+        }
+
         [RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Serialize<TValue>(TValue, JsonSerializerOptions)")]
         private async Task SaveDrivesToDisk()
         {
-            string jsonData = JsonSerializer.Serialize(Drives);
+            List<DriveDTO> drives = new();
+            foreach (DriveViewModel drive in Drives)
+            {
+                DriveDTO driveDTO = new()
+                {
+                    DisplayName = drive.DisplayName,
+                    Provider = new()
+                    {
+                        HomeAccountId = drive.Provider.HomeAccountId,
+                        DriveId = drive.Provider.DriveId
+                    }
+                };
+                drives.Add(driveDTO);
+            }
+            string jsonData = JsonSerializer.Serialize(drives);
             string cachePath = Path.Combine(Directory.GetCurrentDirectory(), "cache");
             Directory.CreateDirectory(cachePath);
-            await File.WriteAllTextAsync(Path.Combine(cachePath, "drives.json"), jsonData);
+            await File.WriteAllTextAsync(cacheFilePath, jsonData);
         }
 
         [RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Deserialize<TValue>(String, JsonSerializerOptions)")]
         public async Task LoadDrivesFromDisk()
         {
-            if (File.Exists(cacheFilePath))
+            if (File.Exists(cacheFilePath) && !isCacheLoaded)
             {
                 string jsonData = await File.ReadAllTextAsync(cacheFilePath);
-                ObservableCollection<DriveViewModel> drives = JsonSerializer.Deserialize<ObservableCollection<DriveViewModel>>(jsonData);
-                foreach (DriveViewModel drive in drives)
+                ObservableCollection<DriveDTO> drives = JsonSerializer.Deserialize<ObservableCollection<DriveDTO>>(jsonData);
+                foreach (DriveDTO drive in drives)
                 {
-                    Drives.Add(drive);
+                    OneDrive provider = new(drive.Provider.DriveId, drive.Provider.HomeAccountId);
+                    Drives.Add(new DriveViewModel(provider, drive.DisplayName));
                 }
             }
+            isCacheLoaded = true;
         }
 
-        private string cacheFilePath = Path.Combine(Directory.GetCurrentDirectory(), "cache", "drives.json");
+        private readonly string cacheFilePath = Path.Combine(Directory.GetCurrentDirectory(), "cache", "drives.json");
+        private bool isCacheLoaded = false;
         [ObservableProperty] private ObservableCollection<DriveViewModel> drives = new();
     }
 }

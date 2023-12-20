@@ -1,14 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Drives.Item.Items.Item.Restore;
 using Microsoft.Graph.Models;
 using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensions.Msal;
 using Microsoft.Kiota.Abstractions.Authentication;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -19,12 +20,14 @@ namespace SimpleList.Services
     {
         public OneDrive()
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            string clientId = configuration.GetSection("AzureAD:ClientId").Value;
-            PublicClientApp = PublicClientApplicationBuilder.Create(clientId)
-                .WithClientName(Assembly.GetEntryAssembly().GetName().Name)
-                .WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
-                .Build();
+            PublicClientApp = Ioc.Default.GetService<IPublicClientApplication>();
+        }
+
+        public OneDrive(string driveId, string homeAccountId)
+        {
+            DriveId = driveId;
+            HomeAccountId = homeAccountId;
+            PublicClientApp = Ioc.Default.GetService<IPublicClientApplication>();
         }
 
         public async Task<DriveItemCollectionResponse> GetFiles(string parentId = "Root")
@@ -142,6 +145,7 @@ namespace SimpleList.Services
 
         public async Task<Quota> GetStorageInfo()
         {
+            if (!IsAuthenticated) await Login();
             Drive drive = await graphClient.Drives[DriveId].GetAsync();
             return drive.Quota;
         }
@@ -217,40 +221,77 @@ namespace SimpleList.Services
             public AllowedHostsValidator AllowedHostsValidator { get; }
         }
 
-        public async Task Login()
+        public async Task Login(bool silent = true)
         {
             TokenProvider tokenProvider = new(async Task<string> (string[] scopes) =>
             {
                 IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
-                IAccount firstAccount = accounts.FirstOrDefault();
 
                 try
                 {
-                    authResult = await PublicClientApp.AcquireTokenSilent(scopes, firstAccount).ExecuteAsync();
+                    if (silent)
+                    {
+                        authResult = await PublicClientApp
+                                        .AcquireTokenSilent(scopes, accounts.FirstOrDefault(account => account.HomeAccountId.Identifier == HomeAccountId))
+                                        .ExecuteAsync();
+                        if (authResult != null)
+                        {
+                            IsAuthenticated = true;
+                        }
+                    } else
+                    {
+                        throw new MsalUiRequiredException("404", "No cache found, please sign in again.");
+                    }
                 }
-                catch
+                catch (MsalUiRequiredException)
                 {
-                    authResult = await PublicClientApp.AcquireTokenInteractive(scopes)
-                                                      .ExecuteAsync();
+                    try
+                    {
+                        authResult = await PublicClientApp.AcquireTokenInteractive(scopes).ExecuteAsync();
+                        if (authResult != null)
+                        {
+                            IsAuthenticated = true;
+                        }
+                    }
+                    catch (MsalException msalex)
+                    {
+                        Console.WriteLine(msalex);
+                    }
                 }
-                return authResult.AccessToken;
+                HomeAccountId = authResult?.Account.HomeAccountId.Identifier;
+                return authResult?.AccessToken;
             }, scopes);
             BaseBearerTokenAuthenticationProvider authProvider = new(tokenProvider);
             graphClient = new(authProvider);
             await Task.FromResult(graphClient);
-            IsAuthenticated = true;
-            Drive driveItem = await graphClient.Me.Drive.GetAsync();
-            DriveId = driveItem.Id;
+            SaveTokenCache();
+            try
+            {
+                Drive driveItem = await graphClient.Me.Drive.GetAsync();
+                DriveId = driveItem.Id;
+            }
+            catch
+            {
+                
+            }
         }
 
-        public bool IsAuthenticated = false;
+        public static void SaveTokenCache()
+        {
+            MsalCacheHelper cacheHelper = Ioc.Default.GetService<MsalCacheHelper>();
+            cacheHelper.RegisterCache(PublicClientApp.UserTokenCache);
+        }
 
         private static IPublicClientApplication PublicClientApp;
         private readonly string[] scopes = new string[] { "User.Read", "Files.ReadWrite.All" };
         private static AuthenticationResult authResult;
         private GraphServiceClient graphClient;
-        public string DriveId;
 
+        public string DriveId;
+        public bool IsAuthenticated = false;
+        public string ClientId;
+        // used for identify account for now
+        public string HomeAccountId;
         public enum SearchType
         {
             Part,

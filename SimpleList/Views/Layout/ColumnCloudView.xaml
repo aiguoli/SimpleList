@@ -7,7 +7,7 @@
     xmlns:views="using:SimpleList.Views.Layout"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{x:Bind vm:CloudViewModel}"
+    d:DataContext="{x:Bind vm:DriveViewModel}"
     mc:Ignorable="d">
 
     <UserControl.Resources>

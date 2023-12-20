@@ -1,6 +1,7 @@
 ﻿using SimpleList.Models;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -73,6 +74,12 @@ namespace SimpleList.Services
                 string _ when MediaType.Contains(ext) => FileType.Media,
                 _ => FileType.Unknown,
             };
+        }
+
+        public static string GetVersion()
+        {
+            Version version = Assembly.GetEntryAssembly().GetName().Version;
+            return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
         public static readonly string[] ImageType = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".ico", ".svg" };

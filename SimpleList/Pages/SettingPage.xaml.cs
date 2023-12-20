@@ -1,11 +1,11 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SimpleList.Helpers;
+using SimpleList.Services;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -62,11 +62,7 @@ namespace SimpleList.Pages
 
         public string Version
         {
-            get
-            {
-                var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-                return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
-            }
+            get => Utils.GetVersion();
         }
 
         public bool IsUpdateAvailable { get; set; } = false;
