@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Drives.Item.Items.Item.Restore;
 using Microsoft.Graph.Models;
@@ -221,7 +220,7 @@ namespace SimpleList.Services
             public AllowedHostsValidator AllowedHostsValidator { get; }
         }
 
-        public async Task Login(bool silent = true)
+        public async Task Login()
         {
             TokenProvider tokenProvider = new(async Task<string> (string[] scopes) =>
             {
@@ -229,34 +228,24 @@ namespace SimpleList.Services
 
                 try
                 {
-                    if (silent)
-                    {
-                        authResult = await PublicClientApp
-                                        .AcquireTokenSilent(scopes, accounts.FirstOrDefault(account => account.HomeAccountId.Identifier == HomeAccountId))
-                                        .ExecuteAsync();
-                        if (authResult != null)
-                        {
-                            IsAuthenticated = true;
-                        }
-                    } else
-                    {
-                        throw new MsalUiRequiredException("404", "No cache found, please sign in again.");
-                    }
+                    authResult = await PublicClientApp
+                                    .AcquireTokenSilent(scopes, accounts.First(account => account.HomeAccountId.Identifier == HomeAccountId))
+                                    .ExecuteAsync();
                 }
-                catch (MsalUiRequiredException)
+                catch (Exception exception) when (exception is MsalUiRequiredException || exception is InvalidOperationException)
                 {
                     try
                     {
                         authResult = await PublicClientApp.AcquireTokenInteractive(scopes).ExecuteAsync();
-                        if (authResult != null)
-                        {
-                            IsAuthenticated = true;
-                        }
                     }
                     catch (MsalException msalex)
                     {
                         Console.WriteLine(msalex);
                     }
+                }
+                if (authResult != null)
+                {
+                    IsAuthenticated = true;
                 }
                 HomeAccountId = authResult?.Account.HomeAccountId.Identifier;
                 return authResult?.AccessToken;

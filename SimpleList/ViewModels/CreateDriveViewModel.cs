@@ -16,7 +16,7 @@ namespace SimpleList.ViewModels
         public async Task CreateDrive()
         {
             OneDrive drive = new();
-            await drive.Login(silent: false);
+            await drive.Login();
             if (drive.IsAuthenticated)
             {
                 DriveViewModel driveViewModel = new(drive, DisplayName);
