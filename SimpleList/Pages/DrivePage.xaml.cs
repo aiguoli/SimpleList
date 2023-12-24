@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using SimpleList.Models;
 using SimpleList.ViewModels;
@@ -75,34 +76,21 @@ namespace SimpleList.Pages
             }
         }
 
-        private async void FileListKeyBoardEvents(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case VirtualKey.Enter:
-                    ListView listView = (ListView)sender;
-                    FileViewModel folder = (FileViewModel)listView.SelectedItem;
-                    if (folder != null && folder.IsFolder)
-                    {
-                        await (DataContext as DriveViewModel).OpenFolder(folder);
-                    }
-                    break;
-                case VirtualKey.Back:
-                    var items = BreadcrumbBar.ItemsSource as ObservableCollection<BreadcrumbItem>;
-                    if (items.Count <= 1)
-                    {
-                        break;
-                    }
-                    items.RemoveAt(items.Count - 1);
-                    await (DataContext as DriveViewModel).GetFiles(items.Last().ItemId);
-                    break;
-            }
-        }
-
         private void ChangeLayout(object sender, RoutedEventArgs e)
         {
             string layout = ((MenuFlyoutItem)sender).Tag.ToString();
             CloudControl.ContentTemplate = Resources[$"{layout}ViewTemplate"] as DataTemplate;
+        }
+
+        private async void BackToLastFolder(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            var items = BreadcrumbBar.ItemsSource as ObservableCollection<BreadcrumbItem>;
+            if (items.Count <= 1)
+            {
+                return;
+            }
+            items.RemoveAt(items.Count - 1);
+            await (DataContext as DriveViewModel).GetFiles(items.Last().ItemId);
         }
     }
 }

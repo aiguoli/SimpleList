@@ -47,7 +47,7 @@
             VerticalAlignment="Top" 
             Visibility="{Binding IsLoading}" />
         <RelativePanel Grid.Row="1" Margin="10 5 10 5">
-            <BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked">
+            <BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding BreadcrumbItems}" ItemClicked="BreadcrumbBar_ItemClicked" KeyboardAcceleratorPlacementMode="Hidden">
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate x:DataType="models:BreadcrumbItem">
                         <BreadcrumbBarItem Content="{Binding}" AutomationProperties.Name="{Binding Name}" Tag="{Binding ItemId}">
@@ -59,11 +59,13 @@
                         </BreadcrumbBarItem>
                     </DataTemplate>
                 </BreadcrumbBar.ItemTemplate>
+                <BreadcrumbBar.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Back" Invoked="BackToLastFolder" />
+                    <KeyboardAccelerator Modifiers="Menu" Key="Left" Invoked="BackToLastFolder" />
+                    <KeyboardAccelerator Modifiers="Menu" Key="Right" />
+                </BreadcrumbBar.KeyboardAccelerators>
             </BreadcrumbBar>
             <Button x:Name="RefreshButton" Command="{Binding RefreshCommand}" RelativePanel.AlignRightWithPanel="True">
-                <Button.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="F5" />
-                </Button.KeyboardAccelerators>
                 <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
             </Button>
         </RelativePanel>
@@ -74,12 +76,19 @@
                         ContentTemplate="{StaticResource ColumnViewTemplate}"
                         AllowDrop="True"
                         DragOver="DisplayCopyIcon"
-                        Drop="DropToUpload"
-                        KeyUp="FileListKeyBoardEvents">
+                        Drop="DropToUpload">
             <ContentControl.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem x:Uid="CloudPage_Refresh" Command="{Binding RefreshCommand}" />
-                    <MenuFlyoutItem x:Uid="CloudPage_CreateFolder" Click="CreateFolderDialogAsync" />
+                    <MenuFlyoutItem x:Uid="CloudPage_Refresh" Command="{Binding RefreshCommand}">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F5" />
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="CloudPage_CreateFolder" Click="CreateFolderDialogAsync">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control,Shift" Key="N" />
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
                     <MenuFlyoutSubItem x:Uid="CloudPage_Layout">
                         <MenuFlyoutItem x:Uid="CloudPage_Layout_Column" Tag="Column" Click="ChangeLayout" />
                         <MenuFlyoutItem x:Uid="CloudPage_Layout_Grid" Tag="Grid" Click="ChangeLayout" />

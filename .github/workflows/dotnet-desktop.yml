@@ -49,7 +49,7 @@ jobs:
 
     # Create the app by building and publishing the project
     - name: Create the app
-      run: msbuild SimpleList /t:Publish /p:Configuration=$env:Configuration /p:Platform=$env:Platform
+      run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:Platform=$env:Platform
       env:
         Configuration: ${{ matrix.configuration }}
         Platform: ${{ matrix.platform }}

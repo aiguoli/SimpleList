@@ -23,7 +23,11 @@
             <MenuFlyout>
                 <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" IsEnabled="{Binding IsFolder}" />
                 <MenuFlyoutItem Text="Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
-                <MenuFlyoutItem Text="Delete" Click="ShowDeleteFileDialogAsync" />
+                <MenuFlyoutItem Text="Delete" Click="ShowDeleteFileDialogAsync">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Delete" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
                 <MenuFlyoutItem Text="Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
                 <MenuFlyoutItem Text="Share" Click="ShowShareFileDialogAsync" />
                 <MenuFlyoutItem Text="Rename" Click="ShowRenameFileDialogAsync" />
