@@ -92,5 +92,15 @@ namespace SimpleList.Pages
             items.RemoveAt(items.Count - 1);
             await (DataContext as DriveViewModel).GetFiles(items.Last().ItemId);
         }
+
+        private async void ShowSearchDialogAsync(object sender, RoutedEventArgs e)
+        {
+            SearchView dialog = new()
+            {
+                XamlRoot = XamlRoot,
+                DataContext = new SearchViewModel(DataContext as DriveViewModel)
+            };
+            await dialog.ShowAsync();
+        }
     }
 }

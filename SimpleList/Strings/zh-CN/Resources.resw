@@ -216,6 +216,21 @@
   <data name="RootFileName" xml:space="preserve">
     <value>根目录</value>
   </data>
+  <data name="SearchView.Title" xml:space="preserve">
+    <value>搜索文件</value>
+  </data>
+  <data name="SearchView_FileName.Header" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="SearchView_Mode.Header" xml:space="preserve">
+    <value>搜索模式</value>
+  </data>
+  <data name="SearchView_Mode_Global.Content" xml:space="preserve">
+    <value>全局</value>
+  </data>
+  <data name="SearchView_Mode_Local.Content" xml:space="preserve">
+    <value>当前目录</value>
+  </data>
   <data name="SettingPage_AboutTitle.Text" xml:space="preserve">
     <value>关于</value>
   </data>
@@ -260,9 +275,6 @@
   </data>
   <data name="ShareCommunityPage_Flyout_Refresh.Text" xml:space="preserve">
     <value>刷新</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
   <data name="TaskManagerPage_Pivot_Download.Header" xml:space="preserve">
     <value>下载</value>

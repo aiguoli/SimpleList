@@ -216,6 +216,21 @@
   <data name="RootFileName" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="SearchView.Title" xml:space="preserve">
+    <value>Search File</value>
+  </data>
+  <data name="SearchView_FileName.Header" xml:space="preserve">
+    <value>FileName</value>
+  </data>
+  <data name="SearchView_Mode.Header" xml:space="preserve">
+    <value>SearchMode</value>
+  </data>
+  <data name="SearchView_Mode_Global.Content" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="SearchView_Mode_Local.Content" xml:space="preserve">
+    <value>Local</value>
+  </data>
   <data name="SettingPage_AboutTitle.Text" xml:space="preserve">
     <value>About</value>
   </data>

@@ -6,6 +6,7 @@ using SimpleList.Helpers;
 using SimpleList.Models;
 using SimpleList.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleList.ViewModels
@@ -56,6 +57,33 @@ namespace SimpleList.ViewModels
         {
             BreadcrumbItems.Add(new BreadcrumbItem { Name = file.Name, ItemId = file.Id });
             await GetFiles(file.Id);
+        }
+
+        [RelayCommand]
+        public async Task SearchFile(string fileName)
+        {
+            IsLoading = Visibility.Visible;
+            var files = await Provider.SearchGlobalItems(fileName);
+            Files.Clear();
+            Images.Clear();
+            files.Value.ForEach(file =>
+            {
+                FileViewModel newFile = new(this, file);
+                Files.Add(newFile);
+                if (file.Image != null)
+                    Images.Add(newFile);
+            });
+            IsLoading = Visibility.Collapsed;
+        }
+
+        public void FilterByName(string name)
+        {
+            var filesToRemove = Files.Where(file => !file.Name.Contains(name)).ToList();
+            foreach (var file in filesToRemove)
+            {
+                Files.Remove(file);
+                Images.Remove(file);
+            }
         }
 
         private string _parentItemId = "Root";

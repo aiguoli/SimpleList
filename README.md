@@ -10,7 +10,7 @@ SimpleList is a OneDrive files index application developed using WinUI3.
 
 Unzip and then double click
 
-# Sttings
+# Settings
 
 Modify `SimpleList/appsettings.json` to customize the configuration. 
 
@@ -34,7 +34,7 @@ Modify `SimpleList/appsettings.json` to customize the configuration.
 - [x] i18n
 - [x] Tools page
 
-# Screenshots
+# Screenshots(may not be the latest version)
 
 ![HomePage](./ScreenShots/HomePage.png)
 ![CloudPage](./ScreenShots/CloudPage.png)

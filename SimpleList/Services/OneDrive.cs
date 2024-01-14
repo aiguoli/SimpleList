@@ -281,10 +281,5 @@ namespace SimpleList.Services
         public string ClientId;
         // used for identify account for now
         public string HomeAccountId;
-        public enum SearchType
-        {
-            Part,
-            Global,
-        }
     }
 }

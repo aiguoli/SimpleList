@@ -65,9 +65,14 @@
                     <KeyboardAccelerator Modifiers="Menu" Key="Right" />
                 </BreadcrumbBar.KeyboardAccelerators>
             </BreadcrumbBar>
-            <Button x:Name="RefreshButton" Command="{Binding RefreshCommand}" RelativePanel.AlignRightWithPanel="True">
-                <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
-            </Button>
+            <StackPanel Orientation="Horizontal" RelativePanel.AlignRightWithPanel="True">
+                <Button Margin="0 0 5 0" Click="ShowSearchDialogAsync">
+                    <FontIcon Glyph="&#xE721;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Button>
+                <Button x:Name="RefreshButton" Command="{Binding RefreshCommand}">
+                    <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Button>
+            </StackPanel>
         </RelativePanel>
         <ContentControl Grid.Row="2" 
                         x:Name="CloudControl"

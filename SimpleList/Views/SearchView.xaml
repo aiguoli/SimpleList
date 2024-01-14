@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="SimpleList.Views.SearchView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Uid="SearchView"
+    d:DataContext="{x:Bind vm:SearchViewModel}"
+    PrimaryButtonText="OK"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonCommand="{Binding SearchCommand}">
+
+    <StackPanel>
+        <ComboBox x:Uid="SearchView_Mode" SelectedIndex="{Binding Mode, Mode=TwoWay}" Loaded="LoadDefaultValue">
+            <ComboBoxItem Content="Local" />
+            <ComboBoxItem Content="Global" />
+        </ComboBox>
+        <TextBox x:Uid="SearchView_FileName" Text="{Binding FileName, Mode=TwoWay}" />
+    </StackPanel>
+</ContentDialog>
