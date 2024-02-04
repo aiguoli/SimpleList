@@ -1,5 +1,7 @@
+using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using SimpleList.Helpers;
 using SimpleList.Services;
 using System;
@@ -8,14 +10,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace SimpleList.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SettingPage : Page
     {
         public SettingPage()
@@ -39,6 +35,8 @@ namespace SimpleList.Pages
                     themeMode.SelectedIndex = 2;
                     break;
             }
+            SystemBackdrop backdrop = App.StartupWindow.SystemBackdrop;
+            materialMode.SelectedIndex = Enum.TryParse(backdrop.GetType().Name, out BackdropType backdropType) ? (int)backdropType : 1;
         }
 
         private void themeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -66,5 +64,25 @@ namespace SimpleList.Pages
         }
 
         public bool IsUpdateAvailable { get; set; } = false;
+        public enum BackdropType
+        {
+            Mica,
+            MicaAlt,
+            DesktopAcrylicBase,
+            DesktopAcrylicThin,
+            DefaultColor,
+        }
+
+        private void ChangeMaterial(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedMaterial = ((ComboBoxItem)materialMode.SelectedItem)?.Tag?.ToString();
+            App.StartupWindow.SystemBackdrop = selectedMaterial switch
+            {
+                "Mica" => new MicaBackdrop(),
+                "MicaAlt" => new MicaBackdrop() { Kind = MicaKind.BaseAlt },
+                "Acrylic" => new DesktopAcrylicBackdrop(),
+                _ => new MicaBackdrop(),
+            };
+        }
     }
 }

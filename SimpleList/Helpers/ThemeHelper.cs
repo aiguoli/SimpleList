@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using System;
-using System.IO;
 
 namespace SimpleList.Helpers
 {
@@ -46,6 +45,18 @@ namespace SimpleList.Helpers
                 if (CurrentApplicationWindow.Content is FrameworkElement rootElement)
                 {
                     rootElement.RequestedTheme = value;
+                }
+            }
+        }
+
+        public static SystemBackdrop Material
+        {
+            get => App.StartupWindow.SystemBackdrop;
+            set
+            {
+                if (value is SystemBackdrop backdrop)
+                {
+                    App.StartupWindow.SystemBackdrop = backdrop;
                 }
             }
         }

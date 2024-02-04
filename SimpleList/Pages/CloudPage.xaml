@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=vm:CloudViewModel}"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    NavigationCacheMode="Enabled">
 
     <Page.Resources>
         <DataTemplate x:Key="DriveItemTemplate" x:DataType="vm:DriveViewModel">

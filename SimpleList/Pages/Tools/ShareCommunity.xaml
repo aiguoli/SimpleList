@@ -9,7 +9,6 @@
     xmlns:models="using:SimpleList.Models"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{x:Bind vm:ShareCommunityViewModel}">
 
     <Page.Resources>

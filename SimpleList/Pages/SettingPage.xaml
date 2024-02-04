@@ -7,8 +7,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -31,6 +30,17 @@
                     <ComboBoxItem x:Uid="SettingPage_Theme_Default" Tag="Default" />
                     <ComboBoxItem x:Uid="SettingPage_Theme_Light" Tag="Light" />
                     <ComboBoxItem x:Uid="SettingPage_Theme_Dark" Tag="Dark" />
+                </ComboBox>
+            </controls:SettingsCard>
+            <controls:SettingsCard Header="Material">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE790;" />
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="materialMode" SelectionChanged="ChangeMaterial">
+                    <ComboBoxItem Content="Mica" Tag="Mica" />
+                    <ComboBoxItem Content="MicaAlt" Tag="MicaAlt" />
+                    <ComboBoxItem Content="Acrylic" Tag="Acrylic" />
+                    <ComboBoxItem Content="Default" Tag="Default" />
                 </ComboBox>
             </controls:SettingsCard>
 

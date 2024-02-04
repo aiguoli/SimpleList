@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using SimpleList.Helpers;
 using SimpleList.Services;
 using SimpleList.ViewModels;
@@ -20,28 +22,30 @@ namespace SimpleList
     /// </summary>
     public partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
         public App()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            LoadSettings();
+            string backdropType = Configuration.GetSection("Material").Value;
             m_window = new MainWindow
             {
                 Title = Assembly.GetEntryAssembly().GetName().Name,
+                SystemBackdrop = backdropType switch
+                {
+                    "Mica" => new MicaBackdrop(),
+                    "MicaAlt" => new MicaBackdrop() { Kind = MicaKind.BaseAlt },
+                    "Acrylic" => new DesktopAcrylicBackdrop(),
+                    _ => new MicaBackdrop(),
+                }
             };
+
             m_window.Activate();
-            
-            LoadSettings();
+            string selectedTheme = Configuration.GetSection("Theme").Value;
+            ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
 
             MsalCacheHelper CacheHelper = GetCacheHelper().GetAwaiter().GetResult();
             Ioc.Default.ConfigureServices(
@@ -57,8 +61,6 @@ namespace SimpleList
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             Current.Resources["Configuration"] = Configuration;
-            string selectedTheme = Configuration.GetSection("Theme").Value;
-            ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
         }
 
         private IPublicClientApplication BuildPublicApp()
@@ -91,6 +93,5 @@ namespace SimpleList
         public static Window StartupWindow => m_window;
         public IServiceProvider Services { get; }
         public IConfigurationRoot Configuration { get; set; }
-        //public MsalCacheHelper CacheHelper { get; set; }
     }
 }

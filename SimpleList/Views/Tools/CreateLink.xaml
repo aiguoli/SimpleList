@@ -8,7 +8,6 @@
     xmlns:vm="using:SimpleList.ViewModels.Tools"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:CreateLinkViewModel}"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Title="Share your link"
     PrimaryButtonText="OK"
     PrimaryButtonCommand="{Binding CreateLinkCommand}"
