@@ -201,6 +201,9 @@
   <data name="LinkDetails_Views.Text" xml:space="preserve">
     <value>访问量</value>
   </data>
+  <data name="NavigationBar_Bookmark.Content" xml:space="preserve">
+    <value>书签</value>
+  </data>
   <data name="NavigationBar_Files.Content" xml:space="preserve">
     <value>文件</value>
   </data>
@@ -275,6 +278,9 @@
   </data>
   <data name="ShareCommunityPage_Flyout_Refresh.Text" xml:space="preserve">
     <value>刷新</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
   <data name="TaskManagerPage_Pivot_Download.Header" xml:space="preserve">
     <value>下载</value>

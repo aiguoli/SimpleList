@@ -3,7 +3,6 @@ using SimpleList.Models;
 using SimpleList.ViewModels.Tools;
 using SimpleList.Views.Tools;
 using System;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace SimpleList.Pages.Tools
 {

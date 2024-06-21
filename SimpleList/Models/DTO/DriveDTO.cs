@@ -1,4 +1,7 @@
-﻿namespace SimpleList.Models.DTO
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+namespace SimpleList.Models.DTO
 {
     public class DriveDTO
     {
@@ -10,5 +13,11 @@
     {
         public string HomeAccountId { get; set; }
         public string DriveId { get; set; }
+    }
+
+    [JsonSourceGenerationOptions()]
+    [JsonSerializable(typeof(List<DriveDTO>))]
+    public partial class DriveDTOSourceGenerationContext : JsonSerializerContext
+    {
     }
 }

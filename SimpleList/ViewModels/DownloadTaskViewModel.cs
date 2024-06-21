@@ -6,6 +6,7 @@ using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -88,9 +89,6 @@ namespace SimpleList.ViewModels
             if (!Completed)
             {
                 _downloader.CancelAsync();
-            }
-            if (!Completed)
-            {
                 await _file.DeleteAsync();
             }
             _manager.RemoveSelectedDownloadTasks(this);

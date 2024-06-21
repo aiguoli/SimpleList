@@ -1,48 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>SimpleList</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-	<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-
-	<WindowsPackageType>None</WindowsPackageType>
-	<!-- error with no reason -->
-	<WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
-	<PublishTrimmed>true</PublishTrimmed>
-	<!--If this line is removed, the package size will be smaller, but it will not function properly in the release mode.-->
-	<TrimMode>partial</TrimMode>
-	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-	<SelfContained>true</SelfContained>
-	<PublishSingleFile>true</PublishSingleFile>
-	<PublishReadyToRun>false</PublishReadyToRun>
-	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-	<PlatformTarget>AnyCPU</PlatformTarget>
-
-	<AssemblyName>SimpleList</AssemblyName>
-	<Authors>Thawne</Authors>
-	<PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-	<AssemblyVersion>1.13.0</AssemblyVersion>
-	<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
-	<PackageIcon>128.png</PackageIcon>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>  
+    <WindowsPackageType>None</WindowsPackageType>
+    <!-- error with no reason -->
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <!--If this line is removed, the package size will be smaller, but it will not function properly in the release mode.-->
+    <TrimMode>partial</TrimMode>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <AssemblyName>SimpleList</AssemblyName>
+    <Authors>Thawne</Authors>
+    <PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
+    <AssemblyVersion>1.13.0</AssemblyVersion>
+    <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
+    <PackageIcon>128.png</PackageIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-	<ItemGroup>
-		<TrimmerRootAssembly Include="Microsoft.Identity.Client" />
-	</ItemGroup>
   <ItemGroup>
-	<None Remove="Assets\favicon.ico" />
+    <TrimmerRootAssembly Include="Microsoft.Identity.Client" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\favicon.ico" />
     <None Remove="Assets\EmptyFolder.png" />
     <None Remove="Assets\File.png" />
     <None Remove="Assets\Folder.png" />
     <None Remove="Assets\link-share.png" />
     <None Remove="Controls\ItemCard.xaml" />
+    <None Remove="Pages\BookmarkPage.xaml" />
     <None Remove="Pages\CloudPage.xaml" />
     <None Remove="Pages\DrivePage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
@@ -70,7 +68,6 @@
     <None Remove="Views\Tools\CreateLink.xaml" />
     <None Remove="Views\Tools\LinkDetails.xaml" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -88,26 +85,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
-	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-	<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.230907" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
     <PackageReference Include="Downloader" Version="3.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Graph" Version="5.24.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.56.0" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.56.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
-    <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.4" />
-    <PackageReference Include="QRCoder" Version="1.4.3" />
-    <PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
-	<Manifest Include="$(ApplicationManifest)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Graph" Version="5.56.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.61.3" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+    <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.5" />
+    <PackageReference Include="QRCoder" Version="1.5.1" />
+    <PackageReference Include="QRCoder.Xaml" Version="1.5.1" />
+    <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
-
   <!-- 
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget
@@ -156,6 +151,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <Page Update="Pages\BookmarkPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\SearchView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -259,8 +257,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-
-	<!-- 
+  <!-- 
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
     Explorer "Package and Publish" context menu entry to be enabled for this project even if 
     the Windows App SDK Nuget package has not yet been restored.

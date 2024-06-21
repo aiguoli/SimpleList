@@ -201,6 +201,9 @@
   <data name="LinkDetails_Views.Text" xml:space="preserve">
     <value>Views</value>
   </data>
+  <data name="NavigationBar_Bookmark.Content" xml:space="preserve">
+    <value>Bookmark</value>
+  </data>
   <data name="NavigationBar_Files.Content" xml:space="preserve">
     <value>Files</value>
   </data>

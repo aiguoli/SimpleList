@@ -11,6 +11,7 @@ using SimpleList.Services;
 using SimpleList.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -67,7 +68,11 @@ namespace SimpleList
         {
             IPublicClientApplication publicClientApp = PublicClientApplicationBuilder.Create(Configuration.GetSection("AzureAD:ClientId").Value)
                 .WithClientName(Assembly.GetEntryAssembly().GetName().Name)
-                .WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
+                .WithRedirectUri("http://localhost")
+                .WithLogging((level, message, containsPii) =>
+                {
+                    Debug.WriteLine($"MSAL: {level} {message}");
+                }, LogLevel.Verbose, enablePiiLogging: true, enableDefaultPlatformLogging: true)
                 .Build();
             return publicClientApp;
         }

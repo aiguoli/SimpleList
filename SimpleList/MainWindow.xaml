@@ -47,6 +47,7 @@
                         <FontIcon Glyph="&#xE74C;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationBar_Bookmark" Tag="BookmarkPage" x:Name="BookmarkItem" Icon="Bookmarks" />
             </NavigationView.MenuItems>
             <!-- How to set Mica/Acrylic to content in Frame? -->
             <Frame x:Name="contentFrame" />

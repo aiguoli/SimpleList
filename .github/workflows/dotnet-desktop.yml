@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
-        platform: [win10-x64, win10-x86]
+        platform: [win-x64, win-x86]
 
     runs-on: windows-latest
 
@@ -31,9 +31,9 @@ jobs:
 
     # Install the .NET Core workload
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: '8.0.x'
         
     # Add CommunityToolkit.Labs
     - name: Restore NuGet packages
@@ -57,7 +57,7 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
-        name: win10-publish
+        name: win-publish
         path: |
-            SimpleList/bin/win10-x64
-            SimpleList/bin/win10-x86
+            SimpleList/bin/win-x64
+            SimpleList/bin/win-x86

@@ -1,12 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Graph;
 using Microsoft.Graph.Drives.Item.Items.Item.Restore;
+using Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ;
 using Microsoft.Graph.Models;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Microsoft.Kiota.Abstractions.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -188,16 +190,16 @@ namespace SimpleList.Services
             return await graphClient.Drives[DriveId].Items[itemId].Restore.PostAsync(requestBody);
         }
 
-        public async Task<Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse> SearchLocalItems(string query, string itemId)
+        public async Task<SearchWithQGetResponse> SearchLocalItems(string query, string itemId)
         {
             // According to code, Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse
             // is same as Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse, so why Microsoft do this?
-            return await graphClient.Drives[DriveId].Items[itemId].SearchWithQ(query).GetAsync();
+            return await graphClient.Drives[DriveId].Items[itemId].SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
         }
 
-        public async Task<Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse> SearchGlobalItems(string query)
+        public async Task<Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQGetResponse> SearchGlobalItems(string query)
         {
-            return await graphClient.Drives[DriveId].SearchWithQ(query).GetAsync();
+            return await graphClient.Drives[DriveId].SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
         }
 
         private class TokenProvider : IAccessTokenProvider
@@ -241,6 +243,10 @@ namespace SimpleList.Services
                     catch (MsalException msalex)
                     {
                         Console.WriteLine(msalex);
+                    }
+                    catch (Exception odataEx)
+                    {
+                        Debug.WriteLine($"OData Error: {odataEx}");
                     }
                 }
                 if (authResult != null)
