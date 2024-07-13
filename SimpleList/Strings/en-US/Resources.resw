@@ -279,6 +279,9 @@
   <data name="ShareCommunityPage_Flyout_Refresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="TaskManagerPage_OpenFolder.Text" xml:space="preserve">
+    <value>Open Folder</value>
+  </data>
   <data name="TaskManagerPage_Pivot_Download.Header" xml:space="preserve">
     <value>Download</value>
   </data>
