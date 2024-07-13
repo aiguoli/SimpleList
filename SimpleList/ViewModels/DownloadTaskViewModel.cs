@@ -47,8 +47,18 @@ namespace SimpleList.ViewModels
 
         private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            // If double data type is used here, it will cause the progress control to handle additional data, resulting in the page being stuck.
-            _dispatcher.TryEnqueue(() => Progress = (int)e.ProgressPercentage);
+            if (DateTime.Now - _lastUpdate >= _updateInterval)
+            {
+                _lastUpdate = DateTime.Now;
+                // If double data type is used here, it will cause the progress control to handle additional data, resulting in the page being stuck.
+                _dispatcher.TryEnqueue(() =>
+                {
+                    Progress = (int)e.ProgressPercentage;
+                    DownloadedBytes = e.ReceivedBytesSize;
+                    TotalBytes = e.TotalBytesToReceive;
+                    DownloadSpeed = (long)e.BytesPerSecondSpeed;
+                });
+            }
         }
 
         [RelayCommand]
@@ -77,7 +87,8 @@ namespace SimpleList.ViewModels
             if (_pack != null)
             {
                 await _downloader.DownloadFileTaskAsync(_pack);
-            } else
+            }
+            else
             {
                 _downloader.Resume();
             }
@@ -94,7 +105,16 @@ namespace SimpleList.ViewModels
             _manager.RemoveSelectedDownloadTasks(this);
         }
 
+        [RelayCommand]
+        public void OpenFolder()
+        {
+            System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{_file.Path}\"");
+        }
+
         public static readonly int chunkSize = 1024 * 1024;  // 1MB chunks
+        // The download speed is updated every second
+        private DateTime _lastUpdate;
+        private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(1000);
         private readonly string _itemId;
         private readonly StorageFile _file;
         private DriveViewModel Drive { get; }
@@ -106,6 +126,9 @@ namespace SimpleList.ViewModels
         [ObservableProperty] private bool _completed = false;
         [ObservableProperty] private bool _isDownloading = true;
         [ObservableProperty] private bool _isPaused = false;
+        [ObservableProperty] private long _downloadedBytes = 0;
+        [ObservableProperty] private long _totalBytes = 0;
+        [ObservableProperty] private long _downloadSpeed = 0;
 
         public DateTime StartTime { get; private set; }
         public DateTime FinishTime { get; private set; }

@@ -14,12 +14,14 @@
         <Grid.Resources>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Collapsed" FalseValue="Visible" />
+            <converters:FileSizeToFriendlyStringConverter x:Key="FileSizeToFriendlyStringConverter" />
             <DataTemplate x:Key="DownloadTaskTemplate" x:DataType="vm:DownloadTaskViewModel">
                 <Grid Margin="0 10 0 10">
                     <Grid.ContextFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem x:Uid="TaskManagerPage_Resume" Command="{Binding ResumeDownloadCommand}" IsEnabled="{Binding IsPaused}" />
                             <MenuFlyoutItem x:Uid="TaskManagerPage_Remove" Command="{Binding CancelTaskCommand}" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_OpenFolder" Command="{Binding OpenFolderCommand}" />
                         </MenuFlyout>
                     </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
@@ -29,6 +31,14 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Name}" FontSize="20" Margin="0 5 0 5" />
                         <ProgressBar Value="{Binding Progress}" Visibility="{Binding Completed, Converter={StaticResource BoolToObjectConverter}}" />
+                        <TextBlock>
+                            <Run Text="{Binding DownloadedBytes, Converter={StaticResource FileSizeToFriendlyStringConverter}}" />
+                            <Run Text=" / " />
+                            <Run Text="{Binding TotalBytes, Converter={StaticResource FileSizeToFriendlyStringConverter}}" />
+                            <Run Text=" " />
+                            <Run Text="{Binding DownloadSpeed, Converter={StaticResource FileSizeToFriendlyStringConverter}}" />
+                            <Run Text="/s" />
+                        </TextBlock>
                         <TextBlock Text="Download completed" Visibility="{Binding Completed, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 0">
@@ -73,7 +83,7 @@
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-        
+
         <Pivot>
             <PivotItem x:Uid="TaskManagerPage_Pivot_Download">
                 <ListView ItemsSource="{Binding DownloadTasks}" ItemTemplate="{StaticResource DownloadTaskTemplate}" />
