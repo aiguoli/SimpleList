@@ -22,27 +22,30 @@ namespace SimpleList.Pages
 
         private void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
         {
-            ElementTheme currentTheme = ThemeHelper.RootTheme;
-            switch (currentTheme)
-            {
-                case ElementTheme.Default:
-                    themeMode.SelectedIndex = 0;
-                    break;
-                case ElementTheme.Light:
-                    themeMode.SelectedIndex = 1;
-                    break;
-                case ElementTheme.Dark:
-                    themeMode.SelectedIndex = 2;
-                    break;
-            }
-            SystemBackdrop backdrop = App.StartupWindow.SystemBackdrop;
-            materialMode.SelectedIndex = Enum.TryParse(backdrop.GetType().Name, out BackdropType backdropType) ? (int)backdropType : 1;
+            //ElementTheme currentTheme = ThemeHelper.RootTheme;
+            //switch (currentTheme)
+            //{
+            //    case ElementTheme.Default:
+            //        themeMode.SelectedIndex = 0;
+            //        break;
+            //    case ElementTheme.Light:
+            //        themeMode.SelectedIndex = 1;
+            //        break;
+            //    case ElementTheme.Dark:
+            //        themeMode.SelectedIndex = 2;
+            //        break;
+            //}
+            //SystemBackdrop backdrop = App.StartupWindow.SystemBackdrop;
+            //materialMode.SelectedIndex = Enum.TryParse(backdrop.GetType().Name, out BackdropType backdropType) ? (int)backdropType : 1;
+            //App.Current.ThemeService.SetThemeComboBoxDefaultItem(themeMode);
+            //App.Current.ThemeService.SetBackdropComboBoxDefaultItem(materialMode);
         }
 
         private void themeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
-            ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
+            //string selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
+            //ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
+            App.Current.GetThemeService.OnThemeComboBoxSelectionChanged(sender);
         }
 
         [RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Deserialize<TValue>(String, JsonSerializerOptions)")]
@@ -75,14 +78,20 @@ namespace SimpleList.Pages
 
         private void ChangeMaterial(object sender, SelectionChangedEventArgs e)
         {
-            string selectedMaterial = ((ComboBoxItem)materialMode.SelectedItem)?.Tag?.ToString();
-            App.StartupWindow.SystemBackdrop = selectedMaterial switch
-            {
-                "Mica" => new MicaBackdrop(),
-                "MicaAlt" => new MicaBackdrop() { Kind = MicaKind.BaseAlt },
-                "Acrylic" => new DesktopAcrylicBackdrop(),
-                _ => new MicaBackdrop(),
-            };
+            //string selectedMaterial = ((ComboBoxItem)materialMode.SelectedItem)?.Tag?.ToString();
+            //App.StartupWindow.SystemBackdrop = selectedMaterial switch
+            //{
+            //    "Mica" => new MicaBackdrop(),
+            //    "MicaAlt" => new MicaBackdrop() { Kind = MicaKind.BaseAlt },
+            //    "Acrylic" => new DesktopAcrylicBackdrop(),
+            //    _ => new MicaBackdrop(),
+            //};
+            App.Current.GetThemeService.OnBackdropComboBoxSelectionChanged(sender);
+        }
+
+        private void ColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        {
+            App.Current.GetThemeService.SetBackdropTintColor(args.NewColor);
         }
     }
 }

@@ -82,11 +82,10 @@ namespace SimpleList.ViewModels
                 // Refresh the download URL
                 DriveItem item = await Drive.Provider.GetItem(_itemId);
                 string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
-                _pack.Address = downloadUrl;
-            }
-            if (_pack != null)
-            {
-                await _downloader.DownloadFileTaskAsync(_pack);
+                if (_pack != null)
+                {
+                    await _downloader.DownloadFileTaskAsync(_pack, downloadUrl);
+                }
             }
             else
             {
@@ -118,7 +117,7 @@ namespace SimpleList.ViewModels
         private readonly string _itemId;
         private readonly StorageFile _file;
         private DriveViewModel Drive { get; }
-        private readonly TaskManagerViewModel _manager = Ioc.Default.GetService<TaskManagerViewModel>();
+        private readonly TaskManagerViewModel _manager = App.GetService<TaskManagerViewModel>();
         private DownloadService _downloader;
         private DownloadPackage _pack;
         private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();

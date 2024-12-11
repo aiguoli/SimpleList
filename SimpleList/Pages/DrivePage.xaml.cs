@@ -61,7 +61,7 @@ namespace SimpleList.Pages
                 IReadOnlyList<IStorageItem> items = await e.DataView.GetStorageItemsAsync();
                 DriveViewModel driveViewModel = (DriveViewModel)DataContext;
 
-                TaskManagerViewModel manager = Ioc.Default.GetService<TaskManagerViewModel>();
+                TaskManagerViewModel manager = App.GetService<TaskManagerViewModel>();
                 var tasks = items.Select(item => manager.AddUploadTask(driveViewModel, driveViewModel.ParentItemId, item));
                 await Task.WhenAll(tasks);
                 await driveViewModel.Refresh();

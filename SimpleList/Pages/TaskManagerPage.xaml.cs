@@ -15,7 +15,7 @@ namespace SimpleList.Pages
         public TaskManagerPage()
         {
             InitializeComponent();
-            DataContext = Ioc.Default.GetService<TaskManagerViewModel>();
+            DataContext = App.GetService<TaskManagerViewModel>();
         }
     }
 }

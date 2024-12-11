@@ -25,7 +25,7 @@
     <AssemblyName>SimpleList</AssemblyName>
     <Authors>Thawne</Authors>
     <PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-    <AssemblyVersion>1.13.1</AssemblyVersion>
+    <AssemblyVersion>1.13.2</AssemblyVersion>
     <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
     <PackageIcon>128.png</PackageIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -90,17 +90,18 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
-    <PackageReference Include="Downloader" Version="3.0.6" />
+    <PackageReference Include="Downloader" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Graph" Version="5.56.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.61.3" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.5" />
-    <PackageReference Include="QRCoder" Version="1.5.1" />
-    <PackageReference Include="QRCoder.Xaml" Version="1.5.1" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="QRCoder.Xaml" Version="1.6.0" />
+    <PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
   <!-- 

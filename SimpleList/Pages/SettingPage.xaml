@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:wuc="using:WinUICommunity"
+    xmlns:local="using:SimpleList"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -26,7 +28,7 @@
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE790;" />
                 </controls:SettingsCard.HeaderIcon>
-                <ComboBox x:Name="themeMode" SelectionChanged="themeMode_SelectionChanged">
+                <ComboBox x:Name="themeMode" wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
                     <ComboBoxItem x:Uid="SettingPage_Theme_Default" Tag="Default" />
                     <ComboBoxItem x:Uid="SettingPage_Theme_Light" Tag="Light" />
                     <ComboBoxItem x:Uid="SettingPage_Theme_Dark" Tag="Dark" />
@@ -34,14 +36,50 @@
             </controls:SettingsCard>
             <controls:SettingsCard Header="Material">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE790;" />
+                    <FontIcon Glyph="&#xF5EF;" />
                 </controls:SettingsCard.HeaderIcon>
-                <ComboBox x:Name="materialMode" SelectionChanged="ChangeMaterial">
+                <ComboBox x:Name="materialMode" wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
+                    <ComboBoxItem Content="None" Tag="None" />
                     <ComboBoxItem Content="Mica" Tag="Mica" />
                     <ComboBoxItem Content="MicaAlt" Tag="MicaAlt" />
-                    <ComboBoxItem Content="Acrylic" Tag="Acrylic" />
-                    <ComboBoxItem Content="Default" Tag="Default" />
+                    <ComboBoxItem Content="Desktop Acrylic" Tag="DesktopAcrylic" />
+                    <ComboBoxItem Content="Acrylic Base" Tag="AcrylicBase" />
+                    <ComboBoxItem Content="Acrylic Thin" Tag="AcrylicThin" />
+                    <ComboBoxItem Content="Transparent" Tag="Transparent" />
                 </ComboBox>
+            </controls:SettingsCard>
+
+            <controls:SettingsCard Header="TintColor">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xEF3C;" />
+                </controls:SettingsCard.HeaderIcon>
+                <Button Padding="0">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="24"
+                                        Height="24"
+                                        Margin="4"
+                                        Background="Gray"
+                                        CornerRadius="4">
+                            <Grid>
+                                <PathIcon Data="M0 6 L0 0 L6 0 L6 6 L12 6 L12 0 L18 0 L18 6 L12 6 L12 12 L18 12 L18 6 L24 6 L24 12 L18 12 L18 18 L24 18 L24 24 L6 24 L6 18 L0 18 L0 12 L6 12 L6 18 L12 18 L12 24 L18 24 L18 18 L12 18 L12 12 L6 12 L6 6 Z"
+                                                  Foreground="LightGray" />
+                                <Rectangle x:Name="TintBox">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{x:Bind colorPicker.Color, Mode=OneWay}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                        <FontIcon Margin="8,4,10,4"
+                                          FontSize="12"
+                                          Glyph="&#xE70D;" />
+                    </StackPanel>
+                    <Button.Flyout>
+                        <Flyout>
+                            <ColorPicker x:Name="colorPicker" ColorChanged="ColorPicker_ColorChanged" IsAlphaEnabled="True" IsMoreButtonVisible="True" />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
             </controls:SettingsCard>
 
             <TextBlock x:Uid="SettingPage_AboutTitle" FontWeight="Bold" Margin="0 10 0 10" />

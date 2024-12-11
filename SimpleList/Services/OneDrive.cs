@@ -21,14 +21,14 @@ namespace SimpleList.Services
     {
         public OneDrive()
         {
-            PublicClientApp = Ioc.Default.GetService<IPublicClientApplication>();
+            PublicClientApp = App.GetService<IPublicClientApplication>();
         }
 
         public OneDrive(string driveId, string homeAccountId)
         {
             DriveId = driveId;
             HomeAccountId = homeAccountId;
-            PublicClientApp = Ioc.Default.GetService<IPublicClientApplication>();
+            PublicClientApp = App.GetService<IPublicClientApplication>();
         }
 
         public async Task<DriveItemCollectionResponse> GetFiles(string parentId = "Root")
@@ -273,7 +273,7 @@ namespace SimpleList.Services
 
         public static void SaveTokenCache()
         {
-            MsalCacheHelper cacheHelper = Ioc.Default.GetService<MsalCacheHelper>();
+            MsalCacheHelper cacheHelper = App.GetService<MsalCacheHelper>();
             cacheHelper.RegisterCache(PublicClientApp.UserTokenCache);
         }
 

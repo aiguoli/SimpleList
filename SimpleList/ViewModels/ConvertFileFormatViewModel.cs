@@ -44,7 +44,7 @@ namespace SimpleList.ViewModels
         }
 
         private readonly FileViewModel _file;
-        private readonly OneDrive drive = Ioc.Default.GetService<OneDrive>();
+        private readonly OneDrive drive = App.GetService<OneDrive>();
         private static readonly string[] allowedExtensions = { ".csv", ".doc", ".docx", ".odp", ".ods", ".odt", ".pot", ".potm", ".potx", ".pps", ".ppsx", ".ppsxm", ".ppt", ".pptm", ".pptx", ".rtf", ".xls", ".xlsx" };
         [ObservableProperty] private string _selectedFormat = "pdf";
         [ObservableProperty] private string _savedFilePath;

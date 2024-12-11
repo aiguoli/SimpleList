@@ -54,7 +54,7 @@ namespace SimpleList.ViewModels
 
         private readonly string _itemId;
         private readonly IStorageItem _item;
-        private readonly TaskManagerViewModel _manager = Ioc.Default.GetService<TaskManagerViewModel>();
+        private readonly TaskManagerViewModel _manager = App.GetService<TaskManagerViewModel>();
         private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
         [ObservableProperty] private int _progress;
         [ObservableProperty] private bool _completed = false;

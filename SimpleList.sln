@@ -8,7 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{274636A6-8B2F-4721-8414-8C65077B2338}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
-		.github\workflows\dotnet-release.yml = .github\workflows\dotnet-release.yml
 		README.md = README.md
 		README_zh_CN.md = README_zh_CN.md
 	EndProjectSection

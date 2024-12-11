@@ -41,7 +41,7 @@ namespace SimpleList.ViewModels
             StorageFile file = await savePicker.PickSaveFileAsync();
             if (file != null)
             {
-                TaskManagerViewModel manager = Ioc.Default.GetService<TaskManagerViewModel>();
+                TaskManagerViewModel manager = App.GetService<TaskManagerViewModel>();
                 await manager.AddDownloadTask(Drive, itemId, file);
             }
         }

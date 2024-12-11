@@ -28,15 +28,14 @@ namespace SimpleList.Pages
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private IEnumerable<ToolItem> _items = new List<ToolItem> {
-            new ToolItem
-            {
+        private IEnumerable<ToolItem> _items = [
+            new() {
                 Name = "Share Community",
                 Description = "Share and browse OneDrive files",
                 ImagePath = "/Assets/link-share.png",
                 FileName = "ShareCommunity"
             },
-        };
+        ];
         public IEnumerable<ToolItem> Items
         {
             get => _items;

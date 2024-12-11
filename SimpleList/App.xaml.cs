@@ -1,12 +1,8 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
-using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
-using SimpleList.Helpers;
 using SimpleList.Services;
 using SimpleList.ViewModels;
 using System;
@@ -15,88 +11,110 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using WinUICommunity;
 
-namespace SimpleList
+namespace SimpleList;
+
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
-    public partial class App : Application
+    public static T GetService<T>() where T : class
     {
-        public App()
+        if (App.Current!.Services.GetService(typeof(T)) is not T service)
         {
-            InitializeComponent();
+            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            LoadSettings();
-            string backdropType = Configuration.GetSection("Material").Value;
-            m_window = new MainWindow
-            {
-                Title = Assembly.GetEntryAssembly().GetName().Name,
-                SystemBackdrop = backdropType switch
-                {
-                    "Mica" => new MicaBackdrop(),
-                    "MicaAlt" => new MicaBackdrop() { Kind = MicaKind.BaseAlt },
-                    "Acrylic" => new DesktopAcrylicBackdrop(),
-                    _ => new MicaBackdrop(),
-                }
-            };
-
-            m_window.Activate();
-            string selectedTheme = Configuration.GetSection("Theme").Value;
-            ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
-
-            MsalCacheHelper CacheHelper = GetCacheHelper().GetAwaiter().GetResult();
-            Ioc.Default.ConfigureServices(
-                new ServiceCollection()
-                    .AddSingleton<TaskManagerViewModel>()
-                    .AddSingleton(CacheHelper)
-                    .AddSingleton(BuildPublicApp())
-                    .BuildServiceProvider()
-            );
-        }
-
-        private void LoadSettings()
-        {
-            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            Current.Resources["Configuration"] = Configuration;
-        }
-
-        private IPublicClientApplication BuildPublicApp()
-        {
-            IPublicClientApplication publicClientApp = PublicClientApplicationBuilder.Create(Configuration.GetSection("AzureAD:ClientId").Value)
-                .WithClientName(Assembly.GetEntryAssembly().GetName().Name)
-                .WithRedirectUri("http://localhost")
-                .WithLogging((level, message, containsPii) =>
-                {
-                    Debug.WriteLine($"MSAL: {level} {message}");
-                }, LogLevel.Verbose, enablePiiLogging: true, enableDefaultPlatformLogging: true)
-                .Build();
-            return publicClientApp;
-        }
-
-        private static async Task<MsalCacheHelper> GetCacheHelper()
-        {
-            string cacheFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "cache");
-            var storageProperties =
-                    new StorageCreationPropertiesBuilder("OneDriveTokenCache.bin", cacheFolderPath)
-                    .WithLinuxKeyring(
-                        "SimpleList.TokenCache",
-                        MsalCacheHelper.LinuxKeyRingDefaultCollection,
-                        "MSAL token cache for SimpleList.",
-                        new KeyValuePair<string, string>("Version", Utils.GetVersion()),
-                        new KeyValuePair<string, string>("ProductGroup", "SimpleList"))
-                    .Build();
-            var cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties).ConfigureAwait(false);
-            cacheHelper.VerifyPersistence();
-            return cacheHelper;
-        }
-
-        private static Window m_window;
-        public static Window StartupWindow => m_window;
-        public IServiceProvider Services { get; }
-        public IConfigurationRoot Configuration { get; set; }
+        return service;
     }
+
+    public App()
+    {
+        Services = ConfigureServices();
+        InitializeComponent();
+    }
+
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    {
+        //Current.Resources["Configuration"] = Configuration;
+
+        //string backdropType = Configuration.GetSection("Material").Value;
+        m_window = new MainWindow
+        {
+            Title = Assembly.GetEntryAssembly().GetName().Name,
+        };
+
+        GetThemeService?.Initialize(m_window, true, "theme.json");
+        m_window.Activate();
+        //string selectedTheme = Configuration.GetSection("Theme").Value;
+        //ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
+
+        //MsalCacheHelper CacheHelper = GetCacheHelper().GetAwaiter().GetResult();
+        //Ioc.Default.ConfigureServices(
+        //    new ServiceCollection()
+        //        .AddSingleton<TaskManagerViewModel>()
+        //        .AddSingleton(CacheHelper)
+        //        .AddSingleton(BuildPublicApp())
+        //        .BuildServiceProvider()
+        //);
+    }
+
+    private ServiceProvider ConfigureServices()
+    {
+        LoadSettings();
+        MsalCacheHelper CacheHelper = GetCacheHelper().GetAwaiter().GetResult();
+        var services = new ServiceCollection();
+        services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<TaskManagerViewModel>();
+        services.AddSingleton(CacheHelper);
+        services.AddSingleton(BuildPublicApp());
+        return services.BuildServiceProvider();
+    }
+
+    private void LoadSettings()
+    {
+        Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+    }
+
+    private IPublicClientApplication BuildPublicApp()
+    {
+        IPublicClientApplication publicClientApp = PublicClientApplicationBuilder.Create(Configuration.GetSection("AzureAD:ClientId").Value)
+            .WithClientName(Assembly.GetEntryAssembly().GetName().Name)
+            .WithRedirectUri("http://localhost")
+            .WithLogging((level, message, containsPii) =>
+            {
+                Debug.WriteLine($"MSAL: {level} {message}");
+            }, LogLevel.Verbose, enablePiiLogging: true, enableDefaultPlatformLogging: true)
+            .Build();
+        return publicClientApp;
+    }
+
+    private static async Task<MsalCacheHelper> GetCacheHelper()
+    {
+        string cacheFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "cache");
+        var storageProperties =
+                new StorageCreationPropertiesBuilder("OneDriveTokenCache.bin", cacheFolderPath)
+                .WithLinuxKeyring(
+                    "SimpleList.TokenCache",
+                    MsalCacheHelper.LinuxKeyRingDefaultCollection,
+                    "MSAL token cache for SimpleList.",
+                    new KeyValuePair<string, string>("Version", Utils.GetVersion()),
+                    new KeyValuePair<string, string>("ProductGroup", "SimpleList"))
+                .Build();
+        var cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties).ConfigureAwait(false);
+        cacheHelper.VerifyPersistence();
+        return cacheHelper;
+    }
+
+    private static Window m_window;
+    public new static App Current => (App)Application.Current;
+    public static Window StartupWindow => m_window;
+    //public IServiceProvider Services { get; }
+    public IConfigurationRoot Configuration { get; set; }
+    //public IThemeService ThemeService { get; set; }
+    public IThemeService GetThemeService => GetService<IThemeService>();
+    public IServiceProvider Services { get; }
 }
+
