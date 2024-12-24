@@ -3,7 +3,7 @@
     x:Class="SimpleList.Pages.DrivePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:converter="using:SimpleList.Converters"
     xmlns:vm="using:SimpleList.ViewModels"
     xmlns:models="using:SimpleList.Models"

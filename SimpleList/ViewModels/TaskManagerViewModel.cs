@@ -1,22 +1,34 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace SimpleList.ViewModels
 {
-    public class TaskManagerViewModel : ObservableObject
+    public partial class TaskManagerViewModel : ObservableObject
     {
-        public ObservableCollection<DownloadTaskViewModel> DownloadTasks { get; } = new();
-        public ObservableCollection<UploadTaskViewModel> UploadTasks { get; } = new();
+        [ObservableProperty] private bool _shutdownAfterDownload = false;
+        public ObservableCollection<DownloadTaskViewModel> DownloadTasks { get; } = [];
+        public ObservableCollection<UploadTaskViewModel> UploadTasks { get; } = [];
+
+        private void CheckShutdown(object sender, AsyncCompletedEventArgs e)
+        {
+            Debug.WriteLine("check shutdown");
+            if (ShutdownAfterDownload && DownloadTasks.All(task => task.Completed))
+            {
+                Process.Start("shutdown", "/s /t 0");
+            }
+        }
 
         public async Task AddDownloadTask(DriveViewModel drive, string itemId, StorageFile file)
         {
             DownloadTaskViewModel task = new(drive, itemId, file);
             DownloadTasks.Add(task);
-            await task.StartDownload();
+            await task.StartDownload(CheckShutdown);
         }
 
         public async Task StartAllDownloadTasks()
@@ -54,6 +66,12 @@ namespace SimpleList.ViewModels
         public void RemoveSelectedUploadTasks(UploadTaskViewModel task)
         {
             UploadTasks.Remove(task);
+        }
+
+        [RelayCommand]
+        private void ChangeShuwdownBehavious(bool canShutdown)
+        {
+            ShutdownAfterDownload = canShutdown;
         }
     }
 }

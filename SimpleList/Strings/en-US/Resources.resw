@@ -240,6 +240,9 @@
   <data name="SettingPage_AppearanceTitle.Text" xml:space="preserve">
     <value>Appearance behavior</value>
   </data>
+  <data name="SettingPage_AppMaterial.Header" xml:space="preserve">
+    <value>Material</value>
+  </data>
   <data name="SettingPage_AppTheme.Header" xml:space="preserve">
     <value>App Theme</value>
   </data>
@@ -251,6 +254,9 @@
   </data>
   <data name="SettingPage_Theme_Light.Content" xml:space="preserve">
     <value>Light</value>
+  </data>
+  <data name="SettingPage_TintColor.Header" xml:space="preserve">
+    <value>TintColor</value>
   </data>
   <data name="SettingPage_Title.Text" xml:space="preserve">
     <value>Settings</value>
@@ -279,6 +285,9 @@
   <data name="ShareCommunityPage_Flyout_Refresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="TaskManagerPage_DownloadComplted.Text" xml:space="preserve">
+    <value>Download completed</value>
+  </data>
   <data name="TaskManagerPage_OpenFolder.Text" xml:space="preserve">
     <value>Open Folder</value>
   </data>
@@ -293,5 +302,11 @@
   </data>
   <data name="TaskManagerPage_Resume.Text" xml:space="preserve">
     <value>Resume</value>
+  </data>
+  <data name="TaskManagerPage_ShutdownAfterDownload.Content" xml:space="preserve">
+    <value>Shutdown After Download(Only once)</value>
+  </data>
+  <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
+    <value>Upload Completed</value>
   </data>
 </root>

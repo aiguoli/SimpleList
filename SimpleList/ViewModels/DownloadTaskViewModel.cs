@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Downloader;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -21,15 +20,24 @@ namespace SimpleList.ViewModels
             Drive = drive;
         }
 
-        public async Task StartDownload()
+        public async Task StartDownload(EventHandler<AsyncCompletedEventArgs> onCompleted = null)
         {
             DriveItem item = await Drive.Provider.GetItem(_itemId);
             string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
 
             StartTime = DateTime.Now;
-            _downloader = new();
+            var downloadOpt = new DownloadConfiguration()
+            {
+                ChunkCount = 8,
+                ParallelDownload = true
+            };
+            _downloader = new(downloadOpt);
             _downloader.DownloadFileCompleted += DownloadFileCompleted;
             _downloader.DownloadProgressChanged += DownloadProgressChanged;
+            if (onCompleted != null)
+            {
+                _downloader.DownloadFileCompleted += onCompleted;
+            }
             await _downloader.DownloadFileTaskAsync(downloadUrl, _file.Path);
         }
 

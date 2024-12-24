@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:wuc="using:WinUICommunity"
     xmlns:local="using:SimpleList"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,7 +34,7 @@
                     <ComboBoxItem x:Uid="SettingPage_Theme_Dark" Tag="Dark" />
                 </ComboBox>
             </controls:SettingsCard>
-            <controls:SettingsCard Header="Material">
+            <controls:SettingsCard x:Uid="SettingPage_AppMaterial">
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xF5EF;" />
                 </controls:SettingsCard.HeaderIcon>
@@ -49,7 +49,7 @@
                 </ComboBox>
             </controls:SettingsCard>
 
-            <controls:SettingsCard Header="TintColor">
+            <controls:SettingsCard x:Uid="SettingPage_TintColor">
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xEF3C;" />
                 </controls:SettingsCard.HeaderIcon>
