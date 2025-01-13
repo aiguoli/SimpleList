@@ -147,6 +147,12 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>你的网盘</value>
   </data>
+  <data name="CreateFolderView_Label.Header" xml:space="preserve">
+    <value>输入新文件夹名</value>
+  </data>
+  <data name="CreateFolderView_Label.PlaceholderText" xml:space="preserve">
+    <value>新建文件夹</value>
+  </data>
   <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
     <value>转换</value>
   </data>
@@ -246,6 +252,15 @@
   <data name="SettingPage_AppTheme.Header" xml:space="preserve">
     <value>App主题</value>
   </data>
+  <data name="SettingPage_CheckUpdate.Content" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="SettingPage_DownloadUpdate.Content" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="SettingPage_NewVersionTip.Text" xml:space="preserve">
+    <value>已经是最新版本。</value>
+  </data>
   <data name="SettingPage_Theme_Dark.Content" xml:space="preserve">
     <value>深色</value>
   </data>
@@ -305,6 +320,12 @@
   </data>
   <data name="TaskManagerPage_ShutdownAfterDownload.Content" xml:space="preserve">
     <value>下载完成后关机(仅本次有效)</value>
+  </data>
+  <data name="TaskManagerPage_StartDownload" xml:space="preserve">
+    <value>开始下载</value>
+  </data>
+  <data name="TaskManagerPage_StartDownloadDesc" xml:space="preserve">
+    <value>准备开始下载{0}个文件</value>
   </data>
   <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
     <value>上传完成</value>

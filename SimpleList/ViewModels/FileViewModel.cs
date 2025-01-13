@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Xaml;
@@ -35,7 +34,7 @@ namespace SimpleList.ViewModels
             {
                 SuggestedStartLocation = PickerLocationId.Downloads
             };
-            savePicker.FileTypeChoices.Add("All files", new List<string>() { Path.GetExtension(_file.Name) });
+            savePicker.FileTypeChoices.Add("All files", [Path.GetExtension(_file.Name)]);
             savePicker.SuggestedFileName = _file.Name;
             InitializeWithWindow.Initialize(savePicker, hwnd);
             StorageFile file = await savePicker.PickSaveFileAsync();

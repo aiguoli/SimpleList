@@ -39,6 +39,7 @@
             Click="ShowCreateDriveDialogAsync" />
         <ListView 
             Grid.Row="2"
+            Name="DirvePanel"
             ItemTemplate="{StaticResource DriveItemTemplate}"
             ItemsSource="{Binding Drives}" />
     </Grid>

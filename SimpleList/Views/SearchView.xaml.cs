@@ -1,20 +1,17 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace SimpleList.Views;
 
-namespace SimpleList.Views
+public sealed partial class SearchView : ContentDialog
 {
-    public sealed partial class SearchView : ContentDialog
+    public SearchView()
     {
-        public SearchView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void LoadDefaultValue(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            (sender as ComboBox).SelectedIndex = 0;
-        }
+    private void LoadDefaultValue(object sender, RoutedEventArgs e)
+    {
+        (sender as ComboBox).SelectedIndex = 0;
     }
 }

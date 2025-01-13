@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations":[
+    {
+    "name": ".NET Core Launch (console)",
+    "type": "coreclr",
+    "request": "launch",
+    "preLaunchTask": "build",
+    // if target frameworks was changed, update program path.
+    "program": 
+      "${workspaceFolder}/SimpleList/bin/x64/Release/net8.0-windows10.0.26100.0/win-x64/SimpleList.exe",
+    "args": [],
+    "cwd": "${workspaceFolder}/SimpleList",
+      // 'console' field https://aka.ms/VSCode-CS-LaunchJson-Console
+    "console": "internalConsole",
+    "stopAtEntry": false
+  },
+  {
+    "name": ".NET Core Attach",
+    "type": "coreclr",
+    "request": "attach"
+  }]
+ }

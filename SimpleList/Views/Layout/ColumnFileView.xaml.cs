@@ -8,7 +8,6 @@ using SimpleList.Views.Preview;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.System;
 
 namespace SimpleList.Views.Layout
 {
@@ -136,6 +135,14 @@ namespace SimpleList.Views.Layout
             FileViewModel viewModel = DataContext as FileViewModel;
             await ShowPreviewDialogFromViewModel(viewModel);
         }
+
+        //private void OnStartDrag(UIElement sender, DragStartingEventArgs args)
+        //{
+        //    if ((sender as GridViewItem).DataContext is FileViewModel fileViewModel)
+        //    {
+        //        file = fileViewModel;
+        //    }
+        //}
     }
 
 }

@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="AppTitleBar">
-            <Image Source="ms-appx:///Assets/Square44x44Logo.png"
+            <Image Source="ms-appx:///Assets/44.png"
                    HorizontalAlignment="Left" 
                    Width="16" Height="16" 
                    Margin="8, 0"/>

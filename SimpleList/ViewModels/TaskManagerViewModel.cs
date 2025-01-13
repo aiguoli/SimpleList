@@ -24,11 +24,11 @@ namespace SimpleList.ViewModels
             }
         }
 
-        public async Task AddDownloadTask(DriveViewModel drive, string itemId, StorageFile file)
+        public async Task AddDownloadTask(DriveViewModel drive, string itemId, IStorageItem target)
         {
-            DownloadTaskViewModel task = new(drive, itemId, file);
+            DownloadTaskViewModel task = new(drive, itemId, target, CheckShutdown);
             DownloadTasks.Add(task);
-            await task.StartDownload(CheckShutdown);
+            await task.StartDownload();
         }
 
         public async Task StartAllDownloadTasks()

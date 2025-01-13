@@ -147,6 +147,12 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>Your drive</value>
   </data>
+  <data name="CreateFolderView_Label.Header" xml:space="preserve">
+    <value>Type name of new folder</value>
+  </data>
+  <data name="CreateFolderView_Label.PlaceholderText" xml:space="preserve">
+    <value>New Folder</value>
+  </data>
   <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
     <value>Convert</value>
   </data>
@@ -246,6 +252,15 @@
   <data name="SettingPage_AppTheme.Header" xml:space="preserve">
     <value>App Theme</value>
   </data>
+  <data name="SettingPage_CheckUpdate.Content" xml:space="preserve">
+    <value>Check for Update</value>
+  </data>
+  <data name="SettingPage_DownloadUpdate.Content" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="SettingPage_NewVersionTip.Text" xml:space="preserve">
+    <value>You are using the latest version.</value>
+  </data>
   <data name="SettingPage_Theme_Dark.Content" xml:space="preserve">
     <value>Dark</value>
   </data>
@@ -305,6 +320,12 @@
   </data>
   <data name="TaskManagerPage_ShutdownAfterDownload.Content" xml:space="preserve">
     <value>Shutdown After Download(Only once)</value>
+  </data>
+  <data name="TaskManagerPage_StartDownload" xml:space="preserve">
+    <value>Download Started</value>
+  </data>
+  <data name="TaskManagerPage_StartDownloadDesc" xml:space="preserve">
+    <value>{0} files are ready to start downloading</value>
   </data>
   <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
     <value>Upload Completed</value>

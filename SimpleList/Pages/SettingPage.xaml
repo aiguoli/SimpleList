@@ -3,7 +3,7 @@
     x:Class="SimpleList.Pages.SettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:converter="using:SimpleList.Converters"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:wuc="using:WinUICommunity"
     xmlns:local="using:SimpleList"
@@ -13,95 +13,98 @@
 
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <converter:BoolToNegativeVisibilityConverter x:Key="BoolToNegativeVisibilityConverter" />
     </Page.Resources>
 
     <Grid Padding="36 0 36 0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Uid="SettingPage_Title" FontSize="30" FontWeight="Medium" Margin="0 20 0 0" />
-        <TextBlock Grid.Row="1" x:Uid="SettingPage_AppearanceTitle" FontWeight="Bold" Margin="0 10 0 10" />
-        <StackPanel Grid.Row="2" Orientation="Vertical" >
-            <controls:SettingsCard x:Uid="SettingPage_AppTheme">
-                <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE790;" />
-                </controls:SettingsCard.HeaderIcon>
-                <ComboBox x:Name="themeMode" wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
-                    <ComboBoxItem x:Uid="SettingPage_Theme_Default" Tag="Default" />
-                    <ComboBoxItem x:Uid="SettingPage_Theme_Light" Tag="Light" />
-                    <ComboBoxItem x:Uid="SettingPage_Theme_Dark" Tag="Dark" />
+        <TextBlock x:Uid="SettingPage_Title"
+                FontSize="30"
+                FontWeight="Medium"
+                Margin="0 20 0 0"/>
+        <TextBlock Grid.Row="1"
+                x:Uid="SettingPage_AppearanceTitle"
+                FontWeight="Bold"
+                Margin="0 10 0 10"/>
+        <StackPanel Grid.Row="2"
+                Orientation="Vertical">
+            <wuc:SettingsCard x:Uid="SettingPage_AppTheme">
+                <wuc:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE790;"/>
+                </wuc:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="themeMode"
+                        wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
+                    <ComboBoxItem x:Uid="SettingPage_Theme_Default"
+                            Tag="Default"/>
+                    <ComboBoxItem x:Uid="SettingPage_Theme_Light"
+                            Tag="Light"/>
+                    <ComboBoxItem x:Uid="SettingPage_Theme_Dark"
+                            Tag="Dark"/>
                 </ComboBox>
-            </controls:SettingsCard>
-            <controls:SettingsCard x:Uid="SettingPage_AppMaterial">
-                <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xF5EF;" />
-                </controls:SettingsCard.HeaderIcon>
-                <ComboBox x:Name="materialMode" wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
-                    <ComboBoxItem Content="None" Tag="None" />
-                    <ComboBoxItem Content="Mica" Tag="Mica" />
-                    <ComboBoxItem Content="MicaAlt" Tag="MicaAlt" />
-                    <ComboBoxItem Content="Desktop Acrylic" Tag="DesktopAcrylic" />
-                    <ComboBoxItem Content="Acrylic Base" Tag="AcrylicBase" />
-                    <ComboBoxItem Content="Acrylic Thin" Tag="AcrylicThin" />
-                    <ComboBoxItem Content="Transparent" Tag="Transparent" />
+            </wuc:SettingsCard>
+            <wuc:SettingsCard x:Uid="SettingPage_AppMaterial">
+                <wuc:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xF5EF;"/>
+                </wuc:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="materialMode"
+                        wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
+                    <ComboBoxItem Content="None"
+                            Tag="None"/>
+                    <ComboBoxItem Content="Mica"
+                            Tag="Mica"/>
+                    <ComboBoxItem Content="MicaAlt"
+                            Tag="MicaAlt"/>
+                    <ComboBoxItem Content="Desktop Acrylic"
+                            Tag="DesktopAcrylic"/>
+                    <ComboBoxItem Content="Acrylic Base"
+                            Tag="AcrylicBase"/>
+                    <ComboBoxItem Content="Acrylic Thin"
+                            Tag="AcrylicThin"/>
+                    <ComboBoxItem Content="Transparent"
+                            Tag="Transparent"/>
                 </ComboBox>
-            </controls:SettingsCard>
+            </wuc:SettingsCard>
 
-            <controls:SettingsCard x:Uid="SettingPage_TintColor">
-                <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xEF3C;" />
-                </controls:SettingsCard.HeaderIcon>
-                <Button Padding="0">
-                    <StackPanel Orientation="Horizontal">
-                        <Border Width="24"
-                                        Height="24"
-                                        Margin="4"
-                                        Background="Gray"
-                                        CornerRadius="4">
-                            <Grid>
-                                <PathIcon Data="M0 6 L0 0 L6 0 L6 6 L12 6 L12 0 L18 0 L18 6 L12 6 L12 12 L18 12 L18 6 L24 6 L24 12 L18 12 L18 18 L24 18 L24 24 L6 24 L6 18 L0 18 L0 12 L6 12 L6 18 L12 18 L12 24 L18 24 L18 18 L12 18 L12 12 L6 12 L6 6 Z"
-                                                  Foreground="LightGray" />
-                                <Rectangle x:Name="TintBox">
-                                    <Rectangle.Fill>
-                                        <SolidColorBrush Color="{x:Bind colorPicker.Color, Mode=OneWay}" />
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </Grid>
-                        </Border>
-                        <FontIcon Margin="8,4,10,4"
-                                          FontSize="12"
-                                          Glyph="&#xE70D;" />
-                    </StackPanel>
-                    <Button.Flyout>
-                        <Flyout>
-                            <ColorPicker x:Name="colorPicker" ColorChanged="ColorPicker_ColorChanged" IsAlphaEnabled="True" IsMoreButtonVisible="True" />
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-            </controls:SettingsCard>
+            <TextBlock x:Uid="SettingPage_AboutTitle"
+                    FontWeight="Bold"
+                    Margin="0 10 0 10"/>
+            <wuc:SettingsExpander Header="SimpleList"
+                    Description="All free for you">
+                <wuc:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE753;"/>
+                </wuc:SettingsExpander.HeaderIcon>
+                <wuc:SettingsExpander.Items>
+                    <wuc:SettingsCard Header="Github">
+                        <wuc:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE943;" />
+                        </wuc:SettingsCard.HeaderIcon>
+                        <HyperlinkButton Content="https://github.com/aiguoli/SimpleList"
+                                NavigateUri="https://github.com/aiguoli/SimpleList"/>
+                    </wuc:SettingsCard>
 
-            <TextBlock x:Uid="SettingPage_AboutTitle" FontWeight="Bold" Margin="0 10 0 10" />
-            <controls:SettingsExpander Header="SimpleList" Description="All free for you">
-                <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon Glyph="&#xE753;" />
-                </controls:SettingsExpander.HeaderIcon>
-                <TextBlock
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        IsTextSelectionEnabled="True"
-                        Text="{x:Bind Version}" />
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard Header="Github">
-                        <HyperlinkButton Content="https://github.com/aiguoli/SimpleList" NavigateUri="https://github.com/aiguoli/SimpleList" />
-                    </controls:SettingsCard>
+                    <wuc:SettingsCard Header="{x:Bind Version}">
+                        <wuc:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE8EC;" />
+                        </wuc:SettingsCard.HeaderIcon>
+                        <Button x:Uid="SettingPage_CheckUpdate" Name="CheckUpdateButton" Click="CheckUpdate" Visibility="{x:Bind IsUpdateAvailable, Converter={StaticResource BoolToNegativeVisibilityConverter}, Mode=OneWay}" />
+                    </wuc:SettingsCard>
+                    <wuc:SettingsCard Name="StatusInfo" Visibility="Collapsed">
+                        <wuc:SettingsCard.Header>
+                            <TextBlock Name="NewVersion" x:Uid="SettingPage_NewVersionTip" />
+                        </wuc:SettingsCard.Header>
+                        <wuc:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE946;" />
+                        </wuc:SettingsCard.HeaderIcon>
+                        <HyperlinkButton Name="DownloadButton" x:Uid="SettingPage_DownloadUpdate" Click="UpdateByPowershell" Visibility="Collapsed" />
+                    </wuc:SettingsCard>
+                </wuc:SettingsExpander.Items>
+            </wuc:SettingsExpander>
 
-                    <controls:SettingsCard Header="Update" Visibility="{x:Bind IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <HyperlinkButton Content="Update" NavigateUri="https://github.com/aiguoli/SimpleList/releases/latest" />
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
-            
         </StackPanel>
     </Grid>
 </Page>

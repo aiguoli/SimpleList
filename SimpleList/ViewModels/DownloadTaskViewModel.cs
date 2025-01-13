@@ -1,79 +1,166 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using Downloader;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Controls;
+using SimpleList.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using WinUICommunity;
 
 namespace SimpleList.ViewModels
 {
     public partial class DownloadTaskViewModel : ObservableObject
     {
-        public DownloadTaskViewModel(DriveViewModel drive, string itemId, StorageFile file)
+        public DownloadTaskViewModel(DriveViewModel drive, string itemId, IStorageItem target, EventHandler<AsyncCompletedEventArgs> onCompleted = null)
         {
             _itemId = itemId;
-            _file = file;
+            _target = target;
             Drive = drive;
+            _onCompleted = onCompleted;
         }
 
-        public async Task StartDownload(EventHandler<AsyncCompletedEventArgs> onCompleted = null)
+        private DownloadService CreateDownloadService(string itemId)
         {
-            DriveItem item = await Drive.Provider.GetItem(_itemId);
-            string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
-
-            StartTime = DateTime.Now;
             var downloadOpt = new DownloadConfiguration()
             {
                 ChunkCount = 8,
                 ParallelDownload = true
             };
-            _downloader = new(downloadOpt);
-            _downloader.DownloadFileCompleted += DownloadFileCompleted;
-            _downloader.DownloadProgressChanged += DownloadProgressChanged;
-            if (onCompleted != null)
+            DownloadService downloader = new(downloadOpt);
+            downloader.DownloadFileCompleted += DownloadFileCompleted(itemId);
+            downloader.DownloadProgressChanged += DownloadProgressChanged(itemId);
+            if (_onCompleted != null)
             {
-                _downloader.DownloadFileCompleted += onCompleted;
+                downloader.DownloadFileCompleted += _onCompleted;
             }
-            await _downloader.DownloadFileTaskAsync(downloadUrl, _file.Path);
+            return downloader;
         }
 
-        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        public async Task StartDownload()
         {
-            _dispatcher.TryEnqueue(() =>
+            DriveItem item = await Drive.Provider.GetItem(_itemId);
+            Name = item.Name;
+            TotalBytes = item.Size ?? 0;
+            StartTime = DateTime.Now;
+            await WalkDownloadItem(item, _target);
+            Growl.Info(new GrowlInfo
             {
-                if (_downloader.Status == DownloadStatus.Completed)
-                {
-                    Completed = true;
-                    IsDownloading = false;
-                }
+                Title = "TaskManagerPage_StartDownload".GetLocalized(),
+                Message = string.Format("TaskManagerPage_StartDownloadDesc".GetLocalized(), DownloadList.Count),
+                IsClosable = true,
+                ShowDateTime = true,
+                Token = "DriveGrowl"
             });
+            foreach (DownloadItem downloadItem in DownloadList)
+            {
+                await downloadItem.DownloadService.DownloadFileTaskAsync(downloadItem.DownloadUrl, downloadItem.Path);
+            }
         }
 
-        private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private async Task WalkDownloadItem(DriveItem item, IStorageItem target)
         {
-            if (DateTime.Now - _lastUpdate >= _updateInterval)
+            // TODO: Add support for limiting count of parallel downloads
+            if (item.File != null)
             {
-                _lastUpdate = DateTime.Now;
-                // If double data type is used here, it will cause the progress control to handle additional data, resulting in the page being stuck.
+                // item is a file
+                string path = target.IsOfType(StorageItemTypes.Folder) ? Path.Combine(target.Path, item.Name) : target.Path;
+                string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
+                DownloadItem downloadItem = new()
+                {
+                    ItemId = item.Id,
+                    DownloadUrl = downloadUrl,
+                    Path = path,
+                    Size = item.Size ?? 0,
+                    DownloadService = CreateDownloadService(item.Id)
+                };
+                DownloadList.Add(downloadItem);
+            }
+
+            if (item.Folder != null)
+            {
+                // item is a folder
+                if (target.IsOfType(StorageItemTypes.File))
+                {
+                    return;
+                }
+                if (target.IsOfType(StorageItemTypes.Folder))
+                {
+                    StorageFolder targetFolder = await (target as StorageFolder).CreateFolderAsync(item.Name, CreationCollisionOption.OpenIfExists);
+                    var children = await Drive.Provider.GetFiles(item.Id);
+                    foreach (DriveItem child in children.Value)
+                    {
+                        await WalkDownloadItem(child, targetFolder);
+                    }
+                }
+            }
+        }
+
+        private EventHandler<AsyncCompletedEventArgs> DownloadFileCompleted(string itemId)
+        {
+            return (object sender, AsyncCompletedEventArgs e) =>
+            {
                 _dispatcher.TryEnqueue(() =>
                 {
-                    Progress = (int)e.ProgressPercentage;
-                    DownloadedBytes = e.ReceivedBytesSize;
-                    TotalBytes = e.TotalBytesToReceive;
-                    DownloadSpeed = (long)e.BytesPerSecondSpeed;
+                    if ((sender as DownloadService).Status == DownloadStatus.Completed)
+                    {
+                        DownloadItem downloadItem = DownloadList.Find(i => i.ItemId == itemId);
+                        if (downloadItem == null) return;
+                        downloadItem.ReceivedBytes = downloadItem.Size;
+                        UpdateProgress();
+                        if (DownloadList.All(i => i.ReceivedBytes == i.Size))
+                        {
+                            Completed = true;
+                            IsDownloading = false;
+                            FinishTime = DateTime.Now;
+                        }
+                    }
                 });
-            }
+            };
+        }
+
+        private EventHandler<DownloadProgressChangedEventArgs> DownloadProgressChanged(string itemId)
+        {
+            return (object sender, DownloadProgressChangedEventArgs e) =>
+            {
+                if (DateTime.Now - _lastUpdate >= _updateInterval)
+                {
+                    _lastUpdate = DateTime.Now;
+                    // If double data type is used here, it will cause the progress control to handle additional data, resulting in the page being stuck.
+                    _dispatcher.TryEnqueue(() =>
+                    {
+                        DownloadItem downloadItem = DownloadList.Find(i => i.ItemId == itemId);
+                        if (downloadItem == null) return;
+                        downloadItem.ReceivedBytes = e.ReceivedBytesSize;
+
+                        UpdateProgress();
+                    });
+                }
+            };
+        }
+
+        private void UpdateProgress()
+        {
+            _lastUpdate = DateTime.Now;
+            DownloadedBytes = DownloadList.Sum(i => i.ReceivedBytes);
+            Progress = (int)((double)DownloadedBytes / TotalBytes * 100);
+            DownloadSpeed = (long)(DownloadedBytes / (DateTime.Now - StartTime).TotalSeconds);
         }
 
         [RelayCommand]
         public void PauseDownload()
         {
-            _downloader.Pause();
-            _pack = _downloader.Package;
+            foreach (DownloadItem item in DownloadList)
+            {
+                item.DownloadService.Pause();
+                item.Package = item.DownloadService.Package;
+            }
             IsPaused = true;
             IsDownloading = false;
         }
@@ -84,30 +171,36 @@ namespace SimpleList.ViewModels
             IsPaused = false;
             IsDownloading = true;
 
-            // If the download has been paused for more than an hour, refresh the download URL
-            if ((DateTime.Now - StartTime).TotalHours >= 1)
+            foreach (DownloadItem downloadItem in DownloadList)
             {
-                // Refresh the download URL
-                DriveItem item = await Drive.Provider.GetItem(_itemId);
-                string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
-                if (_pack != null)
+                if ((DateTime.Now - StartTime).TotalHours >= 1)
                 {
-                    await _downloader.DownloadFileTaskAsync(_pack, downloadUrl);
+                    // Refresh the download URL
+                    DriveItem item = await Drive.Provider.GetItem(downloadItem.ItemId);
+                    string downloadUrl = item.AdditionalData["@microsoft.graph.downloadUrl"].ToString();
+                    DownloadPackage package = downloadItem.DownloadService.Package;
+                    if (package != null)
+                    {
+                        await downloadItem.DownloadService.DownloadFileTaskAsync(package, downloadUrl);
+                    }
                 }
-            }
-            else
-            {
-                _downloader.Resume();
+                else
+                {
+                    downloadItem.DownloadService.Resume();
+                }
             }
         }
 
         [RelayCommand]
-        public async Task CancelTaskAsync()
+        public void CancelTask()
         {
             if (!Completed)
             {
-                _downloader.CancelAsync();
-                await _file.DeleteAsync();
+                foreach (DownloadItem item in DownloadList)
+                {
+                    item.DownloadService.CancelAsync();
+                    File.Delete(item.Path);
+                }
             }
             _manager.RemoveSelectedDownloadTasks(this);
         }
@@ -115,7 +208,7 @@ namespace SimpleList.ViewModels
         [RelayCommand]
         public void OpenFolder()
         {
-            System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{_file.Path}\"");
+            System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{_target.Path}\"");
         }
 
         public static readonly int chunkSize = 1024 * 1024;  // 1MB chunks
@@ -123,12 +216,12 @@ namespace SimpleList.ViewModels
         private DateTime _lastUpdate;
         private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(1000);
         private readonly string _itemId;
-        private readonly StorageFile _file;
+        private readonly List<DownloadItem> DownloadList = [];
+        private readonly IStorageItem _target;
         private DriveViewModel Drive { get; }
         private readonly TaskManagerViewModel _manager = App.GetService<TaskManagerViewModel>();
-        private DownloadService _downloader;
-        private DownloadPackage _pack;
         private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
+        private EventHandler<AsyncCompletedEventArgs> _onCompleted;
         [ObservableProperty] private int _progress;
         [ObservableProperty] private bool _completed = false;
         [ObservableProperty] private bool _isDownloading = true;
@@ -139,6 +232,6 @@ namespace SimpleList.ViewModels
 
         public DateTime StartTime { get; private set; }
         public DateTime FinishTime { get; private set; }
-        public string Name { get => _file.Name; }
+        public string Name { get; private set; }
     }
 }

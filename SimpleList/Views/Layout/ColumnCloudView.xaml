@@ -16,5 +16,10 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ListView ItemsSource="{Binding Files}" ItemTemplate="{StaticResource ListItemTemplate}" />
+    <ListView 
+        ItemsSource="{Binding Files}" 
+        ItemTemplate="{StaticResource ListItemTemplate}"
+        SelectionMode="Extended"
+        SelectionChanged="ChangeSelectedFiles"
+    />
 </UserControl>

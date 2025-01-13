@@ -1,14 +1,14 @@
-using Microsoft.UI.Composition.SystemBackdrops;
+using Downloader;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using SimpleList.Helpers;
 using SimpleList.Services;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Runtime.InteropServices;
+using WinUICommunity;
 
 namespace SimpleList.Pages
 {
@@ -17,81 +17,98 @@ namespace SimpleList.Pages
         public SettingPage()
         {
             InitializeComponent();
-            Loaded += OnSettingsPageLoaded;
         }
 
-        private void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
+        private async void CheckUpdate(object sender, RoutedEventArgs e)
         {
-            //ElementTheme currentTheme = ThemeHelper.RootTheme;
-            //switch (currentTheme)
-            //{
-            //    case ElementTheme.Default:
-            //        themeMode.SelectedIndex = 0;
-            //        break;
-            //    case ElementTheme.Light:
-            //        themeMode.SelectedIndex = 1;
-            //        break;
-            //    case ElementTheme.Dark:
-            //        themeMode.SelectedIndex = 2;
-            //        break;
-            //}
-            //SystemBackdrop backdrop = App.StartupWindow.SystemBackdrop;
-            //materialMode.SelectedIndex = Enum.TryParse(backdrop.GetType().Name, out BackdropType backdropType) ? (int)backdropType : 1;
-            //App.Current.ThemeService.SetThemeComboBoxDefaultItem(themeMode);
-            //App.Current.ThemeService.SetBackdropComboBoxDefaultItem(materialMode);
-        }
-
-        private void themeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //string selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
-            //ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
-            App.Current.GetThemeService.OnThemeComboBoxSelectionChanged(sender);
-        }
-
-        [RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Deserialize<TValue>(String, JsonSerializerOptions)")]
-        private async Task checkForUpdate()
-        {
-            string url = "https://api.github.com/repos/aiguoli/simplelist/releases/latest";
-            HttpClient client = new();
-            HttpResponseMessage response = await client.GetAsync(url);
-            dynamic latestVersion = JsonSerializer.Deserialize<dynamic>(await response.Content.ReadAsStringAsync());
-            if (latestVersion != Version)
+            CheckUpdateButton.IsEnabled = false;
+            var ver = await UpdateHelper.CheckUpdateAsync("aiguoli", "SimpleList");
+            if (ver.IsExistNewVersion)
             {
+                // Update App
                 IsUpdateAvailable = true;
+                var arch = RuntimeInformation.ProcessArchitecture;
+                var archMap = new Dictionary<Architecture, string>
+                {
+                    { Architecture.X64, "x64" },
+                    { Architecture.X86, "x86" },
+                    { Architecture.Arm64, "arm64" },
+                };
+                zipballUrl = Array.Find(ver.Assets, asset => asset.Name == $@"SimpleList-{ver.TagName}-{archMap[arch]}.zip")?.Url;
+                StatusInfo.Description = ver.Changelog;
+                NewVersion.Text = ver.TagName;
+                StatusInfo.Visibility = Visibility.Visible;
+                DownloadButton.Visibility = Visibility.Visible;
             }
+            else
+            {
+                StatusInfo.Visibility = Visibility.Visible;
+                DownloadButton.Visibility = Visibility.Collapsed;
+            }
+            CheckUpdateButton.IsEnabled = true;
         }
 
-        public string Version
+        private async void DownloadLatestZip(object sender, RoutedEventArgs e)
         {
-            get => Utils.GetVersion();
+            //(sender as HyperlinkButton).IsEnabled = false;
+            DownloadButton.IsEnabled = false;
+            if (!Utils.IsValidUrl(zipballUrl) || !IsUpdateAvailable)
+            {
+                return;
+            }
+            var downloadOpt = new DownloadConfiguration()
+            {
+                ChunkCount = 8,
+                ParallelDownload = true,
+                RequestConfiguration =
+                {
+                    Proxy = WebRequest.DefaultWebProxy,
+                }
+            };
+            var downloader = new DownloadService(downloadOpt);
+            var file = Path.Combine(Path.GetTempPath(), $@"{Path.GetRandomFileName()}.zip");
+            downloader.DownloadFileCompleted += (s, e) =>
+            {
+                if ((s as IDownloadService).Status == DownloadStatus.Completed)
+                {
+                    ExtractZip(file);
+                }
+            };
+            await downloader.DownloadFileTaskAsync(zipballUrl, file);
         }
 
+        private static void ExtractZip(string zipFile)
+        {
+            if (!Path.Exists(zipFile))
+            {
+                return;
+            }
+            // Extract Zip using powershell
+            var destinationDirectory = Environment.CurrentDirectory;
+            string script = $@"Expand-Archive -Path '{zipFile}' -DestinationPath '{destinationDirectory}' -Force";
+            Process.Start("PowerShell", script);
+        }
+
+        private void UpdateByPowershell(object sender, RoutedEventArgs e)
+        {
+            if (zipballUrl == null)
+            {
+                return;
+            }
+            var zipFile = Path.Combine(Path.GetTempPath(), $@"{Path.GetRandomFileName()}.zip");
+            string psScript = $@"
+                Stop-Process -Name '{Process.GetCurrentProcess().ProcessName}' -Force
+                Start-BitsTransfer -Source '{zipballUrl}' -Destination '{zipFile}' -DisplayName 'SimpleList Update'
+                Expand-Archive -Path '{zipFile}' -DestinationPath '{Environment.CurrentDirectory}' -Force
+                Remove-Item -Path {zipFile}
+                Start-Process '{Path.Combine(Environment.CurrentDirectory, "SimpleList.exe")}'
+                Pause
+            ";
+            Process.Start("PowerShell", psScript);
+        }
+
+        private string zipballUrl;
+        public string Version => Utils.GetVersion();
         public bool IsUpdateAvailable { get; set; } = false;
-        public enum BackdropType
-        {
-            Mica,
-            MicaAlt,
-            DesktopAcrylicBase,
-            DesktopAcrylicThin,
-            DefaultColor,
-        }
-
-        private void ChangeMaterial(object sender, SelectionChangedEventArgs e)
-        {
-            //string selectedMaterial = ((ComboBoxItem)materialMode.SelectedItem)?.Tag?.ToString();
-            //App.StartupWindow.SystemBackdrop = selectedMaterial switch
-            //{
-            //    "Mica" => new MicaBackdrop(),
-            //    "MicaAlt" => new MicaBackdrop() { Kind = MicaKind.BaseAlt },
-            //    "Acrylic" => new DesktopAcrylicBackdrop(),
-            //    _ => new MicaBackdrop(),
-            //};
-            App.Current.GetThemeService.OnBackdropComboBoxSelectionChanged(sender);
-        }
-
-        private void ColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
-        {
-            App.Current.GetThemeService.SetBackdropTintColor(args.NewColor);
-        }
     }
 }

@@ -10,9 +10,15 @@
     d:DataContext="{x:Bind vm:CreateFolderViewModel}"
     Title="Create folder"
     PrimaryButtonText="OK"
+    IsPrimaryButtonEnabled="False"
     CloseButtonText="Cancel"
     PrimaryButtonCommand="{Binding CreateFolderCommand}"
     DefaultButton="Primary">
 
-    <TextBox Header="Type name of new folder:" PlaceholderText="Folder name" Text="{Binding FolderName, Mode=TwoWay}" />
+    <TextBox 
+        x:Uid="CreateFolderView_Label" 
+        Name="NewFolderName"
+        Text="{Binding FolderName, Mode=TwoWay}"
+        TextChanged="NewFolderName_TextChanged"
+    />
 </ContentDialog>

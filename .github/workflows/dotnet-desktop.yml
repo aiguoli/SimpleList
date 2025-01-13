@@ -159,7 +159,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "${{ env.APP_NAME }}-v${{ env.APP_VERSION }}-*.zip"
-          # bodyFile: "CHANGELOG.md"
+          bodyFile: "CHANGELOG.md"
           name: v${{ env.APP_VERSION }}
           tag: v${{ env.APP_VERSION }}
           prerelease: ${{ env.IS_PRE_RELEASE }}

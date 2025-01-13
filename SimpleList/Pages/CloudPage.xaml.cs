@@ -32,10 +32,12 @@ namespace SimpleList.Pages
 
         private void NavigateToDrive(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
+            DirvePanel.IsItemClickEnabled = false;
             string displayName = (sender as Grid).Tag.ToString();
             DriveViewModel drive = (DataContext as CloudViewModel).GetDrive(displayName);
             Type pageType = Type.GetType("SimpleList.Pages.DrivePage");
             (App.StartupWindow as MainWindow).Navigate(pageType, drive);
+            DirvePanel.IsItemClickEnabled = true;
         }
     }
 }

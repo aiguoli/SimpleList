@@ -15,7 +15,10 @@
     PrimaryButtonCommand="{Binding SearchCommand}">
 
     <StackPanel>
-        <ComboBox x:Uid="SearchView_Mode" SelectedIndex="{Binding Mode, Mode=TwoWay}" Loaded="LoadDefaultValue">
+        <ComboBox x:Uid="SearchView_Mode" 
+            SelectedIndex="{Binding Mode, Mode=TwoWay}" 
+            Loaded="LoadDefaultValue"
+        >
             <ComboBoxItem Content="Local" />
             <ComboBoxItem Content="Global" />
         </ComboBox>

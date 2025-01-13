@@ -5,6 +5,7 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>SimpleList</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platform>x64</Platform>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
@@ -25,9 +26,9 @@
     <AssemblyName>SimpleList</AssemblyName>
     <Authors>Thawne</Authors>
     <PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-    <AssemblyVersion>1.13.3</AssemblyVersion>
+    <AssemblyVersion>1.14.0</AssemblyVersion>
     <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
-    <PackageIcon>128.png</PackageIcon>
+    <PackageIcon>Assets\128.png</PackageIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -69,30 +70,12 @@
     <None Remove="Views\Tools\LinkDetails.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\SplashScreen.scale-200.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\LockScreenLogo.scale-200.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\StoreLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Wide310x150Logo.scale-200.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.MarkdownTextBlock" Version="0.1.241129-build.1830" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />
     <PackageReference Include="Downloader" Version="3.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Graph" Version="5.56.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
@@ -102,6 +85,7 @@
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.5" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="QRCoder.Xaml" Version="1.6.0" />
+    <PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
     <PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>

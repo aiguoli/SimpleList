@@ -11,5 +11,10 @@ namespace SimpleList.Views
         {
             InitializeComponent();
         }
+
+        private void NewFolderName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            IsPrimaryButtonEnabled = !string.IsNullOrEmpty(NewFolderName.Text);
+        }
     }
 }

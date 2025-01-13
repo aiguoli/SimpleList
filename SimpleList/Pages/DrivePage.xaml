@@ -10,6 +10,7 @@
     xmlns:views="using:SimpleList.Views.Layout"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:DriveViewModel}"
     NavigationCacheMode="Enabled">
@@ -30,7 +31,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
+    <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -68,6 +69,9 @@
                 <Button Margin="0 0 5 0" Click="ShowSearchDialogAsync">
                     <FontIcon Glyph="&#xE721;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 </Button>
+                <Button Margin="0 0 5 0" Click="CreateFolderDialogAsync">
+                    <FontIcon Glyph="&#xE8F4;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Button>
                 <Button x:Name="RefreshButton" Command="{Binding RefreshCommand}">
                     <FontIcon Glyph="&#xE72C;" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 </Button>
@@ -101,5 +105,12 @@
                 </MenuFlyout>
             </ContentControl.ContextFlyout>
         </ContentControl>
+        <StackPanel 
+            Grid.Row="2" 
+            MinHeight="250" 
+            Margin="0"
+            wuc:Growl.GrowlParent="True"
+            wuc:Growl.Token="DriveGrowl">
+        </StackPanel>
     </Grid>
 </Page>

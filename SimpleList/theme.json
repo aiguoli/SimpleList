@@ -1,0 +1,20 @@
+{
+  "ElementTheme": 0,
+  "BackdropType": 3,
+  "BackdropTintColor": {
+    "A": 0,
+    "R": 0,
+    "G": 0,
+    "B": 0
+  },
+  "BackdropFallBackColor": {
+    "A": 0,
+    "R": 0,
+    "G": 0,
+    "B": 0
+  },
+  "IsThemeFirstRun": true,
+  "IsBackdropFirstRun": true,
+  "IsBackdropTintColorFirstRun": true,
+  "IsBackdropFallBackColorFirstRun": true
+}

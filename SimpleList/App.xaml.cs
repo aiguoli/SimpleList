@@ -34,6 +34,31 @@ public partial class App : Application
     {
         Services = ConfigureServices();
         InitializeComponent();
+        AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+        {
+            var exception = args.ExceptionObject as Exception;
+            LogError("Unhandled Exception", exception);
+        };
+        TaskScheduler.UnobservedTaskException += (sender, args) =>
+        {
+            LogError("Unobserved Task Exception", args.Exception);
+            args.SetObserved();
+        };
+
+        Application.Current.UnhandledException += (sender, args) =>
+        {
+            LogError("UI Thread Exception", args.Exception);
+            args.Handled = true;
+        };
+        LogError("UI Thread Exception", new Exception());
+    }
+
+    private static void LogError(string title, Exception exception)
+    {
+        var logFilePath = Path.Combine(Environment.CurrentDirectory, "error.log");
+        var logMessage = $"{DateTime.Now}: {title}\n{exception}\n\n";
+
+        File.AppendAllText(logFilePath, logMessage);
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)

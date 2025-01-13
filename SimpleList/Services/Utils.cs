@@ -82,6 +82,12 @@ namespace SimpleList.Services
             return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
+        public static bool IsValidUrl(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out Uri? uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
+
         public static readonly string[] ImageType = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".ico", ".svg" };
         public static readonly string[] MediaType = { "mp3", ".mp4", ".wma", ".3gp", ".aac", ".flac", ".wax", ".wav", ".wmx", ".wpl", ".avi" };
     }

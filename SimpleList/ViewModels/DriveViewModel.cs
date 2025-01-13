@@ -5,9 +5,14 @@ using Microsoft.UI.Xaml;
 using SimpleList.Helpers;
 using SimpleList.Models;
 using SimpleList.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinRT.Interop;
+using Microsoft.UI.Dispatching;
 
 namespace SimpleList.ViewModels
 {
@@ -21,8 +26,9 @@ namespace SimpleList.ViewModels
         }
 
         [RelayCommand]
-        public async Task GetFiles(string itemId = "Root")
+        public async Task GetFiles(string itemId = null)
         {
+            itemId ??= _parentItemId;
             IsLoading = Visibility.Visible;
             _parentItemId = itemId;
             DriveItemCollectionResponse files = await Provider.GetFiles(_parentItemId);
@@ -76,6 +82,25 @@ namespace SimpleList.ViewModels
             IsLoading = Visibility.Collapsed;
         }
 
+        [RelayCommand]
+        private async Task DownloadFiles()
+        {
+            Window _downloadPathSelectWindow = new();
+            IntPtr hwnd = WindowNative.GetWindowHandle(_downloadPathSelectWindow);
+            FolderPicker savePicker = new()
+            {
+                SuggestedStartLocation = PickerLocationId.Downloads,
+            };
+            InitializeWithWindow.Initialize(savePicker, hwnd);
+            StorageFolder folder = await savePicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                TaskManagerViewModel manager = App.GetService<TaskManagerViewModel>();
+                var tasks = SelectedItems.Select(i => manager.AddDownloadTask(this, i.Id, folder));
+                await Task.WhenAll(tasks);
+            }
+        }
+
         public void FilterByName(string name)
         {
             var filesToRemove = Files.Where(file => !file.Name.Contains(name)).ToList();
@@ -87,13 +112,14 @@ namespace SimpleList.ViewModels
         }
 
         private string _parentItemId = "Root";
+        private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
         [ObservableProperty] private Visibility _isLoading = Visibility.Collapsed;
         [ObservableProperty] private string _storageInfo;
 
-        public ObservableCollection<FileViewModel> Files { get; } = new();
-        public ObservableCollection<FileViewModel> Images { get; } = new();
-        public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = new();
-        public FileViewModel SelectedItem { get; set; }
+        public ObservableCollection<FileViewModel> Files { get; } = [];
+        public ObservableCollection<FileViewModel> Images { get; } = [];
+        public ObservableCollection<BreadcrumbItem> BreadcrumbItems { get; } = [];
+        public ObservableCollection<FileViewModel> SelectedItems { get; set; } = [];
         public string ParentItemId => _parentItemId;
         public OneDrive Provider { get; }
         public string DisplayName { get; }

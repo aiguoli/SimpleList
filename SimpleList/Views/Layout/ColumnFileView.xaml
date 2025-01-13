@@ -36,7 +36,11 @@
                     Click="ShowPreviewDialogAsync" 
                     IsEnabled="{Binding CanPreview}"
                     Visibility="{Binding CanPreview, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <MenuFlyoutItem x:Uid="FileView_Flyout_Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
+                <!--<MenuFlyoutItem x:Uid="FileView_Flyout_Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />-->
+                <MenuFlyoutItem 
+                    x:Uid="FileView_Flyout_Download"
+                    Command="{Binding Drive.DownloadFilesCommand}"
+                    />
                 <MenuFlyoutItem x:Uid="FileView_Flyout_Delete" Click="ShowDeleteFileDialogAsync">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Delete" />

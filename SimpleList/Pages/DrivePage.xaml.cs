@@ -28,6 +28,10 @@ namespace SimpleList.Pages
             if (e.Parameter is DriveViewModel drive)
             {
                 DataContext = drive;
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await drive.GetFiles();
+                });
             }
         }
 

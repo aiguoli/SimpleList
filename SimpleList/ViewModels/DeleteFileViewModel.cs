@@ -9,7 +9,7 @@ namespace SimpleList.ViewModels
         public DeleteFileViewModel(FileViewModel file) 
         {
             _drive = file.Drive;
-            File = file;
+            _file = file;
         }
 
         [RelayCommand]
@@ -27,7 +27,6 @@ namespace SimpleList.ViewModels
 
         private readonly DriveViewModel _drive;
         [ObservableProperty] private bool _permanentDelete;
-
-        public FileViewModel File;
+        [ObservableProperty] private FileViewModel _file;
     }
 }

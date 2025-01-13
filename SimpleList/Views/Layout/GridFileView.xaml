@@ -18,20 +18,42 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Width="180" DoubleTapped="OpenFolder">
+    <Grid Width="180" DoubleTapped="OpenFile">
         <Grid.ContextFlyout>
             <MenuFlyout>
-                <MenuFlyoutItem Text="Open" Command="{Binding Cloud.OpenFolderCommand}" CommandParameter="{Binding}" IsEnabled="{Binding IsFolder}" />
-                <MenuFlyoutItem Text="Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
-                <MenuFlyoutItem Text="Delete" Click="ShowDeleteFileDialogAsync">
+                <MenuFlyoutItem 
+                    x:Uid="FileView_Flyout_Open" 
+                    Command="{Binding Drive.OpenFolderCommand}" 
+                    CommandParameter="{Binding}" 
+                    IsEnabled="{Binding IsFolder}" 
+                    Visibility="{Binding IsFolder, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Enter" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem 
+                    x:Uid="FileView_Flyout_Open"  
+                    Click="ShowPreviewDialogAsync" 
+                    IsEnabled="{Binding CanPreview}"
+                    Visibility="{Binding CanPreview, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Delete" Click="ShowDeleteFileDialogAsync">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Delete" />
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
-                <MenuFlyoutItem Text="Share" Click="ShowShareFileDialogAsync" />
-                <MenuFlyoutItem Text="Rename" Click="ShowRenameFileDialogAsync" />
-                <MenuFlyoutItem Text="Property" Click="ShowPropertyDialogAsync" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Convert" Click="ShowConverFiletDialogAsync" Visibility="{Binding Name, Converter={StaticResource FileNameToCanConvertCommandVisible}}" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Share" Click="ShowShareFileDialogAsync" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Rename" Click="ShowRenameFileDialogAsync">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F2" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Property" Click="ShowPropertyDialogAsync">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Menu" Key="Enter" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
             </MenuFlyout>
         </Grid.ContextFlyout>
 
