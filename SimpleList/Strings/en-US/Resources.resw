@@ -181,7 +181,7 @@
     <value>Hello, </value>
   </data>
   <data name="HomePage_QuickStart_Content.Text" xml:space="preserve">
-    <value>Click on Files in the left navigation menu, then click the "Add drive" button to log in to OneDrive. Enter your drive, click "refresh" button(or press F5) to manage your directory files.</value>
+    <value>Click on Files in the left navigation menu, then click the "Add drive" button to log in to OneDrive. Double click to enter your drive.</value>
   </data>
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
     <value>QuickStart</value>
@@ -231,8 +231,14 @@
   <data name="SearchView_FileName.Header" xml:space="preserve">
     <value>FileName</value>
   </data>
-  <data name="SearchView_Mode.Header" xml:space="preserve">
+  <data name="SearchView_Mode.Text" xml:space="preserve">
     <value>SearchMode</value>
+  </data>
+  <data name="SearchView_ModeDescLocal.Text" xml:space="preserve">
+    <value>Local: search in current directory</value>
+  </data>
+  <data name="SearchView_ModeDescGlobal.Text" xml:space="preserve">
+    <value>Global: search across drive</value>
   </data>
   <data name="SearchView_Mode_Global.Content" xml:space="preserve">
     <value>Global</value>
@@ -329,5 +335,20 @@
   </data>
   <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
     <value>Upload Completed</value>
+  </data>
+  <data name="TaskManagerPage_Upload" xml:space="preserve">
+    <value>Upload Started</value>
+  </data>
+  <data name="TaskManagerPage_StartUploadDesc" xml:space="preserve">
+    <value>Start uploading file: {0}</value>
+  </data>
+  <data name="FileView_Flyout_Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="FileView_Flyout_CopyFilename.Text" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="FileView_Flyout_CopyDownloadUrl.Text" xml:space="preserve">
+    <value>Download Url</value>
   </data>
 </root>

@@ -5,6 +5,7 @@ using Microsoft.UI.Dispatching;
 using System;
 using System.Threading.Tasks;
 using Windows.Storage;
+using WinUICommunity;
 
 namespace SimpleList.ViewModels
 {
@@ -20,6 +21,14 @@ namespace SimpleList.ViewModels
         public async Task StartUpload()
         {
             IsUploading = true;
+            Growl.Info(new GrowlInfo
+            {
+                Title = Helpers.ResourceHelper.GetLocalized("TaskManagerPage_Upload"),
+                Message = string.Format(Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartUploadDesc"), _item.Name),
+                IsClosable = true,
+                ShowDateTime = true,
+                Token = "DriveGrowl"
+            });
             IProgress<long> progress = new Progress<long>(value =>
             {
                 _dispatcher.TryEnqueue(async () =>
@@ -29,7 +38,6 @@ namespace SimpleList.ViewModels
             });
             if (_item is StorageFile file)
             {
-
                 await Drive.Provider.UploadFileAsync(file, _itemId, progress);
             } else if (_item is StorageFolder folder)
             {

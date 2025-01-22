@@ -34,7 +34,7 @@
             <TextBlock Text="Save Path" FontWeight="Bold" RelativePanel.AlignLeftWithPanel="True" />
             <StackPanel Orientation="Horizontal"  RelativePanel.AlignRightWithPanel="True">
                 <TextBox Text="{Binding SavedFilePath}" IsEnabled="False" />
-                <Button Content="Browser" Command="{Binding ConvertFileCommand}" />
+                <Button Content="Browser" Command="{Binding ConvertFileFormatCommand}" />
             </StackPanel>
         </RelativePanel>
     </Grid>

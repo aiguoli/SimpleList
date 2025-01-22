@@ -136,6 +136,18 @@ namespace SimpleList.Views.Layout
             await ShowPreviewDialogFromViewModel(viewModel);
         }
 
+        private void CopyFilename(object sender, RoutedEventArgs e)
+        {
+            FileViewModel viewModel = DataContext as FileViewModel;
+            System.Windows.Clipboard.SetData(System.Windows.DataFormats.Text, viewModel.Name);
+        }
+
+        private void CopyDownloadUrl(object sender, RoutedEventArgs e)
+        {
+            FileViewModel viewModel = DataContext as FileViewModel;
+            System.Windows.Clipboard.SetData(System.Windows.DataFormats.Text, viewModel.DownloadUrl);
+        }
+
         //private void OnStartDrag(UIElement sender, DragStartingEventArgs args)
         //{
         //    if ((sender as GridViewItem).DataContext is FileViewModel fileViewModel)

@@ -66,12 +66,12 @@ namespace SimpleList.Services
 
         public static FileType GetFileType(string ext)
         {
-            return ext switch
+            return ext.ToLower() switch
             {
                 ".txt" => FileType.Text,
                 ".md" => FileType.Markdown,
-                string _ when ImageType.Contains(ext) => FileType.Image,// https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image?view=windows-app-sdk-1.4#image-file-formats
-                string _ when MediaType.Contains(ext) => FileType.Media,
+                string img when ImageType.Contains(img) => FileType.Image,// https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image?view=windows-app-sdk-1.4#image-file-formats
+                string media when MediaType.Contains(media) => FileType.Media,
                 _ => FileType.Unknown,
             };
         }

@@ -4,6 +4,7 @@ using CommunityToolkit.WinUI;
 using Downloader;
 using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
+using SimpleList.Helpers;
 using SimpleList.Models;
 using System;
 using System.Collections.Generic;
@@ -52,8 +53,8 @@ namespace SimpleList.ViewModels
             await WalkDownloadItem(item, _target);
             Growl.Info(new GrowlInfo
             {
-                Title = "TaskManagerPage_StartDownload".GetLocalized(),
-                Message = string.Format("TaskManagerPage_StartDownloadDesc".GetLocalized(), DownloadList.Count),
+                Title = Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownload"),
+                Message = string.Format(Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownloadDesc"), DownloadList.Count),
                 IsClosable = true,
                 ShowDateTime = true,
                 Token = "DriveGrowl"

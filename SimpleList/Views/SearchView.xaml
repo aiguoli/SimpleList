@@ -15,12 +15,28 @@
     PrimaryButtonCommand="{Binding SearchCommand}">
 
     <StackPanel>
-        <ComboBox x:Uid="SearchView_Mode" 
+        <ComboBox 
             SelectedIndex="{Binding Mode, Mode=TwoWay}" 
             Loaded="LoadDefaultValue"
         >
-            <ComboBoxItem Content="Local" />
-            <ComboBoxItem Content="Global" />
+            <ComboBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Uid="SearchView_Mode" VerticalAlignment="Center" />
+                    <Button Background="Transparent" BorderThickness="0">
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock x:Uid="SearchView_ModeDescLocal" />
+                                    <TextBlock x:Uid="SearchView_ModeDescGlobal" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                        <FontIcon Glyph="&#xE946;" />
+                    </Button>
+                </StackPanel>
+            </ComboBox.Header>
+            <ComboBoxItem x:Uid="SearchView_Mode_Local" />
+            <ComboBoxItem x:Uid="SearchView_Mode_Global" />
         </ComboBox>
         <TextBox x:Uid="SearchView_FileName" Text="{Binding FileName, Mode=TwoWay}" />
     </StackPanel>

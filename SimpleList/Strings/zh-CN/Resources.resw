@@ -156,6 +156,15 @@
   <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
     <value>转换</value>
   </data>
+  <data name="FileView_Flyout_Copy.Text" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="FileView_Flyout_CopyDownloadUrl.Text" xml:space="preserve">
+    <value>下载链接</value>
+  </data>
+  <data name="FileView_Flyout_CopyFilename.Text" xml:space="preserve">
+    <value>文件名</value>
+  </data>
   <data name="FileView_Flyout_Delete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
@@ -181,7 +190,7 @@
     <value>你好, </value>
   </data>
   <data name="HomePage_QuickStart_Content.Text" xml:space="preserve">
-    <value>点击左侧菜单栏的文件，然后点击添加网盘登录到OneDrive，进入添加好的网盘，按刷新按钮(或按F5)查看文件</value>
+    <value>点击左侧菜单栏的文件，然后点击添加网盘登录到OneDrive，双击进入添加好的网盘</value>
   </data>
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
     <value>快速开始</value>
@@ -231,8 +240,14 @@
   <data name="SearchView_FileName.Header" xml:space="preserve">
     <value>文件名</value>
   </data>
-  <data name="SearchView_Mode.Header" xml:space="preserve">
+  <data name="SearchView_Mode.Text" xml:space="preserve">
     <value>搜索模式</value>
+  </data>
+  <data name="SearchView_ModeDescGlobal.Text" xml:space="preserve">
+    <value>全局：在整个OneDrive搜索</value>
+  </data>
+  <data name="SearchView_ModeDescLocal.Text" xml:space="preserve">
+    <value>当前目录：在此目录搜索</value>
   </data>
   <data name="SearchView_Mode_Global.Content" xml:space="preserve">
     <value>全局</value>
@@ -326,6 +341,12 @@
   </data>
   <data name="TaskManagerPage_StartDownloadDesc" xml:space="preserve">
     <value>准备开始下载{0}个文件</value>
+  </data>
+  <data name="TaskManagerPage_StartUploadDesc" xml:space="preserve">
+    <value>准备上传文件：{0}</value>
+  </data>
+  <data name="TaskManagerPage_Upload" xml:space="preserve">
+    <value>开始上传</value>
   </data>
   <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
     <value>上传完成</value>
