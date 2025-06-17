@@ -35,6 +35,12 @@ namespace SimpleList.Pages
                 ImagePath = "/Assets/link-share.png",
                 FileName = "ShareCommunity"
             },
+            new() {
+                Name = "External Downloader",
+                Description = "Downlaod files with external downloader.",
+                ImagePath = "/Assets/external-downloader.png",
+                FileName = "ExternalDownloader"
+            }
         ];
         public IEnumerable<ToolItem> Items
         {

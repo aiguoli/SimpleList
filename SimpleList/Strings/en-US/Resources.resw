@@ -351,4 +351,43 @@
   <data name="FileView_Flyout_CopyDownloadUrl.Text" xml:space="preserve">
     <value>Download Url</value>
   </data>
+  <data name="ExternalDownloaderPage_Aria2Config.Text" xml:space="preserve">
+    <value>Aria2 Config</value>
+  </data>
+  <data name="ExternalDownloaderPage_RPCAddress.Text" xml:space="preserve">
+    <value>RPC Address</value>
+  </data>
+  <data name="ExternalDownloaderPage_RPCSecret.Text" xml:space="preserve">
+    <value>RPC Secret</value>
+  </data>
+  <data name="ExternalDownloaderPage_MotrixConfig.Text" xml:space="preserve">
+    <value>Motrix Config</value>
+  </data>
+  <data name="ExternalDownloaderPage_IdmPath.Text" xml:space="preserve">
+    <value>IDM Path</value>
+  </data>
+  <data name="ExternalDownloaderPage_OneDriveShareLink.Text" xml:space="preserve">
+    <value>OneDrive Share Link</value>
+  </data>
+  <data name="ExternalDownloaderPage_ParseLink.Content" xml:space="preserve">
+    <value>Parse Link</value>
+  </data>
+  <data name="ExternalDownloaderPage_ParseResult.Text" xml:space="preserve">
+    <value>Parse Result</value>
+  </data>
+  <data name="ExternalDownloaderPage_CopyButton.Content" xml:space="preserve">
+    <value>📋 Copy</value>
+  </data>
+  <data name="ExternalDownloaderPage_DownloadTool.Text" xml:space="preserve">
+    <value>Download Tool</value>
+  </data>
+  <data name="ExternalDownloaderPage_SelectDownloader.PlaceholderText" xml:space="preserve">
+    <value>Select Downloader</value>
+  </data>
+  <data name="ExternalDownloaderPage_PushDownload.Content" xml:space="preserve">
+    <value>Start Download</value>
+  </data>
+  <data name="ExternalDownloaderPage_SelectDownloadTooltip.Text" xml:space="preserve">
+    <value>Select a downloader to view configuration options</value>
+  </data>
 </root>
