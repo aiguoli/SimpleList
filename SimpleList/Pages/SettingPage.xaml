@@ -93,7 +93,7 @@
                         </wuc:SettingsCard.HeaderIcon>
                         <Button x:Uid="SettingPage_CheckUpdate" Name="CheckUpdateButton" Click="CheckUpdate" Visibility="{x:Bind IsUpdateAvailable, Converter={StaticResource BoolToNegativeVisibilityConverter}, Mode=OneWay}" />
                     </wuc:SettingsCard>
-                    <wuc:SettingsCard Name="StatusInfo" Visibility="Collapsed">
+                    <wuc:SettingsCard x:Name="StatusInfo" Visibility="Collapsed">
                         <wuc:SettingsCard.Header>
                             <TextBlock Name="NewVersion" x:Uid="SettingPage_NewVersionTip" />
                         </wuc:SettingsCard.Header>
