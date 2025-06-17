@@ -153,6 +153,45 @@
   <data name="CreateFolderView_Label.PlaceholderText" xml:space="preserve">
     <value>新建文件夹</value>
   </data>
+  <data name="ExternalDownloaderPage_Aria2Config.Text" xml:space="preserve">
+    <value>Aria2 配置</value>
+  </data>
+  <data name="ExternalDownloaderPage_CopyButton.Content" xml:space="preserve">
+    <value>📋 复制</value>
+  </data>
+  <data name="ExternalDownloaderPage_DownloadTool.Text" xml:space="preserve">
+    <value>下载工具</value>
+  </data>
+  <data name="ExternalDownloaderPage_IdmPath.Text" xml:space="preserve">
+    <value>IDM 路径</value>
+  </data>
+  <data name="ExternalDownloaderPage_MotrixConfig.Text" xml:space="preserve">
+    <value>Motrix 配置</value>
+  </data>
+  <data name="ExternalDownloaderPage_OneDriveShareLink.Text" xml:space="preserve">
+    <value>OneDrive 分享链接</value>
+  </data>
+  <data name="ExternalDownloaderPage_ParseLink.Content" xml:space="preserve">
+    <value>解析链接</value>
+  </data>
+  <data name="ExternalDownloaderPage_ParseResult.Text" xml:space="preserve">
+    <value>解析结果</value>
+  </data>
+  <data name="ExternalDownloaderPage_PushDownload.Content" xml:space="preserve">
+    <value>推送下载</value>
+  </data>
+  <data name="ExternalDownloaderPage_RPCAddress.Text" xml:space="preserve">
+    <value>RPC 地址</value>
+  </data>
+  <data name="ExternalDownloaderPage_RPCSecret.Text" xml:space="preserve">
+    <value>RPC 密匙</value>
+  </data>
+  <data name="ExternalDownloaderPage_SelectDownloader.PlaceholderText" xml:space="preserve">
+    <value>选择下载工具</value>
+  </data>
+  <data name="ExternalDownloaderPage_SelectDownloadTooltip.Text" xml:space="preserve">
+    <value>请选择下载器以查看配置选项</value>
+  </data>
   <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
     <value>转换</value>
   </data>

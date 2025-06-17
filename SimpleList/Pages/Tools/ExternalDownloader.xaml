@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="SimpleList.Pages.Tools.ExternalDownloader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SimpleList.Pages.Tools"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:SimpleList.ViewModels.Tools"
+    d:DataContext="{x:Bind vm:ExternalDownloaderViewModel}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="Aria2">
+            <StackPanel Spacing="8" HorizontalAlignment="Stretch">
+                <TextBlock x:Uid="ExternalDownloaderPage_Aria2Config" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock x:Uid="ExternalDownloaderPage_RPCAddress" />
+                <TextBox Text="{Binding RpcUrl, Mode=TwoWay}" PlaceholderText="http://{aria2-server-ip}:6800/jsonrpc"/>
+                <TextBlock x:Uid="ExternalDownloaderPage_RPCSecret" />
+                <TextBox Text="{Binding RpcSecret, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Motrix">
+            <StackPanel Spacing="8">
+                <TextBlock x:Uid="ExternalDownloaderPage_MotrixConfig" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock x:Uid="ExternalDownloaderPage_RPCAddress" />
+                <TextBox Text="{Binding MotrixRpcUrl, Mode=TwoWay}" PlaceholderText="http://localhost:16800/jsonrpc"/>
+                <TextBlock x:Uid="ExternalDownloaderPage_RPCSecret" />
+                <TextBox Text="{Binding MotrixRpcSecret, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="IDM">
+            <StackPanel Spacing="8">
+                <TextBlock x:Uid="ExternalDownloaderPage_IdmPath" />
+                <TextBox Text="{Binding IdmPath, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Margin="20" RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Spacing="8">
+            <TextBlock x:Uid="ExternalDownloaderPage_OneDriveShareLink" />
+            <Grid Height="32" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                    x:Name="InputUrlBox"
+                    Grid.Column="0"
+                    Margin="0,0,8,0"
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding ShareUrl, Mode=TwoWay}"  />
+
+                <Button
+                    x:Name="ConvertBtn"
+                    x:Uid="ExternalDownloaderPage_ParseLink"
+                    Grid.Column="1"
+                    MinWidth="90"
+                    Command="{Binding ParseShareUrlAsyncCommand}"/>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Spacing="8"
+            Visibility="Visible">
+            <TextBlock x:Uid="ExternalDownloaderPage_ParseResult" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    x:Name="DirectLinkBox"
+                    IsReadOnly="True"
+                    Text="{Binding DirectLink}"
+                    TextWrapping="Wrap" />
+                <Button
+                    Grid.Column="1"
+                    x:Uid="ExternalDownloaderPage_CopyButton"
+                    Margin="8,0,0,0"
+                    Command="{Binding CopyToClipboardCommand}" />
+            </Grid>
+            <TextBlock x:Uid="ExternalDownloaderPage_DownloadTool" />
+            <ComboBox
+                x:Name="DownloaderComboBox"
+                x:Uid="ExternalDownloaderPage_SelectDownloader"
+                HorizontalAlignment="Left"
+                Width="200"
+                SelectedIndex="{Binding SelectedDownloaderType, Mode=TwoWay}"
+                SelectionChanged="ChangeConfigTemplate">
+                <x:String>Aria2</x:String>
+                <x:String>Motrix</x:String>
+                <x:String>IDM</x:String>
+            </ComboBox>
+        </StackPanel>
+
+        <ContentControl 
+            Grid.Row="2" 
+            Margin="0,10,0,0"
+            Name="DownloaderConfig"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch">
+            <ContentControl.ContentTemplate>
+                <DataTemplate>
+                    <TextBlock x:Uid="ExternalDownloaderPage_SelectDownloadTooltip"
+                               Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
+
+        <Button
+            x:Name="PushBtn"
+            x:Uid="ExternalDownloaderPage_PushDownload"
+            Grid.Row="4"
+            IsEnabled="{Binding CanPush}"
+            HorizontalAlignment="Stretch"
+            Style="{StaticResource AccentButtonStyle}"
+            Command="{Binding PushToDownloaderCommand}" />
+
+        <TextBlock
+            x:Name="StatusText"
+            Grid.Row="5"
+            Margin="0,12,0,0"
+            Text="{Binding Result}" />
+    </Grid>
+</Page>

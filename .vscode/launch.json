@@ -8,7 +8,7 @@
     "preLaunchTask": "build",
     // if target frameworks was changed, update program path.
     "program": 
-      "${workspaceFolder}/SimpleList/bin/x64/Release/net8.0-windows10.0.26100.0/win-x64/SimpleList.exe",
+      "${workspaceFolder}/SimpleList/bin/x64/Debug/net8.0-windows10.0.22621.0/win-x64/SimpleList.exe",
     "args": [],
     "cwd": "${workspaceFolder}/SimpleList",
       // 'console' field https://aka.ms/VSCode-CS-LaunchJson-Console
