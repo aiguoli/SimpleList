@@ -37,26 +37,26 @@ public partial class App : Application
         AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
         {
             var exception = args.ExceptionObject as Exception;
-            LogError("Unhandled Exception", exception);
+            LogError("Unhandled Exception", sender, exception);
         };
         TaskScheduler.UnobservedTaskException += (sender, args) =>
         {
-            LogError("Unobserved Task Exception", args.Exception);
+            LogError("Unobserved Task Exception", sender, args.Exception);
             args.SetObserved();
         };
 
         Application.Current.UnhandledException += (sender, args) =>
         {
-            LogError("UI Thread Exception", args.Exception);
+            LogError("UI Thread Exception", sender, args.Exception);
             args.Handled = true;
         };
-        LogError("UI Thread Exception", new Exception());
+        LogError("UI Thread Exception", new object { }, new Exception());
     }
 
-    private static void LogError(string title, Exception exception)
+    public static void LogError(string title, object sender, Exception exception)
     {
         var logFilePath = Path.Combine(Environment.CurrentDirectory, "error.log");
-        var logMessage = $"{DateTime.Now}: {title}\n{exception}\n\n";
+        var logMessage = $"{DateTime.Now}: {title}\n{sender}\n{exception}\n\n";
 
         File.AppendAllText(logFilePath, logMessage);
     }

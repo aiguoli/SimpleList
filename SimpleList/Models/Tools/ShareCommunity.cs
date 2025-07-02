@@ -3,7 +3,7 @@ using System;
 
 namespace SimpleList.Models
 {
-	public class Link
+	public class ShareCommunityLink
     {
         public int ID { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -21,13 +21,13 @@ namespace SimpleList.Models
 	public class LinkResponse
 	{
 		public int code { get; set; }
-		public Link data { get; set; }
+		public ShareCommunityLink data { get; set; }
 	}
 
 	public class LinksResponse
 	{
 		public int code { get; set; }
-		public Link[] data { get; set; }
+		public ShareCommunityLink[] data { get; set; }
 	}
 
 	public class CreateLinkResponse : LinkResponse

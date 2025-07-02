@@ -12,7 +12,7 @@
     d:DataContext="{x:Bind vm:ShareCommunityViewModel}">
 
     <Page.Resources>
-        <DataTemplate x:Key="LinkTemplate" x:DataType="models:Link">
+        <DataTemplate x:Key="LinkTemplate" x:DataType="models:ShareCommunityLink">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

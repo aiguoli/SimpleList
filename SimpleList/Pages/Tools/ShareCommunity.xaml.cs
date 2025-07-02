@@ -24,7 +24,7 @@ namespace SimpleList.Pages.Tools
             LinkDetails dialog = new() 
             {
                 XamlRoot = XamlRoot,
-                DataContext = new LinkDetailsViewModel((sender as Button).DataContext as Link)
+                DataContext = new LinkDetailsViewModel((sender as Button).DataContext as ShareCommunityLink)
             };
             await dialog.ShowAsync();
         }

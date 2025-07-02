@@ -5,7 +5,7 @@ namespace SimpleList.ViewModels.Tools
 {
     partial class LinkDetailsViewModel : ObservableObject
     {
-        public LinkDetailsViewModel(Link link)
+        public LinkDetailsViewModel(ShareCommunityLink link)
         {
             _link = link;
         }
@@ -14,7 +14,7 @@ namespace SimpleList.ViewModels.Tools
         {
         }
 
-        [ObservableProperty]private Link _link;
+        [ObservableProperty]private ShareCommunityLink _link;
         public string Title => Link.title;
         public string Content => Link.content;
         public string Password => Link.password;
