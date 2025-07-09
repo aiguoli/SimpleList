@@ -390,4 +390,58 @@
   <data name="ExternalDownloaderPage_SelectDownloadTooltip.Text" xml:space="preserve">
     <value>Select a downloader to view configuration options</value>
   </data>
+  <data name="CreateFolderSuccess" xml:space="preserve">
+    <value>Folder created successfully</value>
+  </data>
+  <data name="CreateFolderFail" xml:space="preserve">
+    <value>Folder creation failed</value>
+  </data>
+  <data name="DeleteFileFail" xml:space="preserve">
+    <value>File deletion failed</value>
+  </data>
+  <data name="DeleteFileSuccess" xml:space="preserve">
+    <value>File deleted successfully</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="UploadFileFail" xml:space="preserve">
+    <value>File upload failed</value>
+  </data>
+  <data name="UploadFolderFail" xml:space="preserve">
+    <value>Folder upload failed</value>
+  </data>
+  <data name="LoginFail" xml:space="preserve">
+    <value>Login failed</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>User login required</value>
+  </data>
+  <data name="AuthenticationError" xml:space="preserve">
+    <value>Authentication error</value>
+  </data>
+  <data name="OperationTimeout " xml:space="preserve">
+    <value>Operation timed out</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>Network error</value>
+  </data>
+  <data name="InsufficientPermission" xml:space="preserve">
+    <value>Insufficient Permission</value>
+  </data>
+  <data name="ParameterError" xml:space="preserve">
+    <value>Parameter Error</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Unknown Error</value>
+  </data>
+  <data name="CanNotNull" xml:space="preserve">
+    <value> cannot be empty</value>
+  </data>
+  <data name="FilenameIllegal" xml:space="preserve">
+    <value>Illegal filename {0}</value>
+  </data>
 </root>
