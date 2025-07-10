@@ -5,6 +5,8 @@ using Microsoft.Graph.Models;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Microsoft.Kiota.Abstractions.Authentication;
+using SimpleList.Helpers;
+using SimpleList.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +18,7 @@ using Windows.Storage;
 
 namespace SimpleList.Services;
 
-public class OneDrive
+public class OneDrive : OneDriveServiceBase
 {
     public OneDrive()
     {
@@ -30,175 +32,274 @@ public class OneDrive
         PublicClientApp = App.GetService<IPublicClientApplication>();
     }
 
-    public async Task<DriveItemCollectionResponse> GetFiles(string parentId = "Root")
+    public async Task<OneDriveResult<DriveItemCollectionResponse>> GetFiles(string parentId = "Root")
     {
-        if (!IsAuthenticated) await Login();
-        return await graphClient.Drives[DriveId].Items[parentId].Children.GetAsync();
-    }
-
-    public async Task<ThumbnailSetCollectionResponse> GetThumbNails(string itemId)
-    {
-        return await graphClient.Drives[DriveId].Items[itemId].Thumbnails.GetAsync();
-    }
-
-    public async Task<DriveItem> GetItem(string itemId)
-    {
-        return await graphClient.Drives[DriveId].Items[itemId].GetAsync();
-    }
-
-    public async Task<Stream> GetItemContent(string itemId)
-    {
-        return await graphClient.Drives[DriveId].Items[itemId].Content.GetAsync();
-    }
-
-    public async Task<DriveItem> CreateFolder(string parentItemId, string folderName)
-    {
-        var requestBody = new DriveItem
+        return await ExecuteAsync(async () =>
         {
-            Name = folderName,
-            Folder = new Folder { },
-            AdditionalData = new Dictionary<string, object>
+            return await graphClient.Drives[DriveId].Items[parentId].Children.GetAsync();
+        }, () => ValidateNotEmpty(parentId, nameof(parentId)));
+    }
+
+    public async Task<OneDriveResult<ThumbnailSetCollectionResponse>> GetThumbNails(string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            return await graphClient.Drives[DriveId].Items[itemId].Thumbnails.GetAsync();
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<DriveItem>> GetItem(string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            return await graphClient.Drives[DriveId].Items[itemId].GetAsync();
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<Stream>> GetItemContent(string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            return await graphClient.Drives[DriveId].Items[itemId].Content.GetAsync();
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<DriveItem>> CreateFolder(string parentItemId, string folderName)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            var requestBody = new DriveItem
             {
-                {
-                    "@microsoft.graph.conflictBehavior" , "rename"
-                },
-            },
-        };
-        return await graphClient.Drives[DriveId].Items[parentItemId].Children.PostAsync(requestBody);
-    }
-
-    public async Task<DriveItem> RenameFile(string itemId, string newName)
-    {
-        DriveItem requestBody = new()
-        {
-            Name = newName,
-        };
-        return await graphClient.Drives[DriveId].Items[itemId].PatchAsync(requestBody);
-    }
-
-    public async Task UploadFileAsync(StorageFile file, string itemId, IProgress<long> progress = null)
-    {
-        Stream stream = await file.OpenStreamForReadAsync();
-        if ((await file.GetBasicPropertiesAsync()).Size == 0)
-        {
-            // Upload an empty file
-            await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).Content.PutAsync(new MemoryStream());
-            return;
-        }
-        var uploadSessionRequestBody = new Microsoft.Graph.Drives.Item.Items.Item.CreateUploadSession.CreateUploadSessionPostRequestBody
-        {
-            Item = new DriveItemUploadableProperties
-            {
+                Name = folderName,
+                Folder = new Folder { },
                 AdditionalData = new Dictionary<string, object>
                 {
-                    { "@microsoft.graph.conflictBehavior", "replace" },
+                    {
+                        "@microsoft.graph.conflictBehavior" , "rename"
+                    },
                 },
-            },
-        };
-        UploadSession uploadSession = await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).CreateUploadSession.PostAsync(uploadSessionRequestBody);
-        int maxChunckSize = 320 * 1024;
-        LargeFileUploadTask<DriveItem> fileUploadTask = new(uploadSession, stream, maxChunckSize, graphClient.RequestAdapter);
-
-        await fileUploadTask.UploadAsync(progress);
-    }
-
-    public async Task UploadFolderAsync(StorageFolder folder, string itemId, IProgress<long> progress = null)
-    {
-        ulong totalSize = await Utils.GetFolderSize(folder);
-        ulong uploadedSize = 0;
-        var files = await folder.GetFilesAsync();
-        DriveItem cloudFolder = await CreateFolder(itemId, folder.Name);
-
-        IEnumerable<Task> uploadTasks = files.Select(async file =>
+            };
+            return await graphClient.Drives[DriveId].Items[parentItemId].Children.PostAsync(requestBody);
+        }, () =>
         {
-            await UploadFileAsync(file, cloudFolder.Id, progress);
-            ulong fileSize = (await file.GetBasicPropertiesAsync()).Size;
-            Interlocked.Add(ref uploadedSize, fileSize);
-            progress?.Report((long)(uploadedSize / totalSize));
+            ValidateNotEmpty(parentItemId, nameof(parentItemId));
+            ValidateFileName(folderName, nameof(folderName));
         });
-        await Task.WhenAll(uploadTasks);
-
-        IReadOnlyList<StorageFolder> subfolders = await folder.GetFoldersAsync();
-        IEnumerable<Task> subfolderTasks = subfolders.Select(subfolder => UploadFolderAsync(subfolder, cloudFolder.Id, progress));
-        await Task.WhenAll(subfolderTasks);
     }
 
-    public async Task<string> CreateLink(string itemId, DateTimeOffset? expirationDateTime = null, string password = null, string type = "view")
+    public async Task<OneDriveResult<DriveItem>> RenameFile(string itemId, string newName)
     {
-        Microsoft.Graph.Drives.Item.Items.Item.CreateLink.CreateLinkPostRequestBody requestBody = new()
+        return await ExecuteAsync(async () =>
         {
-            Type = type,
-            Password = password,
-            Scope = "anonymous",
-            RetainInheritedPermissions = false,
-            ExpirationDateTime = expirationDateTime,
-        };
-        Permission result = await graphClient.Drives[DriveId].Items[itemId].CreateLink.PostAsync(requestBody);
-        return result.Link.WebUrl;
-    }
-
-    public async Task<string> GetDisplayName()
-    {
-        User user = await graphClient.Me.GetAsync();
-        return user.DisplayName;
-    }
-
-    public async Task<Quota> GetStorageInfo()
-    {
-        if (!IsAuthenticated) await Login();
-        Drive drive = await graphClient.Drives[DriveId].GetAsync();
-        return drive.Quota;
-    }
-
-    public async Task ConvertFileFormat(string itemId, StorageFile file, string format = "pdf")
-    {
-        Stream result = await graphClient.Drives[DriveId].Items[itemId].Content.GetAsync(requestConfiguration =>
-        {
-            // The document is written like this, but there is an error. Upon reviewing the source code, I found that there is no definition for "QueryParameters."
-            // requestConfiguration.QueryParameters.Format = format;
-            requestConfiguration.Headers.Add("Format", format);
-        });
-        using Stream fileStream = await file.OpenStreamForWriteAsync();
-        if (result.CanSeek)
-        {
-            result.Seek(0, SeekOrigin.Begin);
-        }
-        await result.CopyToAsync(fileStream);
-    }
-
-    public async Task DeleteItem(string itemId)
-    {
-        await graphClient.Drives[DriveId].Items[itemId].DeleteAsync();
-    }
-
-    public async Task PermanentDeleteItem(string itemId)
-    {
-        await graphClient.Drives[DriveId].Items[itemId].PermanentDelete.PostAsync();
-    }
-
-    public async Task<DriveItem> RestoreItem(string itemId)
-    {
-        // Restore the original name by default.
-        RestorePostRequestBody requestBody = new()
-        {
-            ParentReference = new ItemReference
+            DriveItem requestBody = new()
             {
-                Id = itemId,
-            },
-        };
-        return await graphClient.Drives[DriveId].Items[itemId].Restore.PostAsync(requestBody);
+                Name = newName,
+            };
+            return await graphClient.Drives[DriveId].Items[itemId].PatchAsync(requestBody);
+        }, () =>
+        {
+            ValidateNotEmpty(itemId, nameof(itemId));
+            ValidateFileName(newName, nameof(newName));
+        });
     }
 
-    public async Task<SearchWithQGetResponse> SearchLocalItems(string query, string itemId)
+    public async Task<OneDriveResult<DriveItem>> UploadFileAsync(StorageFile file, string itemId, IProgress<long> progress = null)
     {
-        // According to code, Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse
-        // is same as Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse, so why Microsoft do this?
-        return await graphClient.Drives[DriveId].Items[itemId].SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
+        return await ExecuteAsync(async () =>
+        {
+            ValidateNotNull(file, nameof(file));
+            ValidateNotEmpty(itemId, nameof(itemId));
+
+            Stream stream = await file.OpenStreamForReadAsync();
+            if ((await file.GetBasicPropertiesAsync()).Size == 0)
+            {
+                // Upload an empty file
+                await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).Content.PutAsync(new MemoryStream());
+                return await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).GetAsync();
+            }
+            
+            var uploadSessionRequestBody = new Microsoft.Graph.Drives.Item.Items.Item.CreateUploadSession.CreateUploadSessionPostRequestBody
+            {
+                Item = new DriveItemUploadableProperties
+                {
+                    AdditionalData = new Dictionary<string, object>
+                    {
+                        { "@microsoft.graph.conflictBehavior", "replace" },
+                    },
+                },
+            };
+            
+            UploadSession uploadSession = await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).CreateUploadSession.PostAsync(uploadSessionRequestBody);
+            int maxChunckSize = 320 * 1024;
+            LargeFileUploadTask<DriveItem> fileUploadTask = new(uploadSession, stream, maxChunckSize, graphClient.RequestAdapter);
+
+            var uploadResult = await fileUploadTask.UploadAsync(progress);
+            return uploadResult.ItemResponse;
+        });
     }
 
-    public async Task<Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQGetResponse> SearchGlobalItems(string query)
+    public async Task<OneDriveResult<DriveItem>> UploadFolderAsync(StorageFolder folder, string itemId, IProgress<long> progress = null)
     {
-        return await graphClient.Drives[DriveId].SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
+        return await ExecuteAsync(async () =>
+        {
+            ValidateNotNull(folder, nameof(folder));
+            ValidateNotEmpty(itemId, nameof(itemId));
+
+            ulong totalSize = await Utils.GetFolderSize(folder);
+            ulong uploadedSize = 0;
+            var files = await folder.GetFilesAsync();
+            
+            var createFolderResult = await CreateFolder(itemId, folder.Name);
+            if (!createFolderResult.IsSuccess)
+            {
+                throw new Exception($"{"CreateFolderFail".GetLocalized()}: {createFolderResult.ErrorMessage}");
+            }
+
+
+            DriveItem cloudFolder = createFolderResult.Data;
+
+            IEnumerable<Task> uploadTasks = files.Select(async file =>
+            {
+                var uploadResult = await UploadFileAsync(file, cloudFolder.Id, progress);
+                if (!uploadResult.IsSuccess)
+                {
+                    throw new Exception($"{"UploadFileFail".GetLocalized()}: {uploadResult.ErrorMessage}");
+                }
+                ulong fileSize = (await file.GetBasicPropertiesAsync()).Size;
+                Interlocked.Add(ref uploadedSize, fileSize);
+                progress?.Report((long)(uploadedSize / totalSize));
+            });
+            await Task.WhenAll(uploadTasks);
+
+            IReadOnlyList<StorageFolder> subfolders = await folder.GetFoldersAsync();
+            IEnumerable<Task> subfolderTasks = subfolders.Select(async subfolder => 
+            {
+                var folderResult = await UploadFolderAsync(subfolder, cloudFolder.Id, progress);
+                if (!folderResult.IsSuccess)
+                {
+                    throw new Exception($"{"UploadFolderFail".GetLocalized()}: {folderResult.ErrorMessage}");
+                }
+            });
+            await Task.WhenAll(subfolderTasks);
+
+            return cloudFolder;
+        });
+    }
+
+    public async Task<OneDriveResult<string>> CreateLink(string itemId, DateTimeOffset? expirationDateTime = null, string password = null, string type = "view")
+    {
+        return await ExecuteAsync(async () =>
+        {
+            Microsoft.Graph.Drives.Item.Items.Item.CreateLink.CreateLinkPostRequestBody requestBody = new()
+            {
+                Type = type,
+                Password = password,
+                Scope = "anonymous",
+                RetainInheritedPermissions = false,
+                ExpirationDateTime = expirationDateTime,
+            };
+            Permission result = await graphClient.Drives[DriveId].Items[itemId].CreateLink.PostAsync(requestBody);
+            return result.Link.WebUrl;
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<string>> GetDisplayName()
+    {
+        return await ExecuteAsync(async () =>
+        {
+            User user = await graphClient.Me.GetAsync();
+            return user.DisplayName;
+        });
+    }
+
+    public async Task<OneDriveResult<Quota>> GetStorageInfo()
+    {
+        return await ExecuteAsync(async () =>
+        {
+            Drive drive = await graphClient.Drives[DriveId].GetAsync();
+            return drive.Quota;
+        });
+    }
+
+    public async Task<OneDriveResult<bool>> ConvertFileFormat(string itemId, StorageFile file, string format = "pdf")
+    {
+        return await ExecuteAsync(async () =>
+        {
+            Stream result = await graphClient.Drives[DriveId].Items[itemId].Content.GetAsync(requestConfiguration =>
+            {
+                // The document is written like this, but there is an error. Upon reviewing the source code, I found that there is no definition for "QueryParameters."
+                // requestConfiguration.QueryParameters.Format = format;
+                requestConfiguration.Headers.Add("Format", format);
+            });
+            using Stream fileStream = await file.OpenStreamForWriteAsync();
+            if (result.CanSeek)
+            {
+                result.Seek(0, SeekOrigin.Begin);
+            }
+            await result.CopyToAsync(fileStream);
+            return true;
+        }, () =>
+        {
+            ValidateNotEmpty(itemId, nameof(itemId));
+            ValidateNotNull(file, nameof(file));
+            ValidateNotEmpty(format, nameof(format));
+        });
+    }
+
+    public async Task<OneDriveResult<bool>> DeleteItem(string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            await graphClient.Drives[DriveId].Items[itemId].DeleteAsync();
+            return true;
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<bool>> PermanentDeleteItem(string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            await graphClient.Drives[DriveId].Items[itemId].PermanentDelete.PostAsync();
+            return true;
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<DriveItem>> RestoreItem(string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            // Restore the original name by default.
+            RestorePostRequestBody requestBody = new()
+            {
+                ParentReference = new ItemReference
+                {
+                    Id = itemId,
+                },
+            };
+            return await graphClient.Drives[DriveId].Items[itemId].Restore.PostAsync(requestBody);
+        }, () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public async Task<OneDriveResult<SearchWithQGetResponse>> SearchLocalItems(string query, string itemId)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            // According to code, Microsoft.Graph.Drives.Item.Items.Item.SearchWithQ.SearchWithQResponse
+            // is same as Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQResponse, so why Microsoft do this?
+            return await graphClient.Drives[DriveId].Items[itemId].SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
+        }, () =>
+        {
+            ValidateNotEmpty(query, nameof(query));
+            ValidateNotEmpty(itemId, nameof(itemId));
+        });
+    }
+
+    public async Task<OneDriveResult<Microsoft.Graph.Drives.Item.SearchWithQ.SearchWithQGetResponse>> SearchGlobalItems(string query)
+    {
+        return await ExecuteAsync(async () =>
+        {
+            return await graphClient.Drives[DriveId].SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
+        }, () => ValidateNotEmpty(query, nameof(query)));
     }
 
     private class TokenProvider : IAccessTokenProvider
@@ -221,7 +322,20 @@ public class OneDrive
         public AllowedHostsValidator AllowedHostsValidator { get; }
     }
 
-    public async Task Login()
+    public async Task<OneDriveResult<bool>> Login()
+    {
+        try
+        {
+            await LoginInternal();
+            return OneDriveResult<bool>.Success(true);
+        }
+        catch (Exception ex)
+        {
+            return OneDriveResult<bool>.Failure($"{"LoginFail".GetLocalized()}: {ex.Message}", OneDriveErrorType.Authentication, ex);
+        }
+    }
+
+    private async Task LoginInternal()
     {
         TokenProvider tokenProvider = new(async Task<string> (string[] scopes) =>
         {
@@ -277,7 +391,7 @@ public class OneDrive
     }
 
     private static IPublicClientApplication PublicClientApp;
-    private readonly string[] scopes = new string[] { "User.Read", "Files.ReadWrite.All" };
+    private readonly string[] scopes = ["User.Read", "Files.ReadWrite.All"];
     private static AuthenticationResult authResult;
     private GraphServiceClient graphClient;
 
@@ -286,4 +400,12 @@ public class OneDrive
     public string ClientId;
     // used for identify account for now
     public string HomeAccountId;
+
+    protected override async Task EnsureAuthenticatedAsync()
+    {
+        if (!IsAuthenticated)
+        {
+            await LoginInternal();
+        }
+    }
 }
