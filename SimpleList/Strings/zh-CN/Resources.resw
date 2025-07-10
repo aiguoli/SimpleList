@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthenticationError" xml:space="preserve">
+    <value>身份验证错误</value>
+  </data>
+  <data name="CanNotNull" xml:space="preserve">
+    <value>不能为空</value>
+  </data>
   <data name="CloudPage_CreateDrive.Content" xml:space="preserve">
     <value>添加网盘</value>
   </data>
@@ -147,11 +153,26 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>你的网盘</value>
   </data>
+  <data name="CreateFolderFail" xml:space="preserve">
+    <value>文件夹创建失败</value>
+  </data>
+  <data name="CreateFolderSuccess" xml:space="preserve">
+    <value>文件夹创建成功</value>
+  </data>
   <data name="CreateFolderView_Label.Header" xml:space="preserve">
     <value>输入新文件夹名</value>
   </data>
   <data name="CreateFolderView_Label.PlaceholderText" xml:space="preserve">
     <value>新建文件夹</value>
+  </data>
+  <data name="DeleteFileFail" xml:space="preserve">
+    <value>文件删除失败</value>
+  </data>
+  <data name="DeleteFileSuccess" xml:space="preserve">
+    <value>文件删除成功</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>出错了</value>
   </data>
   <data name="ExternalDownloaderPage_Aria2Config.Text" xml:space="preserve">
     <value>Aria2 配置</value>
@@ -191,6 +212,9 @@
   </data>
   <data name="ExternalDownloaderPage_SelectDownloadTooltip.Text" xml:space="preserve">
     <value>请选择下载器以查看配置选项</value>
+  </data>
+  <data name="FilenameIllegal" xml:space="preserve">
+    <value>文件名{0}不合法</value>
   </data>
   <data name="FileView_Flyout_Convert.Text" xml:space="preserve">
     <value>转换</value>
@@ -234,6 +258,9 @@
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
     <value>快速开始</value>
   </data>
+  <data name="InsufficientPermission" xml:space="preserve">
+    <value>权限不足</value>
+  </data>
   <data name="LinkDetails_Content.Text" xml:space="preserve">
     <value>内容</value>
   </data>
@@ -255,6 +282,12 @@
   <data name="LinkDetails_Views.Text" xml:space="preserve">
     <value>访问量</value>
   </data>
+  <data name="LoginFail" xml:space="preserve">
+    <value>登陆失败</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>需要用户重新登录</value>
+  </data>
   <data name="NavigationBar_Bookmark.Content" xml:space="preserve">
     <value>书签</value>
   </data>
@@ -269,6 +302,15 @@
   </data>
   <data name="NavigationBar_Tools.Content" xml:space="preserve">
     <value>工具</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>网络错误</value>
+  </data>
+  <data name="OperationTimeout " xml:space="preserve">
+    <value>操作超时</value>
+  </data>
+  <data name="ParameterError" xml:space="preserve">
+    <value>参数错误</value>
   </data>
   <data name="RootFileName" xml:space="preserve">
     <value>根目录</value>
@@ -354,6 +396,9 @@
   <data name="ShareCommunityPage_Flyout_Refresh.Text" xml:space="preserve">
     <value>刷新</value>
   </data>
+  <data name="Success" xml:space="preserve">
+    <value>操作成功</value>
+  </data>
   <data name="TaskManagerPage_DownloadComplted.Text" xml:space="preserve">
     <value>下载完成</value>
   </data>
@@ -389,5 +434,14 @@
   </data>
   <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
     <value>上传完成</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>未知错误</value>
+  </data>
+  <data name="UploadFileFail" xml:space="preserve">
+    <value>文件上传失败</value>
+  </data>
+  <data name="UploadFolderFail" xml:space="preserve">
+    <value>文件夹上传失败</value>
   </data>
 </root>
