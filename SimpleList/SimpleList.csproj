@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>SimpleList</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -73,16 +73,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.250402" />
     <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
-    <PackageReference Include="Downloader" Version="3.3.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
-    <PackageReference Include="Microsoft.Graph" Version="5.81.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.72.1" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.72.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
+    <PackageReference Include="Downloader" Version="4.0.1-beta" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0-preview.5.25277.114" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.5.25277.114" />
+    <PackageReference Include="Microsoft.Graph" Version="5.85.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.73.1" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.73.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250702007-experimental4" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" />
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.6" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
