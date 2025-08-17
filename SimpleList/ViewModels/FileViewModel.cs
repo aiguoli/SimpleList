@@ -17,7 +17,7 @@ namespace SimpleList.ViewModels;
 
 public partial class FileViewModel : ObservableObject
 {
-    public FileViewModel(DriveViewModel drive, DriveItem file, bool loadThumbnail=false)
+    public FileViewModel(DriveViewModel drive, DriveItem file, bool loadThumbnail = false)
     {
         Drive = drive;
         _file = file;
@@ -68,7 +68,7 @@ public partial class FileViewModel : ObservableObject
         if (IsFile)
         {
             Content = (await Drive.Provider.GetItemContent(Id)).ToString();
-        } 
+        }
     }
 
     [ObservableProperty] private BitmapImage _image;
@@ -86,4 +86,8 @@ public partial class FileViewModel : ObservableObject
     public string ItemType { get; }
     public string DownloadUrl { get => _file.AdditionalData["@microsoft.graph.downloadUrl"].ToString(); }
     public bool CanPreview { get => IsFile && Utils.GetFileType(Path.GetExtension(Name)) != FileType.Unknown; }
+    public bool CanRename { get => Drive.SelectedItems.Count == 1; }
+    // The SDK does not support sharing multiple projects at the same time. But generating multiple links is too stupid.
+    public bool CanShare { get => Drive.SelectedItems.Count == 1; }
+    public bool CanCopy { get => Drive.SelectedItems.Count == 1; }
 }

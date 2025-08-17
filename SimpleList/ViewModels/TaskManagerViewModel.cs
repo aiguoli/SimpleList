@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using WinUICommunity;
 
 namespace SimpleList.ViewModels
 {
@@ -28,7 +29,7 @@ namespace SimpleList.ViewModels
         {
             DownloadTaskViewModel task = new(drive, itemId, target, CheckShutdown);
             DownloadTasks.Add(task);
-            await task.StartDownload();
+            await task.StartDownload(false);
         }
 
         public async Task StartAllDownloadTasks()

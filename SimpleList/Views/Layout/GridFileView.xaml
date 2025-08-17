@@ -47,7 +47,7 @@
                         <KeyboardAccelerator Key="Delete" />
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutSubItem x:Uid="FileView_Flyout_Copy" Icon="Copy">
+                <MenuFlyoutSubItem x:Uid="FileView_Flyout_Copy" Icon="Copy" Visibility="{Binding CanCopy, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuFlyoutItem x:Uid="FileView_Flyout_CopyFilename" Click="CopyFilename" />
                     <MenuFlyoutItem x:Uid="FileView_Flyout_CopyDownloadUrl" Click="CopyDownloadUrl" Visibility="{Binding IsFile, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </MenuFlyoutSubItem>
@@ -56,12 +56,12 @@
                         <FontIcon Glyph="&#xEA90;" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="FileView_Flyout_Share" Click="ShowShareFileDialogAsync">
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Share" Click="ShowShareFileDialogAsync" Visibility="{Binding CanShare, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE72D;"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="FileView_Flyout_Rename" Click="ShowRenameFileDialogAsync" Icon="Rename">
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Rename" Click="ShowRenameFileDialogAsync" Icon="Rename" Visibility="{Binding CanRename, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F2" />
                     </MenuFlyoutItem.KeyboardAccelerators>
