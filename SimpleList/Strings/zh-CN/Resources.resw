@@ -312,6 +312,18 @@
   <data name="ParameterError" xml:space="preserve">
     <value>参数错误</value>
   </data>
+  <data name="PropertyViews_ChildrenCount.Text" xml:space="preserve">
+    <value>包含项目</value>
+  </data>
+  <data name="PropertyViews_Filename.Text" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="PropertyViews_Size.Text" xml:space="preserve">
+    <value>文件大小</value>
+  </data>
+  <data name="PropertyViews_Updated.Text" xml:space="preserve">
+    <value>更新日期</value>
+  </data>
   <data name="RootFileName" xml:space="preserve">
     <value>根目录</value>
   </data>

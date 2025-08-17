@@ -7,6 +7,7 @@ using SimpleList.ViewModels;
 using SimpleList.Views.Preview;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleList.Views.Layout
@@ -35,7 +36,7 @@ namespace SimpleList.Views.Layout
             PropertyView dialog = new()
             {
                 XamlRoot = XamlRoot,
-                DataContext = new PropertyViewModel(viewModel)
+                DataContext = new PropertyViewModel([..viewModel.Drive.SelectedItems])
             };
             await dialog.ShowAsync();
         }
@@ -83,7 +84,7 @@ namespace SimpleList.Views.Layout
             DeleteFileView dialog = new()
             {
                 XamlRoot = XamlRoot,
-                DataContext = new DeleteFileViewModel(viewModel)
+                DataContext = new DeleteFileViewModel(viewModel.Drive.SelectedItems.ToArray())
             };
             await dialog.ShowAsync();
         }

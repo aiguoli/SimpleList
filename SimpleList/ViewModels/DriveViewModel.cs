@@ -14,6 +14,7 @@ using Windows.Storage;
 using WinRT.Interop;
 using Microsoft.UI.Dispatching;
 using WinUICommunity;
+using SimpleList.Views;
 
 namespace SimpleList.ViewModels;
 
@@ -131,6 +132,15 @@ public partial class DriveViewModel : ObservableObject
         {
             TaskManagerViewModel manager = App.GetService<TaskManagerViewModel>();
             var tasks = SelectedItems.Select(i => manager.AddDownloadTask(this, i.Id, folder));
+            Growl.Info(new GrowlInfo
+            {
+                Title = Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownload"),
+                Message = string.Format(Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownloadDesc"), SelectedItems.Count),
+                IsClosable = true,
+                ShowDateTime = true,
+                Token = "DriveGrowl",
+                UseBlueColorForInfo = true
+            });
             await Task.WhenAll(tasks);
         }
     }

@@ -42,7 +42,7 @@ public partial class DownloadTaskViewModel : ObservableObject
         return downloader;
     }
 
-    public async Task StartDownload()
+    public async Task StartDownload(bool notify = true)
     {
         OneDriveResult<DriveItem> result = await Drive.Provider.GetItem(_itemId);
         if (result.IsSuccess)
@@ -52,14 +52,17 @@ public partial class DownloadTaskViewModel : ObservableObject
             TotalBytes = item.Size ?? 0;
             StartTime = DateTime.Now;
             await WalkDownloadItem(item, _target);
-            Growl.Info(new GrowlInfo
+            if (notify)
             {
-                Title = Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownload"),
-                Message = string.Format(Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownloadDesc"), DownloadList.Count),
-                IsClosable = true,
-                ShowDateTime = true,
-                Token = "DriveGrowl"
-            });
+                Growl.Info(new GrowlInfo
+                {
+                    Title = Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownload"),
+                    Message = string.Format(Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartDownloadDesc"), DownloadList.Count),
+                    IsClosable = true,
+                    ShowDateTime = true,
+                    Token = "DriveGrowl"
+                });
+            }
             foreach (DownloadItem downloadItem in DownloadList)
             {
                 await downloadItem.DownloadService.DownloadFileTaskAsync(downloadItem.DownloadUrl, downloadItem.Path);

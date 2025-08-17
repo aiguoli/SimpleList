@@ -444,4 +444,16 @@
   <data name="FilenameIllegal" xml:space="preserve">
     <value>Illegal filename {0}</value>
   </data>
+  <data name="PropertyViews_Filename.Text" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="PropertyViews_Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="PropertyViews_Updated.Text" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="PropertyViews_ChildrenCount.Text" xml:space="preserve">
+    <value>ChildrenCount</value>
+  </data>
 </root>
