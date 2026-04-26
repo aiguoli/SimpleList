@@ -144,6 +144,15 @@
   <data name="CloudPage_Refresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="CloudPage_Upload.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="CloudPage_UploadFolder.Text" xml:space="preserve">
+    <value>Upload Folder</value>
+  </data>
+  <data name="CloudPage_UploadFile.Text" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>Your drive</value>
   </data>
@@ -333,7 +342,10 @@
   <data name="TaskManagerPage_StartDownloadDesc" xml:space="preserve">
     <value>{0} files are ready to start downloading</value>
   </data>
-  <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
+  <data name="TaskManagerPage_UploadCompleted.Text" xml:space="preserve">
+    <value>Upload Completed</value>
+  </data>
+  <data name="TaskManager_UploadCompleted.Text" xml:space="preserve">
     <value>Upload Completed</value>
   </data>
   <data name="TaskManagerPage_Upload" xml:space="preserve">
@@ -341,6 +353,24 @@
   </data>
   <data name="TaskManagerPage_StartUploadDesc" xml:space="preserve">
     <value>Start uploading file: {0}</value>
+  </data>
+  <data name="TaskManagerPage_Details.Content" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailsTitle" xml:space="preserve">
+    <value>Upload details: {0}</value>
+  </data>
+  <data name="TaskManagerPage_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailStatus_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailStatus_Uploading" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
   </data>
   <data name="FileView_Flyout_Copy.Text" xml:space="preserve">
     <value>Copy</value>

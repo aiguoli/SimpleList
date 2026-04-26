@@ -104,5 +104,61 @@ namespace SimpleList.Pages
             };
             await dialog.ShowAsync();
         }
+
+        private async void ShowUploadFileDialogAsync(object sender, RoutedEventArgs e)
+        {
+            var fileTypeFilter = new List<string> { "*" };
+            Windows.Storage.Pickers.FileOpenPicker picker = new()
+            {
+                ViewMode = Windows.Storage.Pickers.PickerViewMode.List,
+                SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
+            };
+            foreach (var filter in fileTypeFilter)
+            {
+                picker.FileTypeFilter.Add(filter);
+            }
+
+            // Initialize the picker with the current window handle
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.StartupWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+            var files = await picker.PickMultipleFilesAsync();
+            if (files != null && files.Count > 0)
+            {
+                DriveViewModel driveViewModel = (DriveViewModel)DataContext;
+                TaskManagerViewModel manager = App.GetService<TaskManagerViewModel>();
+                var tasks = files.Select(file => manager.AddUploadTask(driveViewModel, driveViewModel.ParentItemId, file));
+                await Task.WhenAll(tasks);
+                await driveViewModel.Refresh();
+            }
+        }
+
+        private async void ShowUploadFolderDialogAsync(object sender, RoutedEventArgs e)
+        {
+            Windows.Storage.Pickers.FolderPicker picker = new()
+            {
+                SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
+            };
+            picker.FileTypeFilter.Add("*");
+
+            // Initialize the picker with the current window handle
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.StartupWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+            var folder = await picker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                DriveViewModel driveViewModel = (DriveViewModel)DataContext;
+                TaskManagerViewModel manager = App.GetService<TaskManagerViewModel>();
+                await manager.AddUploadTask(driveViewModel, driveViewModel.ParentItemId, folder);
+                await driveViewModel.Refresh();
+            }
+        }
+
+        private void SplitButton_Click(object sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs e)
+        {
+            // Default action - upload files
+            ShowUploadFileDialogAsync(sender, new RoutedEventArgs());
+        }
     }
 }
