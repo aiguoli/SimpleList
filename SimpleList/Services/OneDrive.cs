@@ -20,6 +20,8 @@ namespace SimpleList.Services;
 
 public class OneDrive : OneDriveServiceBase
 {
+    private const int MaxConcurrentFileUploadCount = 3;
+
     public OneDrive()
     {
         PublicClientApp = App.GetService<IPublicClientApplication>();
@@ -64,7 +66,7 @@ public class OneDrive : OneDriveServiceBase
         }, () => ValidateNotEmpty(itemId, nameof(itemId)));
     }
 
-    public async Task<OneDriveResult<DriveItem>> CreateFolder(string parentItemId, string folderName)
+    public async Task<OneDriveResult<DriveItem>> CreateFolder(string parentItemId, string folderName, string conflictBehavior = "rename")
     {
         return await ExecuteAsync(async () =>
         {
@@ -75,7 +77,7 @@ public class OneDrive : OneDriveServiceBase
                 AdditionalData = new Dictionary<string, object>
                 {
                     {
-                        "@microsoft.graph.conflictBehavior" , "rename"
+                        "@microsoft.graph.conflictBehavior" , conflictBehavior
                     },
                 },
             };
@@ -103,7 +105,7 @@ public class OneDrive : OneDriveServiceBase
         });
     }
 
-    public async Task<OneDriveResult<DriveItem>> UploadFileAsync(StorageFile file, string itemId, IProgress<long> progress = null)
+    public async Task<OneDriveResult<DriveItem>> UploadFileAsync(StorageFile file, string itemId, IProgress<long> progress = null, string uploadUrl = null, Action<string> uploadUrlCallback = null, CancellationToken cancellationToken = default)
     {
         return await ExecuteAsync(async () =>
         {
@@ -114,31 +116,58 @@ public class OneDrive : OneDriveServiceBase
             if ((await file.GetBasicPropertiesAsync()).Size == 0)
             {
                 // Upload an empty file
-                await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).Content.PutAsync(new MemoryStream());
-                return await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).GetAsync();
+                await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).Content.PutAsync(new MemoryStream(), null, cancellationToken);
+                return await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).GetAsync(null, cancellationToken);
             }
-            
-            var uploadSessionRequestBody = new Microsoft.Graph.Drives.Item.Items.Item.CreateUploadSession.CreateUploadSessionPostRequestBody
-            {
-                Item = new DriveItemUploadableProperties
-                {
-                    AdditionalData = new Dictionary<string, object>
-                    {
-                        { "@microsoft.graph.conflictBehavior", "replace" },
-                    },
-                },
-            };
-            
-            UploadSession uploadSession = await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).CreateUploadSession.PostAsync(uploadSessionRequestBody);
-            int maxChunckSize = 320 * 1024;
-            LargeFileUploadTask<DriveItem> fileUploadTask = new(uploadSession, stream, maxChunckSize, graphClient.RequestAdapter);
 
-            var uploadResult = await fileUploadTask.UploadAsync(progress);
+            LargeFileUploadTask<DriveItem> fileUploadTask;
+            int maxChunckSize = 320 * 1024;
+
+            if (!string.IsNullOrEmpty(uploadUrl))
+            {
+                var uploadSession = new UploadSession { UploadUrl = uploadUrl };
+                fileUploadTask = new LargeFileUploadTask<DriveItem>(uploadSession, stream, maxChunckSize);
+            }
+            else
+            {
+                var uploadSessionRequestBody = new Microsoft.Graph.Drives.Item.Items.Item.CreateUploadSession.CreateUploadSessionPostRequestBody
+                {
+                    Item = new DriveItemUploadableProperties
+                    {
+                        AdditionalData = new Dictionary<string, object>
+                        {
+                            { "@microsoft.graph.conflictBehavior", "replace" },
+                        },
+                    },
+                };
+                
+                UploadSession uploadSession = await graphClient.Drives[DriveId].Items[itemId].ItemWithPath(file.Name).CreateUploadSession.PostAsync(uploadSessionRequestBody, null, cancellationToken);
+                if (uploadSession != null)
+                {
+                    uploadUrlCallback?.Invoke(uploadSession.UploadUrl);
+                    fileUploadTask = new LargeFileUploadTask<DriveItem>(uploadSession, stream, maxChunckSize);
+                }
+                else
+                {
+                    throw new Exception("Failed to create upload session.");
+                }
+            }
+
+            var uploadResult = await fileUploadTask.UploadAsync(progress, 3, cancellationToken);
+            if (uploadResult == null)
+            {
+                throw new Exception("Upload failed.");
+            }
             return uploadResult.ItemResponse;
         });
+
+        // Handle exceptions from UploadAsync which can happen if cancelled or network error
+        // ExecuteAsync wrapper handles exceptions, but for UploadAsync it might return null result if cancelled?
+        // LargeFileUploadTask.UploadAsync returns UploadResult<T>.
+        // If it fails, it might throw.
     }
 
-    public async Task<OneDriveResult<DriveItem>> UploadFolderAsync(StorageFolder folder, string itemId, IProgress<long> progress = null)
+    public async Task<OneDriveResult<DriveItem>> UploadFolderAsync(StorageFolder folder, string itemId, IProgress<long> progress = null, IProgress<FolderUploadProgressInfo> detailProgress = null, CancellationToken cancellationToken = default)
     {
         return await ExecuteAsync(async () =>
         {
@@ -146,44 +175,151 @@ public class OneDrive : OneDriveServiceBase
             ValidateNotEmpty(itemId, nameof(itemId));
 
             ulong totalSize = await Utils.GetFolderSize(folder);
-            ulong uploadedSize = 0;
-            var files = await folder.GetFilesAsync();
-            
-            var createFolderResult = await CreateFolder(itemId, folder.Name);
-            if (!createFolderResult.IsSuccess)
+            UploadProgressTracker tracker = new();
+            using SemaphoreSlim uploadSemaphore = new(MaxConcurrentFileUploadCount, MaxConcurrentFileUploadCount);
+            return await UploadFolderInternalAsync(folder, itemId, folder.Name, totalSize, tracker, progress, detailProgress, uploadSemaphore, cancellationToken);
+        });
+    }
+
+    private async Task<DriveItem> UploadFolderInternalAsync(
+        StorageFolder folder,
+        string itemId,
+        string relativeFolderPath,
+        ulong totalSize,
+        UploadProgressTracker tracker,
+        IProgress<long> progress,
+        IProgress<FolderUploadProgressInfo> detailProgress,
+        SemaphoreSlim uploadSemaphore,
+        CancellationToken cancellationToken)
+    {
+        var createFolderResult = await CreateFolder(itemId, folder.Name, "replace");
+        if (!createFolderResult.IsSuccess)
+        {
+            throw new Exception($"{"CreateFolderFail".GetLocalized()}: {createFolderResult.ErrorMessage}");
+        }
+
+        DriveItem cloudFolder = createFolderResult.Data;
+        if (cloudFolder == null)
+        {
+            throw new Exception("Failed to create or retrieve cloud folder.");
+        }
+
+        var files = await folder.GetFilesAsync();
+        var existingItemsResult = await graphClient.Drives[DriveId].Items[cloudFolder.Id].Children.GetAsync();
+        var existingItems = existingItemsResult?.Value ?? new List<DriveItem>();
+
+        IEnumerable<Task> uploadTasks = files.Select(async file =>
+        {
+            await uploadSemaphore.WaitAsync(cancellationToken);
+            try
             {
-                throw new Exception($"{"CreateFolderFail".GetLocalized()}: {createFolderResult.ErrorMessage}");
-            }
+                ulong fileSize = (await file.GetBasicPropertiesAsync()).Size;
+                string relativePath = $"{relativeFolderPath}/{file.Name}";
 
+                var existing = existingItems.FirstOrDefault(i => i.Name == file.Name);
+                if (existing != null && (ulong?)existing.Size == fileSize)
+                {
+                    long totalUploaded = Interlocked.Add(ref tracker.UploadedSize, (long)fileSize);
+                    ReportOverallProgress(progress, totalSize, totalUploaded);
+                    detailProgress?.Report(new FolderUploadProgressInfo
+                    {
+                        FilePath = relativePath,
+                        UploadedBytes = fileSize,
+                        TotalBytes = fileSize,
+                        Completed = true
+                    });
+                    return;
+                }
 
-            DriveItem cloudFolder = createFolderResult.Data;
+                long currentUploaded = 0;
+                object progressLock = new();
+                System.IProgress<long> fileProgress = new System.Progress<long>(bytes =>
+                {
+                    long delta;
+                    lock (progressLock)
+                    {
+                        delta = bytes - currentUploaded;
+                        if (delta < 0)
+                        {
+                            delta = 0;
+                        }
+                        currentUploaded = bytes;
+                    }
 
-            IEnumerable<Task> uploadTasks = files.Select(async file =>
-            {
-                var uploadResult = await UploadFileAsync(file, cloudFolder.Id, progress);
+                    long totalUploaded = Interlocked.Add(ref tracker.UploadedSize, delta);
+                    ReportOverallProgress(progress, totalSize, totalUploaded);
+
+                    detailProgress?.Report(new FolderUploadProgressInfo
+                    {
+                        FilePath = relativePath,
+                        UploadedBytes = (ulong)Math.Max(0, bytes),
+                        TotalBytes = fileSize,
+                        Completed = bytes >= (long)fileSize
+                    });
+                });
+
+                var uploadResult = await UploadFileAsync(file, cloudFolder.Id, fileProgress, null, null, cancellationToken);
                 if (!uploadResult.IsSuccess)
                 {
                     throw new Exception($"{"UploadFileFail".GetLocalized()}: {uploadResult.ErrorMessage}");
                 }
-                ulong fileSize = (await file.GetBasicPropertiesAsync()).Size;
-                Interlocked.Add(ref uploadedSize, fileSize);
-                progress?.Report((long)(uploadedSize / totalSize));
-            });
-            await Task.WhenAll(uploadTasks);
 
-            IReadOnlyList<StorageFolder> subfolders = await folder.GetFoldersAsync();
-            IEnumerable<Task> subfolderTasks = subfolders.Select(async subfolder => 
-            {
-                var folderResult = await UploadFolderAsync(subfolder, cloudFolder.Id, progress);
-                if (!folderResult.IsSuccess)
+                long remain;
+                lock (progressLock)
                 {
-                    throw new Exception($"{"UploadFolderFail".GetLocalized()}: {folderResult.ErrorMessage}");
+                    remain = (long)fileSize - currentUploaded;
+                    if (remain < 0)
+                    {
+                        remain = 0;
+                    }
+                    currentUploaded += remain;
                 }
-            });
-            await Task.WhenAll(subfolderTasks);
 
-            return cloudFolder;
+                if (remain > 0)
+                {
+                    long totalUploaded = Interlocked.Add(ref tracker.UploadedSize, remain);
+                    ReportOverallProgress(progress, totalSize, totalUploaded);
+                }
+
+                detailProgress?.Report(new FolderUploadProgressInfo
+                {
+                    FilePath = relativePath,
+                    UploadedBytes = fileSize,
+                    TotalBytes = fileSize,
+                    Completed = true
+                });
+            }
+            finally
+            {
+                uploadSemaphore.Release();
+            }
         });
+        await Task.WhenAll(uploadTasks);
+
+        IReadOnlyList<StorageFolder> subfolders = await folder.GetFoldersAsync();
+        foreach (StorageFolder subfolder in subfolders)
+        {
+            string subfolderPath = $"{relativeFolderPath}/{subfolder.Name}";
+            await UploadFolderInternalAsync(subfolder, cloudFolder.Id, subfolderPath, totalSize, tracker, progress, detailProgress, uploadSemaphore, cancellationToken);
+        }
+
+        return cloudFolder;
+    }
+
+    private class UploadProgressTracker
+    {
+        public long UploadedSize;
+    }
+
+    private static void ReportOverallProgress(IProgress<long> progress, ulong totalSize, long uploadedSize)
+    {
+        if (totalSize == 0)
+        {
+            return;
+        }
+
+        long percent = (long)(Math.Min(uploadedSize, (long)totalSize) * 100.0 / totalSize);
+        progress?.Report(percent);
     }
 
     public async Task<OneDriveResult<string>> CreateLink(string itemId, DateTimeOffset? expirationDateTime = null, string password = null, string type = "view")

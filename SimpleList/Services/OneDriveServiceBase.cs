@@ -28,6 +28,10 @@ public abstract class OneDriveServiceBase
                 OneDriveErrorType.InvalidRequest, 
                 validationEx);
         }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             return HandleException<T>(ex);

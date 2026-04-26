@@ -21,5 +21,6 @@
         ItemTemplate="{StaticResource ListItemTemplate}"
         SelectionMode="Extended"
         SelectionChanged="ChangeSelectedFiles"
+        VerticalAlignment="Stretch"
     />
 </UserControl>

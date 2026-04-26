@@ -12,15 +12,23 @@ namespace SimpleList.Services
         public static async Task<ulong> GetFolderSize(StorageFolder folder)
         {
             ulong res = 0;
-            foreach (StorageFile file in await folder.GetFilesAsync())
+            // Use try/catch to skip files/folders we don't have access to
+            try
             {
-                Windows.Storage.FileProperties.BasicProperties properties = await file.GetBasicPropertiesAsync();
-                res += properties.Size;
-            }
+                foreach (StorageFile file in await folder.GetFilesAsync())
+                {
+                    Windows.Storage.FileProperties.BasicProperties properties = await file.GetBasicPropertiesAsync();
+                    res += properties.Size;
+                }
 
-            foreach (StorageFolder subFolder in await folder.GetFoldersAsync())
+                foreach (StorageFolder subFolder in await folder.GetFoldersAsync())
+                {
+                    res += await GetFolderSize(subFolder);
+                }
+            }
+            catch (Exception)
             {
-                res += await GetFolderSize(subFolder);
+                // Ignore errors
             }
             return res;
         }

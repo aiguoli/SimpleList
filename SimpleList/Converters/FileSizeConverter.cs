@@ -6,47 +6,44 @@ namespace SimpleList.Converters
     public class FileSizeConverter : IValueConverter
     {
         public static readonly FileSizeConverter Instance = new();
+        
+        // Optimize: Use static array for units to avoid repeated allocations and ifs
+        private static readonly string[] _units = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is long size)
+            double dValue;
+
+            // Unify type handling by converting to double
+            if (value is long l)
             {
-                if (size == 0) return "";
-                if (size < 1024)
-                {
-                    return size.ToString("F0") + " bytes";
-                }
-
-                if (size >> 10 < 1024)
-                {
-                    return (size / 1024F).ToString("F1") + " KB";
-                }
-
-                if (size >> 20 < 1024)
-                {
-                    return ((size >> 10) / 1024F).ToString("F1") + " MB";
-                }
-
-                if (size >> 30 < 1024)
-                {
-                    return ((size >> 20) / 1024F).ToString("F1") + " GB";
-                }
-
-                if (size >> 40 < 1024)
-                {
-                    return ((size >> 30) / 1024F).ToString("F1") + " TB";
-                }
-
-                if (size >> 50 < 1024)
-                {
-                    return ((size >> 40) / 1024F).ToString("F1") + " PB";
-                }
-
-                return ((size >> 50) / 1024F).ToString("F1") + " EB";
+                dValue = l;
+            }
+            else if (value is ulong ul)
+            {
+                dValue = ul;
+            }
+            else if (value is double d)
+            {
+                dValue = d;
+            }
+            else
+            {
+                return "";
             }
 
-            return "";
-        }
+            // Original logic returns empty string for 0
+            if (dValue == 0) return "";
 
+            int unitIndex = 0;
+            while (dValue >= 1024 && unitIndex < _units.Length - 1)
+            {
+                dValue /= 1024;
+                unitIndex++;
+            }
+
+            return $"{dValue.ToString(unitIndex == 0 ? "F0" : "F1")} {_units[unitIndex]}";
+        }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {

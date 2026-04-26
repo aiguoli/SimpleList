@@ -150,6 +150,15 @@
   <data name="CloudPage_Refresh.Text" xml:space="preserve">
     <value>刷新</value>
   </data>
+  <data name="CloudPage_Upload.Text" xml:space="preserve">
+    <value>上传</value>
+  </data>
+  <data name="CloudPage_UploadFolder.Text" xml:space="preserve">
+    <value>上传文件夹</value>
+  </data>
+  <data name="CloudPage_UploadFile.Text" xml:space="preserve">
+    <value>上传文件</value>
+  </data>
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>你的网盘</value>
   </data>
@@ -441,10 +450,31 @@
   <data name="TaskManagerPage_StartUploadDesc" xml:space="preserve">
     <value>准备上传文件：{0}</value>
   </data>
+  <data name="TaskManagerPage_Details.Content" xml:space="preserve">
+    <value>查看详情</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailsTitle" xml:space="preserve">
+    <value>上传详情：{0}</value>
+  </data>
+  <data name="TaskManagerPage_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailStatus_Pending" xml:space="preserve">
+    <value>等待上传</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailStatus_Uploading" xml:space="preserve">
+    <value>上传中</value>
+  </data>
+  <data name="TaskManagerPage_UploadDetailStatus_Completed" xml:space="preserve">
+    <value>已完成</value>
+  </data>
   <data name="TaskManagerPage_Upload" xml:space="preserve">
     <value>开始上传</value>
   </data>
-  <data name="TaskManagerPage_UploadComplted.Text" xml:space="preserve">
+  <data name="TaskManagerPage_UploadCompleted.Text" xml:space="preserve">
+    <value>上传完成</value>
+  </data>
+  <data name="TaskManager_UploadCompleted.Text" xml:space="preserve">
     <value>上传完成</value>
   </data>
   <data name="UnknownError" xml:space="preserve">

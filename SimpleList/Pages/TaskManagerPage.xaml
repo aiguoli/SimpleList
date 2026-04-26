@@ -5,16 +5,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:cv="using:SimpleList.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:TaskManagerViewModel}">
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <Grid.Resources>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Collapsed" FalseValue="Visible" />
             <converters:FileSizeToFriendlyStringConverter x:Key="FileSizeToFriendlyStringConverter" />
+            <cv:FileSizeConverter x:Key="MyFileSizeConverter" />
             <DataTemplate x:Key="DownloadTaskTemplate" x:DataType="vm:DownloadTaskViewModel">
                 <Grid Margin="0 10 0 10">
                     <Grid.ContextFlyout>
@@ -59,7 +61,8 @@
                 <Grid Margin="0 10 0 10">
                     <Grid.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Uid="TaskManagerPage_Resume" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_Resume" Command="{Binding ResumeCommand}" IsEnabled="{Binding IsPaused}" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_Remove" Command="{Binding CancelTaskCommand}" />
                         </MenuFlyout>
                     </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
@@ -68,17 +71,61 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Name}" FontSize="20" Margin="0 5 0 5" />
-                        <ProgressBar Value="{Binding Progress}" Visibility="{Binding Completed, Converter={StaticResource BoolToObjectConverter}}" />
-                        <TextBlock x:Uid="TaskManagerPage_UploadComplted" Visibility="{Binding Completed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <ProgressBar Value="{Binding ProgressValue}" Visibility="{Binding Completed, Converter={StaticResource BoolToObjectConverter}}" />
+                        <TextBlock Visibility="{Binding Completed, Converter={StaticResource BoolToObjectConverter}}">
+                            <Run Text="{Binding UploadedBytes, Converter={StaticResource MyFileSizeConverter}}" />
+                            <Run Text=" / " />
+                            <Run Text="{Binding TotalBytes, Converter={StaticResource MyFileSizeConverter}}" />
+                            <Run Text=" (" />
+                            <Run Text="{Binding ProgressPercentText}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding CompletedText}" Visibility="{Binding Completed, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 0">
+                        <Button
+                            x:Uid="TaskManagerPage_Details"
+                            Margin="0 0 10 0"
+                            Visibility="{Binding IsFolder, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Click="ShowUploadDetails_Click"
+                            Tag="{Binding}" />
                         <Button Margin="0 0 10 0" Visibility="{Binding IsUploading, Converter={StaticResource BoolToVisibilityConverter}}" Command="{Binding PauseCommand}">
-                            <!--Pasue icon-->
+                            <!--Pause icon-->
                             <FontIcon Glyph="&#xE769;" FontSize="10" />
                         </Button>
-                        <Button Command="{Binding CancelCommand}">
+                        <Button Margin="0 0 10 0" Visibility="{Binding IsPaused, Converter={StaticResource BoolToVisibilityConverter}}" Command="{Binding ResumeCommand}">
+                            <!--Resume icon-->
+                            <FontIcon Glyph="&#xE768;" FontSize="10" />
+                        </Button>
+                        <Button Command="{Binding CancelTaskCommand}">
+                            <!--Cancel icon-->
                             <FontIcon Glyph="&#xE711;" FontSize="10" />
                         </Button>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="UploadDetailTemplate" x:DataType="vm:UploadFileProgressViewModel">
+                <Grid Margin="0 8 0 8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding FilePath}" TextWrapping="Wrap" />
+                    <TextBlock Grid.Column="1" Text="{Binding StatusText}" VerticalAlignment="Center" Opacity="0.8" Margin="12 0 0 0" />
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <ProgressBar Width="240" Value="{Binding ProgressValue}" />
+                        <TextBlock>
+                            <Run Text="{Binding UploadedBytes, Converter={StaticResource MyFileSizeConverter}}" />
+                            <Run Text=" / " />
+                            <Run Text="{Binding TotalBytes, Converter={StaticResource MyFileSizeConverter}}" />
+                            <Run Text=" (" />
+                            <Run Text="{Binding ProgressValue}" />
+                            <Run Text="%)" />
+                        </TextBlock>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
