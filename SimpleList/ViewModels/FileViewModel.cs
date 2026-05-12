@@ -21,7 +21,7 @@ public partial class FileViewModel : ObservableObject
     {
         Drive = drive;
         _file = file;
-        ItemType = IsFile ? "File" : "Folder";
+        ItemType = IsFile ? Helpers.ResourceHelper.GetLocalized("ItemType_File") : Helpers.ResourceHelper.GetLocalized("ItemType_Folder");
     }
 
     [RelayCommand]

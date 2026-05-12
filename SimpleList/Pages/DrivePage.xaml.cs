@@ -17,9 +17,12 @@ namespace SimpleList.Pages
 {
     public sealed partial class DrivePage : Page
     {
+        public DriveViewModel ViewModel => DataContext as DriveViewModel;
+
         public DrivePage()
         {
             InitializeComponent();
+            this.DataContextChanged += (s, e) => Bindings.Update();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -155,10 +158,15 @@ namespace SimpleList.Pages
             }
         }
 
-        private void SplitButton_Click(object sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs e)
+        private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args)
         {
             // Default action - upload files
             ShowUploadFileDialogAsync(sender, new RoutedEventArgs());
+        }
+
+        private void SplitButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowUploadFileDialogAsync(sender, e);
         }
     }
 }

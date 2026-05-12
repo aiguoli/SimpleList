@@ -18,7 +18,8 @@
     <TextBox 
         x:Uid="CreateFolderView_Label" 
         Name="NewFolderName"
-        Text="{Binding FolderName, Mode=TwoWay}"
+        Text="{Binding FolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
         TextChanged="NewFolderName_TextChanged"
+        KeyDown="NewFolderName_KeyDown"
     />
 </ContentDialog>

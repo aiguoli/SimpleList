@@ -50,7 +50,6 @@ public partial class App : Application
             LogError("UI Thread Exception", sender, args.Exception);
             args.Handled = true;
         };
-        LogError("UI Thread Exception", new object { }, new Exception());
     }
 
     public static void LogError(string title, object sender, Exception exception)
@@ -71,8 +70,24 @@ public partial class App : Application
             Title = Assembly.GetEntryAssembly().GetName().Name,
         };
 
-        GetThemeService?.Initialize(m_window, true, "theme.json");
         m_window.Activate();
+        m_window.DispatcherQueue.TryEnqueue(() =>
+        {
+            var themeService = GetThemeService;
+            if (themeService != null)
+            {
+                themeService.Initialize(m_window, true, "theme.json");
+
+                string cfgMaterial = Configuration.GetSection("Material").Value;
+                string cfgTheme = Configuration.GetSection("Theme").Value;
+
+                var backdropType = Enum.TryParse(cfgMaterial, out BackdropType parsedBackdrop) ? parsedBackdrop : BackdropType.Mica;
+                var elementTheme = Enum.TryParse(cfgTheme, out ElementTheme parsedTheme) ? parsedTheme : ElementTheme.Default;
+
+                themeService.ConfigBackdrop(backdropType);
+                themeService.ConfigElementTheme(elementTheme);
+            }
+        });
         //string selectedTheme = Configuration.GetSection("Theme").Value;
         //ThemeHelper.RootTheme = Enum.TryParse(selectedTheme, out ElementTheme theme) ? theme : ElementTheme.Default;
 
@@ -89,12 +104,11 @@ public partial class App : Application
     private ServiceProvider ConfigureServices()
     {
         LoadSettings();
-        MsalCacheHelper CacheHelper = GetCacheHelper().GetAwaiter().GetResult();
         var services = new ServiceCollection();
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<TaskManagerViewModel>();
-        services.AddSingleton(CacheHelper);
-        services.AddSingleton(BuildPublicApp());
+        services.AddSingleton<Task<MsalCacheHelper>>(sp => GetCacheHelper());
+        services.AddSingleton<IPublicClientApplication>(sp => BuildPublicApp());
         return services.BuildServiceProvider();
     }
 

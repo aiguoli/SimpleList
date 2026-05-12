@@ -10,9 +10,12 @@ namespace SimpleList.Views.Layout
 {
     public sealed partial class ColumnCloudView : UserControl
     {
+        public DriveViewModel ViewModel => DataContext as DriveViewModel;
+
         public ColumnCloudView()
         {
             InitializeComponent();
+            this.DataContextChanged += (s, e) => Bindings.Update();
         }
 
         private void ChangeSelectedFiles(object sender, SelectionChangedEventArgs e)

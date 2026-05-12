@@ -468,22 +468,16 @@
   <data name="UnknownError" xml:space="preserve">
     <value>Unknown Error</value>
   </data>
-  <data name="CanNotNull" xml:space="preserve">
-    <value> cannot be empty</value>
+  <data name="SelectionStatus_Total" xml:space="preserve">
+    <value>Total {0} items</value>
   </data>
-  <data name="FilenameIllegal" xml:space="preserve">
-    <value>Illegal filename {0}</value>
+  <data name="SelectionStatus_Selected" xml:space="preserve">
+    <value>Selected {0} items, Total {1} items</value>
   </data>
-  <data name="PropertyViews_Filename.Text" xml:space="preserve">
-    <value>Filename</value>
+  <data name="ItemType_File" xml:space="preserve">
+    <value>File</value>
   </data>
-  <data name="PropertyViews_Size.Text" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="PropertyViews_Updated.Text" xml:space="preserve">
-    <value>Updated</value>
-  </data>
-  <data name="PropertyViews_ChildrenCount.Text" xml:space="preserve">
-    <value>ChildrenCount</value>
+  <data name="ItemType_Folder" xml:space="preserve">
+    <value>Folder</value>
   </data>
 </root>

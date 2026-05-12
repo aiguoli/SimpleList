@@ -74,12 +74,14 @@ namespace SimpleList.Services
 
         public static FileType GetFileType(string ext)
         {
+            if (string.IsNullOrEmpty(ext)) return FileType.Unknown;
+            
             return ext.ToLower() switch
             {
                 ".txt" => FileType.Text,
                 ".md" => FileType.Markdown,
-                string img when ImageType.Contains(img) => FileType.Image,// https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image?view=windows-app-sdk-1.4#image-file-formats
-                string media when MediaType.Contains(media) => FileType.Media,
+                ".png" or ".jpg" or ".jpeg" or ".bmp" or ".gif" or ".tiff" or ".ico" or ".svg" => FileType.Image,
+                ".mp3" or ".mp4" or ".wma" or ".3gp" or ".aac" or ".flac" or ".wax" or ".wav" or ".wmx" or ".wpl" or ".avi" => FileType.Media,
                 _ => FileType.Unknown,
             };
         }
@@ -97,6 +99,6 @@ namespace SimpleList.Services
         }
 
         public static readonly string[] ImageType = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".ico", ".svg" };
-        public static readonly string[] MediaType = { "mp3", ".mp4", ".wma", ".3gp", ".aac", ".flac", ".wax", ".wav", ".wmx", ".wpl", ".avi" };
+        public static readonly string[] MediaType = { ".mp3", ".mp4", ".wma", ".3gp", ".aac", ".flac", ".wax", ".wav", ".wmx", ".wpl", ".avi" };
     }
 }

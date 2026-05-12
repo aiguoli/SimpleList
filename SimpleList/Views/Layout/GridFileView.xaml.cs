@@ -14,9 +14,12 @@ namespace SimpleList.Views.Layout
 {
     public sealed partial class GridFileView : UserControl
     {
+        public FileViewModel ViewModel => DataContext as FileViewModel;
+
         public GridFileView()
         {
             InitializeComponent();
+            this.DataContextChanged += (s, e) => Bindings.Update();
         }
 
         private async void ShowRenameFileDialogAsync(object sender, RoutedEventArgs e)
