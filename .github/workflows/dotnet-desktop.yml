@@ -49,7 +49,7 @@ jobs:
         
     - uses: actions/setup-dotnet@v4
       with:
-       dotnet-version: '8.0.x'
+        dotnet-version: '10.0.x'
 
     # Add CommunityToolkit Labs and Main nuget sources
     - run: |
@@ -77,7 +77,7 @@ jobs:
     # Building with configured commands
     - run: |
         $runtimeIdentifier = "${{ matrix.platform }}"
-      dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-$($runtimeIdentifier.ToLower()) /p:GITHUB_ACTIONS=true -p:Platform=${{ matrix.platform }} -p:PublishFlavor=${{ matrix.publish_flavor }} -p:PublishAot=${{ env.PUBLISH_AOT }} --output ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}/${{ matrix.publish_flavor }}
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-$($runtimeIdentifier.ToLower()) /p:GITHUB_ACTIONS=true -p:Platform=${{ matrix.platform }} -p:PublishFlavor=${{ matrix.publish_flavor }} -p:PublishAot=${{ env.PUBLISH_AOT }} --output ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}/${{ matrix.publish_flavor }}
 
     # Zipping folder and all files
     - uses: vimtor/action-zip@v1.2
