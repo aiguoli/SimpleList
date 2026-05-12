@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using SimpleList.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -20,9 +21,12 @@ namespace SimpleList.Views.Layout
 {
     public sealed partial class GridCloudView : UserControl
     {
+        public DriveViewModel ViewModel => DataContext as DriveViewModel;
+
         public GridCloudView()
         {
             this.InitializeComponent();
+            this.DataContextChanged += (s, e) => Bindings.Update();
         }
     }
 }

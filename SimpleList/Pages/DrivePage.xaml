@@ -48,12 +48,12 @@
             IsIndeterminate="True"
             ShowError="False"
             ShowPaused="False"
-            Visibility="{Binding IsLoading}" />
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
         <RelativePanel Grid.Row="1" Margin="10,5,10,5">
             <BreadcrumbBar
                 x:Name="BreadcrumbBar"
                 ItemClicked="BreadcrumbBar_ItemClicked"
-                ItemsSource="{Binding BreadcrumbItems}"
+                ItemsSource="{x:Bind ViewModel.BreadcrumbItems, Mode=OneWay}"
                 KeyboardAcceleratorPlacementMode="Hidden">
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate x:DataType="models:BreadcrumbItem">
@@ -86,19 +86,19 @@
                         FontSize="14"
                         Glyph="&#xE721;" />
                 </Button>
-                <SplitButton Margin="0,0,5,0" Click="SplitButton_Click" ToolTipService.ToolTip="上传文件">
+                <Button Margin="0,0,5,0" Click="SplitButton_Click" ToolTipService.ToolTip="上传文件">
                     <FontIcon
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         FontSize="14"
                         Glyph="&#xE898;" />
-                    <SplitButton.Flyout>
+                    <Button.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem x:Uid="CloudPage_UploadFile" Click="ShowUploadFileDialogAsync" />
                             <MenuFlyoutItem x:Uid="CloudPage_UploadFolder" Click="ShowUploadFolderDialogAsync" />
                         </MenuFlyout>
-                    </SplitButton.Flyout>
-                </SplitButton>
+                    </Button.Flyout>
+                </Button>
                 <Button Margin="0,0,5,0" Click="CreateFolderDialogAsync" ToolTipService.ToolTip="新建文件夹">
                     <FontIcon
                         HorizontalAlignment="Right"
@@ -106,7 +106,7 @@
                         FontSize="14"
                         Glyph="&#xE8F4;" />
                 </Button>
-                <Button x:Name="RefreshButton" Command="{Binding RefreshCommand}" ToolTipService.ToolTip="刷新">
+                <Button x:Name="RefreshButton" Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}" ToolTipService.ToolTip="刷新">
                     <FontIcon
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
@@ -128,7 +128,7 @@
             Drop="DropToUpload">
             <ContentControl.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem x:Uid="CloudPage_Refresh" Command="{Binding RefreshCommand}">
+                    <MenuFlyoutItem x:Uid="CloudPage_Refresh" Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}">
                         <MenuFlyoutItem.KeyboardAccelerators>
                             <KeyboardAccelerator Key="F5" />
                         </MenuFlyoutItem.KeyboardAccelerators>
@@ -167,6 +167,14 @@
                 </MenuFlyout>
             </ContentControl.ContextFlyout>
         </ContentControl>
+        <TextBlock 
+            Grid.Row="2" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Bottom" 
+            Margin="0,0,20,30" 
+            Foreground="Black" 
+            IsHitTestVisible="False" 
+            Text="{x:Bind ViewModel.SelectionStatus, Mode=OneWay}" />
         <StackPanel
             Grid.Row="2" 
             MinHeight="250"

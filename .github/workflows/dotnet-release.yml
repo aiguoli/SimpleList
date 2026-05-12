@@ -21,12 +21,7 @@ env:
 
   # Configuring Dotnet Build Commands
   PUBLISH_OUTPUT_FOLDER: Publish
-  PUBLISH_SELF_CONTAINED: false
-  PUBLISH_SINGLE_FILE: false
-  PUBLISH_READY_TO_RUN: false
   PUBLISH_AOT: false # currently only Console App Supported
-  PUBLISH_TRIMMED: false
-  PUBLISH_TRIM_MODE: partial # or full
 
   # Configuring GitHub Release
   IS_PRE_RELEASE: false
@@ -44,6 +39,7 @@ jobs:
     strategy:
       matrix:
         platform: [x64, x86, arm64] # Change platform if you want to build only a specific platform
+        publish_flavor: [Portable, Slim]
 
     steps:
     - uses: actions/checkout@v4
@@ -80,20 +76,20 @@ jobs:
     # Building with configured commands
     - run: |
         $runtimeIdentifier = "${{ matrix.platform }}"
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-$($runtimeIdentifier.ToLower()) /p:GITHUB_ACTIONS=true -p:Platform=${{ matrix.platform }} --self-contained ${{ env.PUBLISH_SELF_CONTAINED }} -p:PublishSingleFile=${{ env.PUBLISH_SINGLE_FILE }} -p:PublishReadyToRun=${{ env.PUBLISH_READY_TO_RUN }} -p:PublishTrimmed=${{ env.PUBLISH_TRIMMED }} -p:TrimMode=${{ env.PUBLISH_TRIM_MODE }} -p:PublishAot=${{ env.PUBLISH_AOT }} --output ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}
+      dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-$($runtimeIdentifier.ToLower()) /p:GITHUB_ACTIONS=true -p:Platform=${{ matrix.platform }} -p:PublishFlavor=${{ matrix.publish_flavor }} -p:PublishAot=${{ env.PUBLISH_AOT }} --output ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}/${{ matrix.publish_flavor }}
 
     # Zipping folder and all files
     - uses: vimtor/action-zip@v1.2
       with:
-        files: ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}
+        files: ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}/${{ matrix.publish_flavor }}
         recursive: true
-        dest: ${{ env.APP_NAME }}-v${{ steps.get-version.outputs.version }}-${{ matrix.platform }}.zip
+        dest: ${{ env.APP_NAME }}-v${{ steps.get-version.outputs.version }}-${{ matrix.platform }}-${{ matrix.publish_flavor }}.zip
 
     # Uploading all zip files to access them in the 'release' job
     - uses: actions/upload-artifact@v4
       with:
-        name: artifacts-${{ matrix.platform }}
-        path: ${{ env.APP_NAME }}-v${{ steps.get-version.outputs.version }}-${{ matrix.platform }}.zip
+        name: artifacts-${{ matrix.platform }}-${{ matrix.publish_flavor }}
+        path: ${{ env.APP_NAME }}-v${{ steps.get-version.outputs.version }}-${{ matrix.platform }}-${{ matrix.publish_flavor }}.zip
 
     # Checking version suffix for words like [alpha, beta, preview, and experiment]. Marking the release as a pre-release if any exists.
     - run: |
@@ -153,12 +149,33 @@ jobs:
       # Installing a package for generating a changelog file
       - run: npm install -g auto-changelog  
       - run: auto-changelog --tag-pattern .+ --commit-limit false --starting-version v${{ env.APP_VERSION }} --ending-version v${{ env.APP_VERSION }} --hide-credit  
+
+      # Compose bilingual release notes with flavor explanation + changelog
+      - run: |
+          cat > RELEASE_BODY.md <<'EOF'
+          ## Package Flavors / 安装包版本说明
+
+          - **Portable**: Self-contained package. No preinstalled .NET runtime required. Larger size.
+          - **Slim**: Framework-dependent package. Smaller size, but requires runtime dependencies on target machine.
+
+          - **Portable（便携版）**：自包含版本，通常不需要预装 .NET 运行时，体积较大。
+          - **Slim（轻量版）**：依赖运行时版本，体积更小，但目标机器需满足运行时依赖。
+
+          ### Artifact Naming / 产物命名
+
+          - `YOUR_APP_NAME-vVERSION-PLATFORM-Portable.zip`
+          - `YOUR_APP_NAME-vVERSION-PLATFORM-Slim.zip`
+
+          ---
+
+          EOF
+          cat CHANGELOG.md >> RELEASE_BODY.md
       
       # Creating a Release in GitHub
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "${{ env.APP_NAME }}-v${{ env.APP_VERSION }}-*.zip"
-          bodyFile: "CHANGELOG.md"
+          bodyFile: "RELEASE_BODY.md"
           name: v${{ env.APP_VERSION }}
           tag: v${{ env.APP_VERSION }}
           prerelease: ${{ env.IS_PRE_RELEASE }}

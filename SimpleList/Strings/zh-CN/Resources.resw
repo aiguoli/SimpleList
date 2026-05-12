@@ -62,7 +62,7 @@
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
+      <xsd:complexType> 
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
@@ -480,10 +480,14 @@
   <data name="UnknownError" xml:space="preserve">
     <value>未知错误</value>
   </data>
-  <data name="UploadFileFail" xml:space="preserve">
-    <value>文件上传失败</value>
+  <data name="SelectionStatus_Total" xml:space="preserve">
+    <value>共 {0} 条</value>
   </data>
-  <data name="UploadFolderFail" xml:space="preserve">
-    <value>文件夹上传失败</value>
+  <data name="SelectionStatus_Selected" xml:space="preserve">
+    <value>已选中 {0} 条，共 {1} 条</value>
+  </data>  <data name="ItemType_File" xml:space="preserve">
+    <value>文件</value>
   </data>
-</root>
+  <data name="ItemType_Folder" xml:space="preserve">
+    <value>文件夹</value>
+  </data></root>

@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -15,6 +16,20 @@ namespace SimpleList.Views
         private void NewFolderName_TextChanged(object sender, TextChangedEventArgs e)
         {
             IsPrimaryButtonEnabled = !string.IsNullOrEmpty(NewFolderName.Text);
+        }
+
+        private void NewFolderName_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter && IsPrimaryButtonEnabled)
+            {
+                var vm = DataContext as ViewModels.CreateFolderViewModel;
+                if (vm?.CreateFolderCommand.CanExecute(null) == true)
+                {
+                    vm.CreateFolderCommand.Execute(null);
+                    this.Hide();
+                }
+                e.Handled = true;
+            }
         }
     }
 }

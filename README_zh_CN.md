@@ -1,44 +1,96 @@
 # SimpleList
 
-[English](./README.md) | ¼òÌåÖĞÎÄ
+[English](./README.md) | ç®€ä½“ä¸­æ–‡
 
 ![simplelist](https://socialify.git.ci/aiguoli/simplelist/image?description=1&font=Raleway&language=1&name=1&stargazers=1&theme=Light)
 
-OneDriveÁĞ±í³ÌĞò£¬Ê¹ÓÃWinUI3¿ª·¢
+SimpleList æ˜¯ä¸€ä¸ªä½¿ç”¨ WinUI3 å¼€å‘çš„ OneDrive æ–‡ä»¶ç´¢å¼•åº”ç”¨ã€‚
 
-# Ê¹ÓÃ·½·¨
+# ä½¿ç”¨
 
-½âÑ¹ºóË«»÷´ò¿ª
+è§£å‹ååŒå‡»è¿è¡Œã€‚
 
-# ÅäÖÃ
+# å‘å¸ƒç‰ˆæœ¬è¯´æ˜
 
-ĞŞ¸Ä`SimpleList/appsettings.json`¿ÉÒÔ×Ô¶¨ÒåClientIDµÈÅäÖÃ¡£ 
+GitHub Release æä¾›ä¸¤ç§å®‰è£…åŒ…ï¼š
 
-# ¹¦ÄÜ
+| ç‰ˆæœ¬ | è¯´æ˜ | å…¸å‹ä½“ç§¯ | é€‚ç”¨åœºæ™¯ |
+| --- | --- | --- | --- |
+| Portable | è‡ªåŒ…å«ç‰ˆæœ¬ï¼ˆself-containedï¼‰ï¼Œç›®æ ‡æœºå™¨é€šå¸¸ä¸éœ€è¦é¢„è£… .NET è¿è¡Œæ—¶ã€‚ | è¾ƒå¤§ | å¸Œæœ›å¼€ç®±å³ç”¨çš„ç”¨æˆ· |
+| Slim | ä¾èµ–è¿è¡Œæ—¶ç‰ˆæœ¬ï¼ˆframework-dependentï¼‰ï¼Œç›®æ ‡æœºå™¨éœ€è¦æ»¡è¶³ .NET/Windows App SDK è¿è¡Œæ—¶ä¾èµ–ã€‚ | è¾ƒå° | æ›´åœ¨æ„ä¸‹è½½ä½“ç§¯çš„ç”¨æˆ· |
 
-- [x] ÁĞ±í
-- [x] ÏÂÔØ
-- [x] ¹²Ïí
-- [x] Ô¤ÀÀ
-- [x] ÏÂÔØ½ø¶È
-- [x] ÉÏ´«
-- [ ] ×Ô¶¯Í¬²½
-- [x] ÖØÃüÃû
-- [x] É¾³ı
-- [x] ÊôĞÔ
-- [x] ×ÜÓÃÁ¿
-- [x] ×ª»»ÎªPDFÎÄ¼ş
-- [ ] ĞÂtab´ò¿ª
-- [ ] ×Ô¶¨ÒåÖ÷Ìâ
-- [x] ¶àÕË»§
-- [x] ¶àÓïÑÔ
-- [x] ¹¤¾ßÒ³ 
+æ¯ä¸ªå¹³å°éƒ½ä¼šäº§å‡ºä¸¤ç±»å‹ç¼©åŒ…ï¼š
 
-# ¼¼ÊõÑ¡ĞÍ
+- `SimpleList-vVERSION-x64-Portable.zip`
+- `SimpleList-vVERSION-x64-Slim.zip`
 
-WinForms£¬WPFÌ«ÀÏÁË£¬Avalonia¿ÓÌ«¶àÁËÓÃ²»Ã÷°×£¬HTML+CSS+JSµÄ¿ò¼ÜÓÖÌ«´ó£¬IcedºÍSlintÉúÌ¬²»ÖªµÀÔõÑù£¬²»¸ÒÉÏÊÖ£¬ËìÑ¡ÓÃWinUI3£¬·¢ÏÖĞ´ÆğÀ´ºÜË¬£¬ÎÄµµÒ²±È½ÏÍêÕû¡£µÚÒ»´ÎĞ´×ÀÃæ¶ËºÍWinUI3£¬È¨µ±Á·ÊÖÏîÄ¿ÁË¡£
+## æœ¬åœ°å‘å¸ƒå‘½ä»¤ç¤ºä¾‹
 
-# ½ØÍ¼£¨¿ÉÄÜ²»ÊÇ×îĞÂ°æ±¾£©
+Portableï¼ˆè‡ªåŒ…å«ï¼‰:
+
+```powershell
+dotnet publish .\SimpleList\SimpleList.csproj -c Release -r win-x64 -p:PublishFlavor=Portable
+```
+
+Slimï¼ˆè½»é‡ï¼‰:
+
+```powershell
+dotnet publish .\SimpleList\SimpleList.csproj -c Release -r win-x64 -p:PublishFlavor=Slim
+```
+
+# ä¸ä¸Šçº¿éªŒè¯ CI çš„æ–¹æ³•
+
+ä½ å¯ä»¥åœ¨æœ¬åœ°å…ˆéªŒè¯ workflowï¼Œå†å†³å®šæ˜¯å¦æ¨é€ã€‚
+
+## 1) æ ¡éªŒ workflow è¯­æ³•ä¸ Action ç”¨æ³•
+
+ä½¿ç”¨ actionlintï¼š
+
+```powershell
+docker run --rm -v "${PWD}:/repo" -w /repo rhysd/actionlint:latest
+```
+
+## 2) æœ¬åœ°æ¨¡æ‹Ÿ CI çš„å‘å¸ƒçŸ©é˜µ
+
+```powershell
+$platforms = @("x64", "x86", "arm64")
+$flavors = @("Portable", "Slim")
+foreach ($p in $platforms) {
+  foreach ($f in $flavors) {
+    dotnet publish .\SimpleList\SimpleList.csproj -c Release -r "win-$($p.ToLower())" -p:Platform=$p -p:PublishFlavor=$f
+  }
+}
+```
+
+## 3) æœ¬åœ°æ£€æŸ¥ Release æè¿°æ–‡ä»¶
+
+workflow ä¼šç”Ÿæˆ `RELEASE_BODY.md` å¹¶è¿½åŠ  `CHANGELOG.md`ã€‚å¯åœ¨æœ¬åœ°æ‰§è¡ŒåŒæ ·çš„è„šæœ¬ç‰‡æ®µï¼ˆGit Bash/WSLï¼‰å¹¶æ£€æŸ¥è¯¥æ–‡ä»¶å†…å®¹ï¼Œç¡®è®¤ä¸­è‹±è¯´æ˜ä¸å˜æ›´æ—¥å¿—ç¬¦åˆé¢„æœŸã€‚
+
+# è®¾ç½®
+
+ä¿®æ”¹ `SimpleList/appsettings.json` å¯è‡ªå®šä¹‰é…ç½®ã€‚
+
+# åŠŸèƒ½
+
+- [x] åˆ—è¡¨
+- [x] ä¸‹è½½
+- [x] åˆ†äº«
+- [x] é¢„è§ˆ
+- [x] ä¸‹è½½è¿›åº¦
+- [x] ä¸Šä¼ 
+- [ ] è‡ªåŠ¨åŒæ­¥
+- [x] é‡å‘½å
+- [x] åˆ é™¤
+- [x] å±æ€§
+- [x] æ€»å®¹é‡ä¿¡æ¯
+- [x] è½¬æ¢ä¸º PDF
+- [ ] æ–°æ ‡ç­¾é¡µæ‰“å¼€
+- [ ] è‡ªå®šä¹‰ä¸»é¢˜
+- [x] å¤šè´¦å·
+- [x] å›½é™…åŒ–
+- [x] å·¥å…·é¡µ
+
+# æˆªå›¾ï¼ˆå¯èƒ½ä¸æ˜¯æœ€æ–°ç‰ˆæœ¬ï¼‰
 
 ![HomePage](./ScreenShots/HomePage.png)
 ![CloudPage](./ScreenShots/CloudPage.png)

@@ -25,6 +25,29 @@ public partial class DriveViewModel : ObservableObject
         DisplayName = displayName ?? provider.DriveId;
         Provider = provider;
         BreadcrumbItems.Add(new BreadcrumbItem { Name = "RootFileName".GetLocalized(), ItemId = "Root" });
+        SelectedItems.CollectionChanged += (s, e) => UpdateSelectionStatus();
+        Files.CollectionChanged += (s, e) => UpdateSelectionStatus();
+        UpdateSelectionStatus();
+    }
+
+    private void UpdateSelectionStatus()
+    {
+        int selectedCount = SelectedItems?.Count ?? 0;
+        int totalCount = Files?.Count ?? 0;
+        if (selectedCount == 0)
+        {
+            SelectionStatus = string.Format("SelectionStatus_Total".GetLocalized(), totalCount);
+        }
+        else
+        {
+            SelectionStatus = string.Format("SelectionStatus_Selected".GetLocalized(), selectedCount, totalCount);
+        }
+
+        // Trigger UI update using dispatcher thread if necessary
+        _dispatcher.TryEnqueue(() => 
+        {
+            OnPropertyChanged(nameof(SelectionStatus));
+        });
     }
 
     [RelayCommand]
@@ -159,6 +182,7 @@ public partial class DriveViewModel : ObservableObject
     private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
     [ObservableProperty] private Visibility _isLoading = Visibility.Collapsed;
     [ObservableProperty] private string _storageInfo;
+    [ObservableProperty] private string _selectionStatus;
 
     public ObservableCollection<FileViewModel> Files { get; } = [];
     public ObservableCollection<FileViewModel> Images { get; } = [];

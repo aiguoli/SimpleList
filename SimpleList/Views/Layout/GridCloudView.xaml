@@ -12,9 +12,10 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="GridItemTemplate" x:DataType="vm:FileViewModel">
-            <views:GridFileView DataContext="{Binding}" />
+            <!-- DataContext is established implicitly by the ListView, so we don't strictly need to pass it, but x:Bind ignores DataContext by default without a property. Still using Binding for DataContext is fine here. -->
+            <views:GridFileView DataContext="{x:Bind}" />
         </DataTemplate>
     </UserControl.Resources>
 
-    <GridView ItemsSource="{Binding Files}" ItemTemplate="{StaticResource GridItemTemplate}" />
+    <GridView ItemsSource="{x:Bind ViewModel.Files, Mode=OneWay}" ItemTemplate="{StaticResource GridItemTemplate}" />
 </UserControl>

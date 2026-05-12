@@ -475,12 +475,22 @@ public class OneDrive : OneDriveServiceBase
     {
         TokenProvider tokenProvider = new(async Task<string> (string[] scopes) =>
         {
-            IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
-
+            IAccount account = null;
+            if (!string.IsNullOrEmpty(HomeAccountId))
+            {
+                account = await PublicClientApp.GetAccountAsync(HomeAccountId).ConfigureAwait(false);
+            }
+            
+            if (account == null)
+            {
+                IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
+                account = accounts.FirstOrDefault(a => a.HomeAccountId.Identifier == HomeAccountId) ?? accounts.FirstOrDefault();
+            }
+            
             try
             {
                 authResult = await PublicClientApp
-                                .AcquireTokenSilent(scopes, accounts.First(account => account.HomeAccountId.Identifier == HomeAccountId))
+                                .AcquireTokenSilent(scopes, account)
                                 .ExecuteAsync();
             }
             catch (Exception exception) when (exception is MsalUiRequiredException || exception is InvalidOperationException)
@@ -508,7 +518,7 @@ public class OneDrive : OneDriveServiceBase
         BaseBearerTokenAuthenticationProvider authProvider = new(tokenProvider);
         graphClient = new(authProvider);
         await Task.FromResult(graphClient);
-        SaveTokenCache();
+        await SaveTokenCacheAsync();
         try
         {
             Drive driveItem = await graphClient.Me.Drive.GetAsync();
@@ -520,9 +530,10 @@ public class OneDrive : OneDriveServiceBase
         }
     }
 
-    public static void SaveTokenCache()
+    public static async Task SaveTokenCacheAsync()
     {
-        MsalCacheHelper cacheHelper = App.GetService<MsalCacheHelper>();
+        Task<MsalCacheHelper> cacheHelperTask = App.GetService<Task<MsalCacheHelper>>();
+        MsalCacheHelper cacheHelper = await cacheHelperTask.ConfigureAwait(false);
         cacheHelper.RegisterCache(PublicClientApp.UserTokenCache);
     }
 
