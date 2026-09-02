@@ -1,0 +1,89 @@
+name: Desktop CI
+
+on:
+  pull_request:
+    paths:
+      - 'SimpleList/**'
+      - 'SimpleList.Core/**'
+      - 'SimpleList.Tests/**'
+      - 'SimpleList.sln'
+      - '.github/workflows/dotnet-desktop.yml'
+      - '.github/workflows/dotnet-pr.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Add CommunityToolkit package sources
+        shell: pwsh
+        run: |
+          dotnet nuget add source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json --name CommunityToolkit-Labs
+          dotnet nuget add source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-MainLatest/nuget/v3/index.json --name CommunityToolkit-Main
+
+      - name: Restore
+        run: dotnet restore SimpleList.sln -p:Platform=x64
+
+      - name: Test
+        run: dotnet test SimpleList.Tests/SimpleList.Tests.csproj -c Debug -p:Platform=x64 --no-restore
+
+      - name: Build desktop app
+        run: dotnet build SimpleList/SimpleList.csproj -c Debug -p:Platform=x64 --no-restore
+
+      - name: Publish portable release (trimmed)
+        run: dotnet publish SimpleList/SimpleList.csproj -c Release -r win-x64 -p:Platform=x64 -p:PublishFlavor=Portable --output artifacts/win-x64-portable
+
+      - name: Publish slim release
+        run: dotnet publish SimpleList/SimpleList.csproj -c Release -r win-x64 -p:Platform=x64 -p:PublishFlavor=Slim --output artifacts/win-x64-slim
+
+      - name: Verify release contents
+        shell: pwsh
+        run: |
+          $requiredFiles = @(
+            'artifacts/win-x64-portable/SimpleList.exe',
+            'artifacts/win-x64-portable/appsettings.defaults.json',
+            'artifacts/win-x64-slim/SimpleList.exe',
+            'artifacts/win-x64-slim/SimpleList.dll',
+            'artifacts/win-x64-slim/appsettings.defaults.json'
+          )
+
+          foreach ($file in $requiredFiles) {
+            if (-not (Test-Path $file)) {
+              throw "Missing release file: $file"
+            }
+          }
+
+      - name: Upload portable build
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimpleList-win-x64-portable
+          path: |
+            artifacts/win-x64-portable/**
+            !artifacts/win-x64-portable/appsettings.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload slim build
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimpleList-win-x64-slim
+          path: |
+            artifacts/win-x64-slim/**
+            !artifacts/win-x64-slim/appsettings.json
+          if-no-files-found: error
+          retention-days: 7

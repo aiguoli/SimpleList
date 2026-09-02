@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList cloud concept A — Fluent Glass</title>
+  <desc id="desc">A luminous glass cloud with a connected list, designed as a dimensional Windows app icon.</desc>
+  <defs>
+    <linearGradient id="bg" x1="150" y1="110" x2="878" y2="930" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5EC8FF"/>
+      <stop offset=".48" stop-color="#5369F3"/>
+      <stop offset="1" stop-color="#8146D9"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="0" cy="0" r="1" gradientTransform="translate(324 226) rotate(48) scale(600)">
+      <stop stop-color="#FFFFFF" stop-opacity=".52"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cloud" x1="510" y1="245" x2="520" y2="724" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".97"/>
+      <stop offset=".62" stop-color="#F2F6FF" stop-opacity=".92"/>
+      <stop offset="1" stop-color="#C7D6FF" stop-opacity=".88"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="360" y1="420" x2="720" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3857D8"/>
+      <stop offset="1" stop-color="#6C42CA"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="330" y1="414" x2="350" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B7FFF0"/>
+      <stop offset="1" stop-color="#43DFCB"/>
+    </linearGradient>
+    <clipPath id="appClip"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath>
+    <filter id="cloudShadow" x="-25%" y="-25%" width="150%" height="165%">
+      <feDropShadow dx="0" dy="34" stdDeviation="28" flood-color="#182E85" flood-opacity=".36"/>
+    </filter>
+    <filter id="glyphShadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#263786" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#appClip)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#bg)"/>
+    <circle cx="286" cy="206" r="490" fill="url(#bgGlow)"/>
+    <ellipse cx="716" cy="864" rx="460" ry="235" fill="#4423A6" opacity=".18"/>
+  </g>
+  <path d="M282 719 C171 719 122 586 197 505 C227 472 269 456 316 459 C312 339 405 245 518 245 C609 245 685 300 714 382 C735 374 756 370 779 370 C871 370 944 445 944 537 C944 638 863 719 762 719 Z"
+        fill="url(#cloud)" stroke="#FFFFFF" stroke-opacity=".72" stroke-width="10" filter="url(#cloudShadow)"/>
+  <path d="M276 489 C311 460 354 450 402 454 C425 342 532 282 635 318"
+        fill="none" stroke="#FFFFFF" stroke-opacity=".52" stroke-width="21" stroke-linecap="round"/>
+  <g filter="url(#glyphShadow)">
+    <path d="M343 438 V635" stroke="url(#mint)" stroke-width="22" stroke-linecap="round"/>
+    <circle cx="343" cy="438" r="31" fill="url(#mint)" stroke="#FFFFFF" stroke-opacity=".65" stroke-width="5"/>
+    <circle cx="343" cy="536" r="31" fill="url(#mint)" stroke="#FFFFFF" stroke-opacity=".65" stroke-width="5"/>
+    <circle cx="343" cy="635" r="31" fill="url(#mint)" stroke="#FFFFFF" stroke-opacity=".65" stroke-width="5"/>
+    <rect x="405" y="409" width="347" height="58" rx="29" fill="url(#ink)"/>
+    <rect x="405" y="507" width="290" height="58" rx="29" fill="url(#ink)"/>
+    <rect x="405" y="606" width="224" height="58" rx="29" fill="url(#ink)"/>
+  </g>
+</svg>

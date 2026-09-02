@@ -3,27 +3,134 @@
     x:Class="SimpleList.Pages.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="using:SimpleList.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converter:FileSizeConverter x:Key="FileSizeConverter" />
+        <Style x:Key="TutorialCardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+        <Style x:Key="TutorialExpanderStyle" TargetType="Expander">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="IsExpanded" Value="False" />
+        </Style>
     </Page.Resources>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="1" x:Name="StorageText" FontSize="15" />
-        <StackPanel Orientation="Vertical" Grid.Row="2">
-            <TextBlock x:Uid="HomePage_QuickStart_Title" FontSize="25" />
-            <TextBlock 
-                x:Uid="HomePage_QuickStart_Content"
-                FontSize="16"
-                Margin="0 20 0 5" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel
+            MaxWidth="960"
+            Margin="24"
+            HorizontalAlignment="Stretch"
+            Spacing="16">
+
+            <StackPanel Spacing="6">
+                <TextBlock
+                    x:Uid="HomePage_Tutorial_Title"
+                    Style="{StaticResource TitleTextBlockStyle}" />
+                <TextBlock
+                    x:Uid="HomePage_Tutorial_Subtitle"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+
+            <Border Style="{StaticResource TutorialCardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        x:Uid="HomePage_QuickStart_Title"
+                        Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock x:Uid="HomePage_QuickStart_Step1" TextWrapping="Wrap" />
+                    <TextBlock x:Uid="HomePage_QuickStart_Step2" TextWrapping="Wrap" />
+                    <TextBlock x:Uid="HomePage_QuickStart_Step3" TextWrapping="Wrap" />
+                    <Button
+                        HorizontalAlignment="Left"
+                        Click="OpenDrives_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <SymbolIcon Symbol="Document" />
+                            <TextBlock x:Uid="HomePage_OpenDrives" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <InfoBar
+                x:Uid="HomePage_GoogleNotice"
+                IsClosable="False"
+                IsOpen="True"
+                Severity="Informational" />
+
+            <Expander Style="{StaticResource TutorialExpanderStyle}">
+                <Expander.Header>
+                    <TextBlock x:Uid="HomePage_OneDrive_Title" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                </Expander.Header>
+                <Border Margin="0,4,0,0" Style="{StaticResource TutorialCardStyle}">
+                    <TextBlock x:Uid="HomePage_OneDrive_Content" TextWrapping="Wrap" />
+                </Border>
+            </Expander>
+
+            <Expander Style="{StaticResource TutorialExpanderStyle}">
+                <Expander.Header>
+                    <TextBlock x:Uid="HomePage_GoogleDrive_Title" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                </Expander.Header>
+                <Border Margin="0,4,0,0" Style="{StaticResource TutorialCardStyle}">
+                    <StackPanel Spacing="10">
+                        <TextBlock x:Uid="HomePage_GoogleDrive_Prerequisites" TextWrapping="Wrap" />
+                        <TextBlock x:Uid="HomePage_ConfigPath_Label" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock
+                            Text="{x:Bind ConfigurationPath}"
+                            FontFamily="Consolas"
+                            IsTextSelectionEnabled="True"
+                            TextWrapping="Wrap" />
+                        <TextBlock x:Uid="HomePage_GoogleDrive_ConfigIntro" TextWrapping="Wrap" />
+                        <TextBox
+                            MinHeight="132"
+                            AcceptsReturn="True"
+                            FontFamily="Consolas"
+                            IsReadOnly="True"
+                            Text="{x:Bind GoogleConfigurationExample}"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            x:Uid="HomePage_GoogleDrive_Restart"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            x:Uid="HomePage_GoogleDrive_Limitations"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </Expander>
+
+            <Expander Style="{StaticResource TutorialExpanderStyle}">
+                <Expander.Header>
+                    <TextBlock x:Uid="HomePage_Local_Title" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                </Expander.Header>
+                <Border Margin="0,4,0,0" Style="{StaticResource TutorialCardStyle}">
+                    <TextBlock x:Uid="HomePage_Local_Content" TextWrapping="Wrap" />
+                </Border>
+            </Expander>
+
+            <Expander Style="{StaticResource TutorialExpanderStyle}">
+                <Expander.Header>
+                    <TextBlock x:Uid="HomePage_PikPak_Title" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                </Expander.Header>
+                <Border Margin="0,4,0,0" Style="{StaticResource TutorialCardStyle}">
+                    <StackPanel Spacing="10">
+                        <TextBlock x:Uid="HomePage_PikPak_Content" TextWrapping="Wrap" />
+                        <InfoBar
+                            x:Uid="HomePage_PikPak_Limitations"
+                            IsClosable="False"
+                            IsOpen="True"
+                            Severity="Warning" />
+                    </StackPanel>
+                </Border>
+            </Expander>
+
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Page>

@@ -1,23 +1,11 @@
 {
   "version": "0.2.0",
-  "configurations":[
+  "configurations": [
     {
-    "name": ".NET Core Launch (console)",
-    "type": "coreclr",
-    "request": "launch",
-    "preLaunchTask": "build",
-    // if target frameworks was changed, update program path.
-    "program": 
-      "${workspaceFolder}/SimpleList/bin/x64/Debug/net10.0-windows10.0.19041.0/win-x64/SimpleList.exe",
-    "args": [],
-    "cwd": "${workspaceFolder}/SimpleList",
-      // 'console' field https://aka.ms/VSCode-CS-LaunchJson-Console
-    "console": "internalConsole",
-    "stopAtEntry": false
-  },
-  {
-    "name": ".NET Core Attach",
-    "type": "coreclr",
-    "request": "attach"
-  }]
- }
+      "name": "Launch SimpleList",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/SimpleList/SimpleList.csproj"
+    }
+  ]
+}

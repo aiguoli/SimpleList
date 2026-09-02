@@ -40,34 +40,34 @@ namespace SimpleList.Services
                 if (size == 0) return "0";
                 if (size < 1024)
                 {
-                    return size.ToString("F0") + " bytes";
+                    return size.ToString("F0") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_Bytes");
                 }
 
                 if (size >> 10 < 1024)
                 {
-                    return (size / 1024F).ToString("F1") + " KB";
+                    return (size / 1024F).ToString("F1") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_KB");
                 }
 
                 if (size >> 20 < 1024)
                 {
-                    return ((size >> 10) / 1024F).ToString("F1") + " MB";
+                    return ((size >> 10) / 1024F).ToString("F1") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_MB");
                 }
 
                 if (size >> 30 < 1024)
                 {
-                    return ((size >> 20) / 1024F).ToString("F1") + " GB";
+                    return ((size >> 20) / 1024F).ToString("F1") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_GB");
                 }
 
                 if (size >> 40 < 1024)
                 {
-                    return ((size >> 30) / 1024F).ToString("F1") + " TB";
+                    return ((size >> 30) / 1024F).ToString("F1") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_TB");
                 }
 
                 if (size >> 50 < 1024)
                 {
-                    return ((size >> 40) / 1024F).ToString("F1") + " PB";
+                    return ((size >> 40) / 1024F).ToString("F1") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_PB");
                 }
-                return ((size >> 50) / 1024F).ToString("F1") + " EB";
+                return ((size >> 50) / 1024F).ToString("F1") + " " + Helpers.ResourceHelper.GetLocalized("FileSize_Unit_EB");
             }
             return "0";
         }

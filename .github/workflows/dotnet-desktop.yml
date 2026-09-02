@@ -3,6 +3,12 @@ name: SimpleList Release Publisher
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'SimpleList/**'
+      - 'SimpleList.Core/**'
+      - 'SimpleList.Tests/**'
+      - 'SimpleList.sln'
+      - '.github/workflows/dotnet-desktop.yml'
 
 permissions:
   contents: write
@@ -32,7 +38,29 @@ env:
   ARTIFACT_ERRORS_FAIL_BUILD: false
 
 jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Add CommunityToolkit package sources
+      shell: pwsh
+      run: |
+        dotnet nuget add source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json --name CommunityToolkit-Labs
+        dotnet nuget add source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-MainLatest/nuget/v3/index.json --name CommunityToolkit-Main
+
+    - name: Restore
+      run: dotnet restore SimpleList.sln -p:Platform=x64
+
+    - name: Test
+      run: dotnet test SimpleList.Tests/SimpleList.Tests.csproj -c Release -p:Platform=x64 --no-restore
+
   build:
+    needs: test
     runs-on: windows-latest
     outputs:
       app-version: ${{ steps.get-version.outputs.assembly-version }}
@@ -156,11 +184,25 @@ jobs:
           cat > RELEASE_BODY.md <<'EOF'
           ## Package Flavors / 安装包版本说明
 
-          - **Portable**: Self-contained package. No preinstalled .NET runtime required. Larger size.
-          - **Slim**: Framework-dependent package. Smaller size, but requires runtime dependencies on target machine.
+          ### English
 
-          - **Portable（便携版）**：自包含版本，通常不需要预装 .NET 运行时，体积较大。
-          - **Slim（轻量版）**：依赖运行时版本，体积更小，但目标机器需满足运行时依赖。
+          - **Portable (recommended for most users)**: Self-contained package that includes the required .NET and Windows App SDK runtime components. No runtime installation is normally required, but the download is larger.
+          - **Slim**: Smaller, framework-dependent package. The target machine must already have the matching architecture of **.NET 10 Desktop Runtime** and **Windows App Runtime 2.4** installed. SimpleList does **not** automatically install missing runtimes. If the app does not start, install both runtimes manually or use the Portable package.
+          - End users only need the runtimes above; the developer-facing Windows App SDK is not required.
+
+          ### 中文
+
+          - **Portable（便携版，推荐大多数用户）**：自包含版本，已包含所需的 .NET 和 Windows App SDK 运行时组件，通常无需另外安装运行时，但下载体积较大。
+          - **Slim（轻量版）**：依赖运行时的精简版本，体积较小。目标机器必须预先安装与系统架构匹配的 **.NET 10 Desktop Runtime** 和 **Windows App Runtime 2.4**。SimpleList 当前**不会自动安装**缺失的运行时；如果程序无法启动，请手动安装这两个运行时，或改用 Portable 版本。
+          - 普通用户只需安装上述运行时，不需要安装开发用途的 Windows App SDK。
+
+          Runtime downloads / 运行时下载：[.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) · [Windows App Runtime](https://learn.microsoft.com/windows/apps/windows-app-sdk/downloads)
+
+          ### Architecture / 架构选择
+
+          - `x64`: Most Intel/AMD Windows PCs / 大多数 Intel、AMD Windows 电脑
+          - `arm64`: Windows on ARM devices / Windows ARM 设备
+          - `x86`: 32-bit Windows only / 仅限 32 位 Windows
 
           ### Artifact Naming / 产物命名
 

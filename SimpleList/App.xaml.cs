@@ -1,16 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Google.Apis.Auth.OAuth2;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Microsoft.UI.Xaml;
+using SimpleList.Core.Contracts;
+using SimpleList.Core.Services;
+using SimpleList.Helpers;
 using SimpleList.Services;
 using SimpleList.ViewModels;
+using SimpleList.ViewModels.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using Windows.System;
 using WinUICommunity;
 
 namespace SimpleList;
@@ -20,6 +27,11 @@ namespace SimpleList;
 /// </summary>
 public partial class App : Application
 {
+    public static string SettingsPath { get; } = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "SimpleList",
+        "appsettings.json");
+
     public static T GetService<T>() where T : class
     {
         if (App.Current!.Services.GetService(typeof(T)) is not T service)
@@ -63,7 +75,6 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         //Current.Resources["Configuration"] = Configuration;
-
         //string backdropType = Configuration.GetSection("Material").Value;
         m_window = new MainWindow
         {
@@ -105,16 +116,144 @@ public partial class App : Application
     {
         LoadSettings();
         var services = new ServiceCollection();
+        services.AddSingleton<IConfigurationRoot>(Configuration);
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<TaskManagerViewModel>();
+        services.AddSingleton<CloudViewModel>();
         services.AddSingleton<Task<MsalCacheHelper>>(sp => GetCacheHelper());
         services.AddSingleton<IPublicClientApplication>(sp => BuildPublicApp());
+        services.AddSingleton<IStringLocalizer, WinUiStringLocalizer>();
+        services.AddSingleton<IPikPakCredentialStore, PikPakCredentialStore>();
+        services.AddSingleton<ClientSecrets>(sp => BuildGoogleSecrets());
+        services.AddSingleton<GoogleTokenDataStore>(sp => new GoogleTokenDataStore(Path.Combine(Directory.GetCurrentDirectory(), "cache", "GoogleDriveTokenCache")));
+        services.AddSingleton<ShareCommunityTokenStore>();
+        services.AddSingleton<ShareCommunityApiClient>();
+        services.AddTransient<ShareCommunityViewModel>();
         return services.BuildServiceProvider();
+    }
+
+    public static OneDriveStorageProvider CreateOneDriveProvider(string driveId = null, string accountId = null)
+    {
+        return new OneDriveStorageProvider(
+            Current.BuildPublicApp(),
+            GetService<Task<MsalCacheHelper>>(),
+            GetService<IStringLocalizer>(),
+            driveId,
+            accountId);
+    }
+
+    public static GoogleDriveStorageProvider CreateGoogleDriveProvider(
+        string driveId = null,
+        string accountId = null,
+        string credentialStoreKey = null)
+    {
+        return new GoogleDriveStorageProvider(
+            Current.BuildGoogleSecrets(),
+            GetService<GoogleTokenDataStore>(),
+            GetService<IStringLocalizer>(),
+            driveId,
+            accountId,
+            credentialStoreKey);
+    }
+
+    public static LocalStorageProvider CreateLocalProvider(string rootPath)
+    {
+        return new LocalStorageProvider(rootPath, GetService<IStringLocalizer>());
+    }
+
+    public static PikPakStorageProvider CreatePikPakProvider(string driveId, string username, string password = null, bool rememberPassword = true)
+    {
+        return new PikPakStorageProvider(
+            driveId,
+            username,
+            password,
+            GetService<IPikPakCredentialStore>(),
+            GetService<IStringLocalizer>(),
+            rememberPassword: rememberPassword,
+            captchaChallengeHandler: OpenPikPakCaptchaAsync);
+    }
+
+    private static Task OpenPikPakCaptchaAsync(string verificationUrl, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(verificationUrl))
+        {
+            return Task.CompletedTask;
+        }
+
+        TaskCompletionSource<bool> completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        CancellationTokenRegistration registration = default;
+        if (ct.CanBeCanceled)
+        {
+            registration = ct.Register(() => completion.TrySetCanceled(ct));
+        }
+
+        bool enqueued = StartupWindow?.DispatcherQueue.TryEnqueue(async () =>
+        {
+            try
+            {
+                ct.ThrowIfCancellationRequested();
+                bool launched = await Launcher.LaunchUriAsync(new Uri(verificationUrl));
+                if (!launched)
+                {
+                    completion.TrySetException(new InvalidOperationException("Unable to open PikPak captcha verification page."));
+                    return;
+                }
+
+                completion.TrySetResult(true);
+            }
+            catch (Exception ex)
+            {
+                completion.TrySetException(ex);
+            }
+            finally
+            {
+                registration.Dispose();
+            }
+        }) == true;
+
+        if (!enqueued)
+        {
+            registration.Dispose();
+            completion.TrySetException(new InvalidOperationException("Unable to open PikPak captcha verification page."));
+        }
+
+        return completion.Task;
+    }
+
+    private ClientSecrets BuildGoogleSecrets()
+    {
+        return new ClientSecrets
+        {
+            ClientId = Configuration.GetSection("GoogleOAuth:ClientId").Value ?? string.Empty,
+            ClientSecret = Configuration.GetSection("GoogleOAuth:ClientSecret").Value ?? string.Empty,
+        };
     }
 
     private void LoadSettings()
     {
-        Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        Dictionary<string, string> builtInDefaults = new()
+        {
+            ["AzureAD:ClientId"] = "f3416197-df13-4fd9-a57d-9fb052ba2cdf",
+            ["GoogleOAuth:ClientId"] = string.Empty,
+            ["GoogleOAuth:ClientSecret"] = string.Empty,
+            ["Theme"] = "Default",
+            ["Material"] = "MicaAlt",
+            ["TintColor"] = string.Empty,
+            ["Tools:ShareCommunity:Url"] = "https://share.qqsign.cn",
+            ["Tools:ShareCommunity:DevelopmentUrl"] = "http://127.0.0.1:3000",
+        };
+
+        Configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(builtInDefaults)
+            .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.defaults.json"), optional: true, reloadOnChange: false)
+            .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.json"), optional: true, reloadOnChange: false)
+            .AddJsonFile(SettingsPath, optional: true, reloadOnChange: false)
+            .Build();
+    }
+
+    public void ReloadSettings()
+    {
+        LoadSettings();
     }
 
     private IPublicClientApplication BuildPublicApp()

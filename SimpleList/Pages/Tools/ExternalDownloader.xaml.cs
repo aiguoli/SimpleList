@@ -7,9 +7,14 @@ namespace SimpleList.Pages.Tools;
 public sealed partial class ExternalDownloader : Page
 {
   public ExternalDownloader()
+    : this(new ExternalDownloaderViewModel())
+  {
+  }
+
+  public ExternalDownloader(ExternalDownloaderViewModel viewModel)
   {
     InitializeComponent();
-    DataContext = new ExternalDownloaderViewModel();
+    DataContext = viewModel;
   }
 
   private void ParseShareUrl(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

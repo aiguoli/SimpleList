@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Graph.Models;
 using Microsoft.UI.Dispatching;
-using SimpleList.Models;
+using SimpleList.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,20 +22,30 @@ public partial class UploadTaskViewModel : ObservableObject
 
     private Task _uploadTask;
     private CancellationTokenSource _cancellationTokenSource;
+    private bool _isCanceled;
     private readonly Dictionary<string, UploadFileProgressViewModel> _folderProgressMap = [];
 
 
-    [ObservableProperty] public int progressValue;
-    [ObservableProperty] private ulong _uploadedBytes = 0;
-    [ObservableProperty] private ulong _totalBytes;
-    [ObservableProperty] private bool _completed = false;
+    [ObservableProperty]
+    public partial int ProgressValue { get; set; }
+
+    [ObservableProperty]
+    public partial ulong UploadedBytes { get; set; } = 0;
+
+    [ObservableProperty]
+    public partial ulong TotalBytes { get; set; }
+
+    [ObservableProperty]
+    public partial bool Completed { get; set; } = false;
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PauseCommand))]
-    private bool _isUploading = false;
+    public partial bool IsUploading { get; set; } = false;
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ResumeCommand))]
     [NotifyCanExecuteChangedFor(nameof(PauseCommand))]
-    private bool _isPaused = false;
+    public partial bool IsPaused { get; set; } = false;
 
     public bool IsFolder => _item is StorageFolder;
     public ObservableCollection<UploadFileProgressViewModel> FolderUploadItems { get; } = [];
@@ -56,7 +65,7 @@ public partial class UploadTaskViewModel : ObservableObject
             var sizeText = Converters.FileSizeConverter.Instance.Convert(TotalBytes, typeof(string), null, string.Empty)?.ToString();
             if (string.IsNullOrWhiteSpace(sizeText))
             {
-                sizeText = "0 bytes";
+                sizeText = Helpers.ResourceHelper.GetLocalized("FileSize_ZeroBytes");
             }
 
             return $"{completedLabel}, {sizeText}";
@@ -94,6 +103,7 @@ public partial class UploadTaskViewModel : ObservableObject
     [RelayCommand]
     private void CancelTask()
     {
+        _isCanceled = true;
         if (_cancellationTokenSource != null && !_cancellationTokenSource.Token.IsCancellationRequested)
         {
             _cancellationTokenSource.Cancel();
@@ -115,13 +125,16 @@ public partial class UploadTaskViewModel : ObservableObject
 
     private void UpdateOnUiThread(Action action)
     {
-        if (_dispatcher.HasThreadAccess)
+        if (_dispatcher == null || _dispatcher.HasThreadAccess)
         {
             action();
             return;
         }
 
-        _dispatcher.TryEnqueue(() => action());
+        if (!_dispatcher.TryEnqueue(() => action()))
+        {
+            throw new InvalidOperationException("Unable to update the upload task on the UI thread.");
+        }
     }
 
     private void MarkUploadCompleted()
@@ -146,12 +159,40 @@ public partial class UploadTaskViewModel : ObservableObject
         });
     }
 
+    private void ShowUploadSuccess()
+    {
+        UpdateOnUiThread(() =>
+        {
+            WinUICommunity.Growl.Success(new WinUICommunity.GrowlInfo
+            {
+                Title = Helpers.ResourceHelper.GetLocalized("Success"),
+                StaysOpen = false,
+                Token = "DriveGrowl"
+            });
+        });
+    }
+
+    private void ShowUploadError(string message)
+    {
+        UpdateOnUiThread(() =>
+        {
+            WinUICommunity.Growl.Error(new WinUICommunity.GrowlInfo
+            {
+                Title = Helpers.ResourceHelper.GetLocalized("Error"),
+                Message = message,
+                StaysOpen = false,
+                Token = "DriveGrowl"
+            });
+        });
+    }
+
     public async Task StartUpload()
     {
-        if (_uploadTask != null && !_uploadTask.IsCompleted)
+        if (_isCanceled || (_uploadTask != null && !_uploadTask.IsCompleted))
             return;
-            
-        _cancellationTokenSource = new CancellationTokenSource();
+
+        CancellationTokenSource uploadCancellation = new();
+        _cancellationTokenSource = uploadCancellation;
         IsUploading = true;
         IsPaused = false;
         Completed = false;
@@ -167,24 +208,33 @@ public partial class UploadTaskViewModel : ObservableObject
             Token = "DriveGrowl"
         });
 
-        if (_item is StorageFile fileItem)
+        try
         {
-            TotalBytes = (await fileItem.GetBasicPropertiesAsync()).Size;
+            if (_item is StorageFile fileItem)
+            {
+                TotalBytes = (await fileItem.GetBasicPropertiesAsync()).Size;
+            }
+            else if (_item is StorageFolder folderItem)
+            {
+                TotalBytes = await Services.Utils.GetFolderSize(folderItem);
+            }
         }
-        else if (_item is StorageFolder folderItem)
+        catch (Exception ex)
         {
-            TotalBytes = await Services.Utils.GetFolderSize(folderItem);
+            IsUploading = false;
+            ShowUploadError(ex.Message);
+            return;
         }
 
         System.IProgress<long> progress = new System.Progress<long>(value =>
         {
-            _dispatcher.TryEnqueue(() =>
+            UpdateOnUiThread(() =>
             {
-                if (_cancellationTokenSource?.Token.IsCancellationRequested == false)
+                if (!uploadCancellation.IsCancellationRequested && !Completed)
                 {
                     if (_item is StorageFile)
                     {
-                         UploadedBytes = (ulong)value;
+                         UploadedBytes = TotalBytes > 0 ? Math.Min((ulong)Math.Max(0, value), TotalBytes) : (ulong)Math.Max(0, value);
                          if (TotalBytes > 0)
                          {
                             ProgressValue = (int)(UploadedBytes * 100 / TotalBytes);
@@ -192,10 +242,10 @@ public partial class UploadTaskViewModel : ObservableObject
                     }
                     else
                     {
-                        ProgressValue = (int)value;
+                        ProgressValue = Math.Clamp((int)value, 0, 100);
                         if (TotalBytes > 0)
                         {
-                            UploadedBytes = (ulong)((double)value / 100 * TotalBytes);
+                            UploadedBytes = (ulong)((double)ProgressValue / 100 * TotalBytes);
                         }
                     }
                 }
@@ -209,8 +259,13 @@ public partial class UploadTaskViewModel : ObservableObject
                 return;
             }
 
-            _dispatcher.TryEnqueue(() =>
+            UpdateOnUiThread(() =>
             {
+                if (Completed)
+                {
+                    return;
+                }
+
                 if (!_folderProgressMap.TryGetValue(detail.FilePath, out UploadFileProgressViewModel item))
                 {
                     item = new UploadFileProgressViewModel
@@ -240,84 +295,66 @@ public partial class UploadTaskViewModel : ObservableObject
         {
             try
             {
-                _cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                uploadCancellation.Token.ThrowIfCancellationRequested();
                 
                 if (_item is StorageFile file)
                 {
-                    var result = await Drive.Provider.UploadFileAsync(file, _itemId, progress, _uploadUrl, (url) => _uploadUrl = url, _cancellationTokenSource.Token);
+                    var result = await Drive.Provider.UploadFileAsync(file, _itemId, progress, _uploadUrl, (url) => _uploadUrl = url, uploadCancellation.Token);
                     
-                    _cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    uploadCancellation.Token.ThrowIfCancellationRequested();
                     
                     if (result.IsSuccess)
                     {
-                        WinUICommunity.Growl.Success(new WinUICommunity.GrowlInfo
-                        {
-                            Title = Helpers.ResourceHelper.GetLocalized("Success"),
-                            StaysOpen = false,
-                            Token = "DriveGrowl"
-                        });
                         MarkUploadCompleted();
+                        ShowUploadSuccess();
                     }
                     else
                     {
-                        WinUICommunity.Growl.Error(new WinUICommunity.GrowlInfo
-                        {
-                            Title = Helpers.ResourceHelper.GetLocalized("Error"),
-                            Message = result.ErrorMessage,
-                            StaysOpen = false,
-                            Token = "DriveGrowl"
-                        });
+                        ShowUploadError(result.ErrorMessage);
                     }
                 }
                 else if (_item is StorageFolder folder)
                 {
-                    var result = await Drive.Provider.UploadFolderAsync(folder, _itemId, progress, folderDetailProgress, _cancellationTokenSource.Token);
+                    var result = await Drive.Provider.UploadFolderAsync(folder, _itemId, progress, folderDetailProgress, uploadCancellation.Token);
                     
-                    _cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    uploadCancellation.Token.ThrowIfCancellationRequested();
                     
                     if (result.IsSuccess)
                     {
-                        WinUICommunity.Growl.Success(new WinUICommunity.GrowlInfo
-                        {
-                            Title = Helpers.ResourceHelper.GetLocalized("Success"),
-                            StaysOpen = false,
-                            Token = "DriveGrowl"
-                        });
                         MarkUploadCompleted();
+                        ShowUploadSuccess();
                     }
                     else
                     {
-                        WinUICommunity.Growl.Error(new WinUICommunity.GrowlInfo
-                        {
-                            Title = Helpers.ResourceHelper.GetLocalized("Error"),
-                            Message = result.ErrorMessage,
-                            StaysOpen = false,
-                            Token = "DriveGrowl"
-                        });
+                        ShowUploadError(result.ErrorMessage);
                     }
                 }
             }
             catch (OperationCanceledException)
             {
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ShowUploadError(ex.Message);
             }
             finally
             {
-                if (!_cancellationTokenSource.Token.IsCancellationRequested)
+                UpdateOnUiThread(() =>
                 {
-                    if (ProgressValue >= 100 && !Completed)
+                    if (!uploadCancellation.IsCancellationRequested)
                     {
-                        MarkUploadCompleted();
+                        if (ProgressValue >= 100 && !Completed)
+                        {
+                            MarkUploadCompleted();
+                        }
+                        else
+                        {
+                            IsUploading = false;
+                        }
                     }
-                    else
-                    {
-                        UpdateOnUiThread(() => IsUploading = false);
-                    }
-                }
+                });
             }
-        }, _cancellationTokenSource.Token);
+        }, uploadCancellation.Token);
         
         try
         {

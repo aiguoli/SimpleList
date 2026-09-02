@@ -1,40 +1,95 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Configuration;
+using SimpleList.Core.Models;
 using SimpleList.Models;
+using SimpleList.Services;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Linq;
 using System.Threading.Tasks;
-using WinUICommunity;
 
-namespace SimpleList.ViewModels.Tools
+namespace SimpleList.ViewModels.Tools;
+
+public partial class ShareCommunityViewModel : ObservableObject
 {
-    public partial class ShareCommunityViewModel : ObservableObject
+    private readonly ShareCommunityApiClient _api;
+
+    public ShareCommunityViewModel(ShareCommunityApiClient api)
     {
-        [RelayCommand]
-        public async Task Refresh()
+        _api = api;
+    }
+
+    [RelayCommand]
+    public async Task Refresh()
+    {
+        try
         {
-            try
-            {
-                string response = await _client.GetStringAsync(_apiUrl + "/api/links");
-                LinksResponse linksResponse = JsonSerializer.Deserialize(response, LinksResponseJsonContext.Default.LinksResponse);
-                Links = linksResponse.data;
-            }
-            catch (Exception e)
-            {
-                Growl.Error(e.Message);
-                App.LogError("Error fetching links", this, e);
-            }
+            HasError = false;
+            LastError = string.Empty;
+            Task<LinksResponse> linksTask = _api.GetLinksAsync();
+            Task<ProvidersResponse> providersTask = _api.GetProvidersAsync();
+            await Task.WhenAll(linksTask, providersTask);
+            Links = linksTask.Result.Data ?? [];
+            Providers = (providersTask.Result.Data ?? [])
+                .Where(item => item.Capabilities?.CommunityPublish == true)
+                .Select(ToOption)
+                .Where(item => item is not null)
+                .ToArray();
         }
+        catch (Exception e)
+        {
+            LastError = e.Message;
+            HasError = true;
+            App.LogError("Error fetching share community data", this, e);
+        }
+    }
 
-        [JsonSerializable(typeof(LinksResponse), GenerationMode = JsonSourceGenerationMode.Metadata)]
-        internal partial class LinksResponseJsonContext : JsonSerializerContext { }
+    [RelayCommand]
+    public async Task Logout()
+    {
+        await _api.LogoutAsync();
+        NotifySessionChanged();
+    }
 
-        [ObservableProperty] private IEnumerable<ShareCommunityLink> _links;
-        private readonly HttpClient _client = new();
-        private readonly string _apiUrl = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Tools:ShareCommunity:Url").Value;
+    public bool IsAuthenticated => _api.IsAuthenticated;
+    public string CurrentUserName => _api.CurrentUser?.Username ?? string.Empty;
+    public ShareCommunityApiClient Api => _api;
+
+    public void NotifySessionChanged()
+    {
+        OnPropertyChanged(nameof(IsAuthenticated));
+        OnPropertyChanged(nameof(CurrentUserName));
+    }
+
+    [ObservableProperty]
+    public partial IEnumerable<ShareCommunityLink> Links { get; set; } = [];
+
+    [ObservableProperty]
+    public partial IReadOnlyList<ShareProviderOption> Providers { get; set; } = [];
+
+    [ObservableProperty]
+    public partial bool HasError { get; set; }
+
+    [ObservableProperty]
+    public partial string LastError { get; set; }
+
+    private static ShareProviderOption ToOption(ShareProvider provider)
+    {
+        ProviderType? providerType = provider.Type switch
+        {
+            "onedrive" => ProviderType.OneDrive,
+            "google_drive" => ProviderType.GoogleDrive,
+            "local" => ProviderType.Local,
+            "pikpak" => ProviderType.PikPak,
+            _ => null,
+        };
+        return providerType is null
+            ? null
+            : new ShareProviderOption(
+                providerType.Value,
+                provider.Type,
+                provider.DisplayName,
+                provider.Capabilities.Password,
+                provider.Capabilities.Expiration);
     }
 }

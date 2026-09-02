@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
+using SimpleList.Services;
 using SimpleList.ViewModels;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -15,7 +15,12 @@ namespace SimpleList.Views.Layout
         public ColumnCloudView()
         {
             InitializeComponent();
-            this.DataContextChanged += (s, e) => Bindings.Update();
+            this.DataContextChanged += (s, e) =>
+            {
+                Bindings.Update();
+                ObserveFiles();
+            };
+            Loaded += (s, e) => SelectPendingBookmarkItem();
         }
 
         private void ChangeSelectedFiles(object sender, SelectionChangedEventArgs e)
@@ -27,5 +32,51 @@ namespace SimpleList.Views.Layout
                 (DataContext as DriveViewModel).SelectedItems.Add(item);
             }
         }
+
+        private void StartFileDrag(object sender, DragItemsStartingEventArgs e)
+        {
+            FileDragDropService.ConfigureDragItems(e, ViewModel);
+        }
+
+        private void SelectPendingBookmarkItem()
+        {
+            if (ViewModel?.PendingSelectedItemId == null)
+            {
+                return;
+            }
+
+            FileViewModel item = ViewModel.Files.FirstOrDefault(file => file.Id == ViewModel.PendingSelectedItemId);
+            if (item == null)
+            {
+                return;
+            }
+
+            FileListView.SelectedItem = item;
+            FileListView.ScrollIntoView(item);
+            ViewModel.PendingSelectedItemId = null;
+        }
+
+        private void ObserveFiles()
+        {
+            if (ViewModel == null || ReferenceEquals(_observedViewModel, ViewModel))
+            {
+                return;
+            }
+
+            if (_observedViewModel != null)
+            {
+                _observedViewModel.Files.CollectionChanged -= Files_CollectionChanged;
+            }
+
+            _observedViewModel = ViewModel;
+            _observedViewModel.Files.CollectionChanged += Files_CollectionChanged;
+        }
+
+        private void Files_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            SelectPendingBookmarkItem();
+        }
+
+        private DriveViewModel _observedViewModel;
     }
 }

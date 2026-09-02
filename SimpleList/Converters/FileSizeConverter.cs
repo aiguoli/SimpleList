@@ -8,7 +8,16 @@ namespace SimpleList.Converters
         public static readonly FileSizeConverter Instance = new();
         
         // Optimize: Use static array for units to avoid repeated allocations and ifs
-        private static readonly string[] _units = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
+        private static readonly string[] _unitKeys =
+        {
+            "FileSize_Unit_Bytes",
+            "FileSize_Unit_KB",
+            "FileSize_Unit_MB",
+            "FileSize_Unit_GB",
+            "FileSize_Unit_TB",
+            "FileSize_Unit_PB",
+            "FileSize_Unit_EB"
+        };
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -36,13 +45,14 @@ namespace SimpleList.Converters
             if (dValue == 0) return "";
 
             int unitIndex = 0;
-            while (dValue >= 1024 && unitIndex < _units.Length - 1)
+            while (dValue >= 1024 && unitIndex < _unitKeys.Length - 1)
             {
                 dValue /= 1024;
                 unitIndex++;
             }
 
-            return $"{dValue.ToString(unitIndex == 0 ? "F0" : "F1")} {_units[unitIndex]}";
+            string unit = Helpers.ResourceHelper.GetLocalized(_unitKeys[unitIndex]);
+            return $"{dValue.ToString(unitIndex == 0 ? "F0" : "F1")} {unit}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

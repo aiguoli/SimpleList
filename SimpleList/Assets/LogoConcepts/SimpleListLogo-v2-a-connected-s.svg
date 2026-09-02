@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList 2.0 concept A — Connected S</title>
+  <desc id="desc">A minimal connected route shaped like an S, combining a list and a multi-provider circuit.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#5162EE"/>
+  <path d="M300 310 H645 C760 310 760 475 645 475 H380 C265 475 265 640 380 640 H724"
+        fill="none" stroke="#FFFFFF" stroke-width="112" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="300" cy="310" r="30" fill="#65F0D2"/>
+  <circle cx="645" cy="475" r="30" fill="#65F0D2"/>
+  <circle cx="724" cy="640" r="30" fill="#65F0D2"/>
+</svg>

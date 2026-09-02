@@ -32,7 +32,10 @@ namespace SimpleList.ViewModels
         }
 
         private readonly DriveViewModel _drive;
-        [ObservableProperty] private string _fileName;
-        [ObservableProperty] private SearchMode _mode;
+        [ObservableProperty]
+        public partial string FileName { get; set; }
+
+        [ObservableProperty]
+        public partial SearchMode Mode { get; set; }
     }
 }

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList cloud concept F — Neon Outline</title>
+  <desc id="desc">A luminous cloud tube surrounding a floating glass list panel.</desc>
+  <defs>
+    <linearGradient id="bg" x1="121" y1="102" x2="911" y2="934" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071C37"/>
+      <stop offset=".54" stop-color="#0B1530"/>
+      <stop offset="1" stop-color="#24123F"/>
+    </linearGradient>
+    <linearGradient id="tube" x1="180" y1="290" x2="890" y2="734" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#65F4E0"/>
+      <stop offset=".45" stop-color="#4C9CF7"/>
+      <stop offset=".72" stop-color="#6B66F5"/>
+      <stop offset="1" stop-color="#C05AE7"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="319" y1="409" x2="720" y2="669" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#8EB7FF" stop-opacity=".10"/>
+    </linearGradient>
+    <radialGradient id="aura" cx="0" cy="0" r="1" gradientTransform="translate(510 530) scale(490 360)">
+      <stop stop-color="#507CF5" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#507CF5" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="190%">
+      <feGaussianBlur stdDeviation="17" result="blur"/>
+      <feFlood flood-color="#55CFFF" flood-opacity=".55"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="panelShadow" x="-35%" y="-35%" width="170%" height="190%">
+      <feDropShadow dx="0" dy="22" stdDeviation="19" flood-color="#000817" flood-opacity=".58"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#bg)"/>
+    <ellipse cx="510" cy="530" rx="500" ry="380" fill="url(#aura)"/>
+    <circle cx="786" cy="210" r="280" fill="#9D48E5" opacity=".08"/>
+  </g>
+  <path d="M282 722 C171 722 122 589 197 508 C227 475 269 459 316 462 C312 342 405 248 518 248 C609 248 685 303 714 385 C735 377 756 373 779 373 C871 373 944 448 944 540 C944 641 863 722 762 722 Z"
+        fill="#0E2343" fill-opacity=".56" stroke="url(#tube)" stroke-width="61" stroke-linejoin="round" filter="url(#glow)"/>
+  <path d="M278 493 C321 457 374 451 428 466 C456 350 577 291 678 352"
+        fill="none" stroke="#FFFFFF" stroke-opacity=".47" stroke-width="11" stroke-linecap="round"/>
+  <g filter="url(#panelShadow)">
+    <rect x="286" y="406" width="494" height="278" rx="90" fill="url(#panel)" stroke="#FFFFFF" stroke-opacity=".28" stroke-width="5"/>
+    <path d="M354 462 V628" stroke="#67F1DE" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="354" cy="462" r="25" fill="#82FBE7"/>
+    <circle cx="354" cy="545" r="25" fill="#6CEEDB"/>
+    <circle cx="354" cy="628" r="25" fill="#55DDCC"/>
+    <rect x="409" y="437" width="298" height="50" rx="25" fill="#FFFFFF" fill-opacity=".92"/>
+    <rect x="409" y="520" width="248" height="50" rx="25" fill="#FFFFFF" fill-opacity=".82"/>
+    <rect x="409" y="603" width="190" height="50" rx="25" fill="#FFFFFF" fill-opacity=".72"/>
+  </g>
+</svg>

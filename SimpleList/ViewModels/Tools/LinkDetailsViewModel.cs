@@ -7,20 +7,23 @@ namespace SimpleList.ViewModels.Tools
     {
         public LinkDetailsViewModel(ShareCommunityLink link)
         {
-            _link = link;
+            Link = link;
         }
 
         public LinkDetailsViewModel(string linkId)
         {
         }
 
-        [ObservableProperty]private ShareCommunityLink _link;
-        public string Title => Link.title;
-        public string Content => Link.content;
-        public string Password => Link.password;
-        public string ExpireDate => Link.expire_date.ToString();
+        [ObservableProperty]
+        public partial ShareCommunityLink Link { get; set; }
+
+        public string Title => Link.Title;
+        public string Content => Link.Url;
+        public string Provider => Link.ProviderType;
+        public string Password => Link.Password;
+        public string ExpireDate => Link.ExpiresAt?.ToString() ?? string.Empty;
         public string CreatedAt => Link.CreatedAt.ToString();
         public string UpdatedAt => Link.UpdatedAt.ToString();
-        public int Views => Link.views;
+        public int Views => Link.Views;
     }
 }

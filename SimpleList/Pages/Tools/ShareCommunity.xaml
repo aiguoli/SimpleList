@@ -18,24 +18,46 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding title}" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="1" Text="{Binding expire_date}" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="2" Text="{Binding views}" VerticalAlignment="Center" />
-                <Button Grid.Column="3" x:Uid="ShareCommunityPage_Details" Style="{StaticResource AccentButtonStyle}" Click="ShowLinkDetailsDialogAsync" />
+                <TextBlock Grid.Column="0" Text="{Binding Title}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding ProviderType}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="2" Text="{Binding ExpiresAt}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="3" Text="{Binding Views}" VerticalAlignment="Center" />
+                <Button Grid.Column="4" x:Uid="ShareCommunityPage_Details" Style="{StaticResource AccentButtonStyle}" Click="ShowLinkDetailsDialogAsync" />
             </Grid>
         </DataTemplate>
     </Page.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Grid.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem x:Uid="ShareCommunityPage_Flyout_Refresh" Command="{Binding RefreshCommand}" />
                 <MenuFlyoutItem x:Uid="ShareCommunityPage_Flyout_CreateLink" Click="ShowCreateLinkDialogAsync" />
             </MenuFlyout>
         </Grid.ContextFlyout>
+        <CommandBar Grid.Row="0" DefaultLabelPosition="Right">
+            <AppBarButton
+                x:Name="AccountButton"
+                Icon="Contact"
+                Label="Sign in"
+                Click="AccountButton_Click" />
+        </CommandBar>
+        <InfoBar
+            Grid.Row="1"
+            Margin="12,0,12,8"
+            IsOpen="{Binding HasError, Mode=OneWay}"
+            IsClosable="False"
+            Severity="Error"
+            Message="{Binding LastError, Mode=OneWay}" />
         <ListView
+            Grid.Row="2"
             ItemsSource="{Binding Links}"
             ItemTemplate="{StaticResource LinkTemplate}" />
     </Grid>

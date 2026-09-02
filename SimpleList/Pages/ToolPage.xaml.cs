@@ -31,15 +31,9 @@ namespace SimpleList.Pages
         private IEnumerable<ToolItem> _items = [
             new() {
                 Name = "Share Community",
-                Description = "Share and browse OneDrive files",
+                Description = "Share and browse multi-cloud links",
                 ImagePath = "/Assets/link-share.png",
                 FileName = "ShareCommunity"
-            },
-            new() {
-                Name = "External Downloader",
-                Description = "Downlaod files with external downloader.",
-                ImagePath = "/Assets/external-downloader.png",
-                FileName = "ExternalDownloader"
             }
         ];
         public IEnumerable<ToolItem> Items
@@ -52,9 +46,19 @@ namespace SimpleList.Pages
 
         private void OnToolItemClick(object sender, ItemClickEventArgs e)
         {
-            ToolItem item = (ToolItem)e.ClickedItem;
-            Type pageType = Type.GetType("SimpleList.Pages.Tools." + item.FileName);
-            (App.StartupWindow as MainWindow).Navigate(pageType);
+            if (e.ClickedItem is ToolItem item
+                && App.StartupWindow is MainWindow window)
+            {
+                Type pageType = item.FileName switch
+                {
+                    "ShareCommunity" => typeof(SimpleList.Pages.Tools.ShareCommunity),
+                    _ => throw new ArgumentOutOfRangeException(
+                        nameof(item.FileName),
+                        item.FileName,
+                        "Unknown tool page")
+                };
+                window.Navigate(pageType);
+            }
         }
     }
 }

@@ -8,11 +8,66 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:PreviewViewModel}"
-    PrimaryButtonText="Close"
+    x:Uid="ImagePreviewView"
+    Title="{Binding CurrentImageName}"
+    MinWidth="560"
+    MaxWidth="1080"
     Loaded="LoadImageContentAsync">
 
-    <Grid>
-        <ProgressRing IsActive="{Binding IsLoading}" Background="LightGray"/>
-        <Image Source="{Binding Image}" />
+    <Grid
+        MinWidth="560"
+        MaxWidth="1000"
+        HorizontalAlignment="Stretch"
+        RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            HorizontalAlignment="Center">
+            <Border
+                MinHeight="360"
+                MaxHeight="600"
+                HorizontalAlignment="Center"
+                Background="Transparent">
+                <Grid>
+                    <ProgressRing
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsActive="{Binding IsLoading}" />
+                    <Image
+                        MaxWidth="1000"
+                        MaxHeight="600"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Source="{Binding Image}"
+                        Stretch="Uniform"
+                        ImageOpened="PreviewImage_ImageOpened"
+                        ImageFailed="PreviewImage_ImageFailed" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid
+            Grid.Row="1"
+            HorizontalAlignment="Center">
+            <PipsPager
+                HorizontalAlignment="Center"
+                NumberOfPages="{Binding ImagePagerPageCount}"
+                SelectedPageIndex="{Binding SelectedImageIndex, Mode=TwoWay}"
+                MaxVisiblePips="10"
+                PreviousButtonVisibility="Collapsed"
+                NextButtonVisibility="Collapsed" />
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            HorizontalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="{Binding CurrentImagePosition}" />
+        </Grid>
     </Grid>
 </ContentDialog>

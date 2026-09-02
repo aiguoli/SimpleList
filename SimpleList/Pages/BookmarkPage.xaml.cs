@@ -1,31 +1,45 @@
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using SimpleList.ViewModels;
 
 namespace SimpleList.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class BookmarkPage : Page
     {
+        public BookmarkViewModel ViewModel => DataContext as BookmarkViewModel;
+
         public BookmarkPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            DataContext = new BookmarkViewModel();
+            Loaded += async (sender, args) =>
+            {
+                await ViewModel.LoadBookmarksAsync();
+            };
+        }
+
+        private async void OpenBookmark(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if ((sender as Grid)?.DataContext is BookmarkItemViewModel bookmark)
+            {
+                await ViewModel.OpenBookmarkCommand.ExecuteAsync(bookmark);
+            }
+        }
+
+        private async void OpenBookmarkMenu(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            if ((sender as MenuFlyoutItem)?.DataContext is BookmarkItemViewModel bookmark)
+            {
+                await ViewModel.OpenBookmarkCommand.ExecuteAsync(bookmark);
+            }
+        }
+
+        private async void RemoveBookmarkMenu(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            if ((sender as MenuFlyoutItem)?.DataContext is BookmarkItemViewModel bookmark)
+            {
+                await ViewModel.RemoveBookmarkCommand.ExecuteAsync(bookmark);
+            }
         }
     }
 }

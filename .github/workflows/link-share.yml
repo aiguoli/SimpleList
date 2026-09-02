@@ -1,0 +1,31 @@
+name: link-share
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/link-share/**'
+      - '.github/workflows/link-share.yml'
+  pull_request:
+    paths:
+      - 'services/link-share/**'
+      - '.github/workflows/link-share.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/link-share
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: services/link-share/go.mod
+          cache-dependency-path: services/link-share/go.sum
+      - run: go test ./...
+      - run: go vet ./...
+      - run: go build ./...

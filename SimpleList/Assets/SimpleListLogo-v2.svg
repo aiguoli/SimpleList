@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList 2.0 logo</title>
+  <desc id="desc">A rounded blue-violet app icon with a white cloud containing a connected three-row list.</desc>
+  <defs>
+    <linearGradient id="background" x1="150" y1="100" x2="874" y2="924" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#407BFF"/>
+      <stop offset="0.52" stop-color="#5B5BEF"/>
+      <stop offset="1" stop-color="#7A45D8"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="url(#background)"/>
+  <path
+    d="M286 708
+       C181 708 132 583 201 507
+       C231 474 272 458 318 460
+       C314 343 404 252 516 252
+       C603 252 677 305 707 384
+       C726 377 747 373 768 373
+       C858 373 930 446 930 536
+       C930 631 855 708 762 708
+       Z"
+    fill="#FFFFFF"/>
+
+  <path d="M337 437 V620" stroke="#65F0D2" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="337" cy="437" r="27" fill="#65F0D2"/>
+  <circle cx="337" cy="528" r="27" fill="#65F0D2"/>
+  <circle cx="337" cy="620" r="27" fill="#65F0D2"/>
+  <rect x="392" y="411" width="352" height="52" rx="26" fill="#5764F2"/>
+  <rect x="392" y="502" width="298" height="52" rx="26" fill="#5764F2"/>
+  <rect x="392" y="594" width="236" height="52" rx="26" fill="#5764F2"/>
+</svg>

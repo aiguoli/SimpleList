@@ -22,6 +22,7 @@
             x:Key="BoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
         <DataTemplate x:Key="ColumnViewTemplate">
             <views:ColumnCloudView />
@@ -79,14 +80,14 @@
                 </BreadcrumbBar.KeyboardAccelerators>
             </BreadcrumbBar>
             <StackPanel Orientation="Horizontal" RelativePanel.AlignRightWithPanel="True">
-                <Button Margin="0,0,5,0" Click="ShowSearchDialogAsync" ToolTipService.ToolTip="搜索">
+                <Button x:Uid="DrivePage_SearchButton" Margin="0,0,5,0" Click="ShowSearchDialogAsync" Visibility="{x:Bind ViewModel.CanSearch, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <FontIcon
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         FontSize="14"
                         Glyph="&#xE721;" />
                 </Button>
-                <Button Margin="0,0,5,0" Click="SplitButton_Click" ToolTipService.ToolTip="上传文件">
+                <Button x:Uid="DrivePage_UploadButton" Margin="0,0,5,0" Click="SplitButton_Click" Visibility="{x:Bind ViewModel.CanEditCurrentFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <FontIcon
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
@@ -99,14 +100,44 @@
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
-                <Button Margin="0,0,5,0" Click="CreateFolderDialogAsync" ToolTipService.ToolTip="新建文件夹">
+                <Button x:Uid="DrivePage_CreateFolderButton" Margin="0,0,5,0" Click="CreateFolderDialogAsync" Visibility="{x:Bind ViewModel.CanEditCurrentFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <FontIcon
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         FontSize="14"
                         Glyph="&#xE8F4;" />
                 </Button>
-                <Button x:Name="RefreshButton" Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}" ToolTipService.ToolTip="刷新">
+                <Button x:Uid="DrivePage_BatchRenameButton" Margin="0,0,5,0" Click="ShowBatchRenameDialogAsync" IsEnabled="{x:Bind ViewModel.CanBatchRename, Mode=OneWay}" Visibility="{x:Bind ViewModel.CanEditCurrentFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <FontIcon
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Glyph="&#xE8AC;" />
+                </Button>
+                <Button
+                    x:Uid="Trash_RestoreButton"
+                    Margin="0,0,5,0"
+                    Command="{x:Bind ViewModel.RestoreSelectedTrashItemsCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CanOperateSelectedTrashItems, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsTrashMode, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <FontIcon FontSize="14" Glyph="&#xE7A7;" />
+                </Button>
+                <Button
+                    x:Uid="Trash_DeleteButton"
+                    Margin="0,0,5,0"
+                    Command="{x:Bind ViewModel.PermanentDeleteSelectedTrashItemsCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CanOperateSelectedTrashItems, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsTrashMode, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <FontIcon FontSize="14" Glyph="&#xE74D;" />
+                </Button>
+                <Button
+                    x:Uid="Trash_EmptyButton"
+                    Margin="0,0,5,0"
+                    Command="{x:Bind ViewModel.EmptyTrashCommand, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsTrashMode, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <FontIcon FontSize="14" Glyph="&#xE75C;" />
+                </Button>
+                <Button x:Name="RefreshButton" x:Uid="DrivePage_RefreshButton" Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}">
                     <FontIcon
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
@@ -122,7 +153,7 @@
             VerticalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
-            AllowDrop="True"
+            AllowDrop="{x:Bind ViewModel.CanEditCurrentFolder, Mode=OneWay}"
             ContentTemplate="{StaticResource ColumnViewTemplate}"
             DragOver="DisplayCopyIcon"
             Drop="DropToUpload">
@@ -133,7 +164,7 @@
                             <KeyboardAccelerator Key="F5" />
                         </MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
-                    <MenuFlyoutSubItem x:Uid="CloudPage_Upload">
+                    <MenuFlyoutSubItem x:Uid="CloudPage_Upload" Visibility="{x:Bind ViewModel.CanEditCurrentFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                         <MenuFlyoutItem x:Uid="CloudPage_UploadFile" Click="ShowUploadFileDialogAsync">
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="U" Modifiers="Control" />
@@ -145,7 +176,7 @@
                             </MenuFlyoutItem.KeyboardAccelerators>
                         </MenuFlyoutItem>
                     </MenuFlyoutSubItem>
-                    <MenuFlyoutItem x:Uid="CloudPage_CreateFolder" Click="CreateFolderDialogAsync">
+                    <MenuFlyoutItem x:Uid="CloudPage_CreateFolder" Click="CreateFolderDialogAsync" Visibility="{x:Bind ViewModel.CanEditCurrentFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                         <MenuFlyoutItem.KeyboardAccelerators>
                             <KeyboardAccelerator Key="N" Modifiers="Control,Shift" />
                         </MenuFlyoutItem.KeyboardAccelerators>
@@ -164,6 +195,10 @@
                             Click="ChangeLayout"
                             Tag="Image" />
                     </MenuFlyoutSubItem>
+                    <MenuFlyoutItem x:Uid="BatchRenameMenu" Click="ShowBatchRenameDialogAsync" IsEnabled="{x:Bind ViewModel.CanBatchRename, Mode=OneWay}" Visibility="{x:Bind ViewModel.CanShowBatchRename, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" Icon="Rename" />
+                    <MenuFlyoutItem x:Uid="FileView_Flyout_Restore" Command="{x:Bind ViewModel.RestoreSelectedTrashItemsCommand, Mode=OneWay}" IsEnabled="{x:Bind ViewModel.CanOperateSelectedTrashItems, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsTrashMode, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" Icon="Undo" />
+                    <MenuFlyoutItem x:Uid="FileView_Flyout_PermanentDelete" Command="{x:Bind ViewModel.PermanentDeleteSelectedTrashItemsCommand, Mode=OneWay}" IsEnabled="{x:Bind ViewModel.CanOperateSelectedTrashItems, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsTrashMode, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" Icon="Delete" />
+                    <MenuFlyoutItem x:Uid="Trash_EmptyMenu" Command="{x:Bind ViewModel.EmptyTrashCommand, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsTrashMode, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" Icon="Delete" />
                 </MenuFlyout>
             </ContentControl.ContextFlyout>
         </ContentControl>
@@ -172,7 +207,7 @@
             HorizontalAlignment="Right" 
             VerticalAlignment="Bottom" 
             Margin="0,0,20,30" 
-            Foreground="Black" 
+            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
             IsHitTestVisible="False" 
             Text="{x:Bind ViewModel.SelectionStatus, Mode=OneWay}" />
         <StackPanel

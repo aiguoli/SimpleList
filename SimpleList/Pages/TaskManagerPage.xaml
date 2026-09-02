@@ -23,7 +23,7 @@
                         <MenuFlyout>
                             <MenuFlyoutItem x:Uid="TaskManagerPage_Resume" Command="{Binding ResumeDownloadCommand}" IsEnabled="{Binding IsPaused}" />
                             <MenuFlyoutItem x:Uid="TaskManagerPage_Remove" Command="{Binding CancelTaskCommand}" />
-                            <MenuFlyoutItem x:Uid="TaskManagerPage_OpenFolder" Command="{Binding OpenFolderCommand}" />
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_OpenFolder" Command="{Binding OpenFolderCommand}" Visibility="{Binding CanOpenFolder, Converter={StaticResource BoolToVisibilityConverter}}" />
                         </MenuFlyout>
                     </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
@@ -39,8 +39,9 @@
                             <Run Text="{Binding TotalBytes, Converter={StaticResource FileSizeToFriendlyStringConverter}}" />
                             <Run Text=" " />
                             <Run Text="{Binding DownloadSpeed, Converter={StaticResource FileSizeToFriendlyStringConverter}}" />
-                            <Run Text="/s" />
+                            <Run x:Uid="TaskManagerPage_PerSecond" />
                         </TextBlock>
+                        <TextBlock Text="{Binding EstimatedTimeRemainingText}" Visibility="{Binding HasEstimatedTimeRemaining, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <TextBlock x:Uid="TaskManagerPage_DownloadComplted" Visibility="{Binding Completed, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 0">
@@ -129,22 +130,103 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="MigrationTaskTemplate" x:DataType="vm:MigrationTaskViewModel">
+                <Grid Margin="0 10 0 10">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Uid="TaskManagerPage_Remove" Command="{Binding RemoveTaskCommand}" />
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Spacing="4">
+                        <TextBlock Text="{Binding Name}" FontSize="20" Margin="0 5 0 0" />
+                        <TextBlock Opacity="0.8">
+                            <Run Text="{Binding SourceDriveName}" />
+                            <Run Text=" -> " />
+                            <Run Text="{Binding TargetDisplay}" />
+                        </TextBlock>
+                        <ProgressBar Value="{Binding ProgressValue}" Visibility="{Binding Completed, Converter={StaticResource BoolToObjectConverter}}" />
+                        <TextBlock Visibility="{Binding Completed, Converter={StaticResource BoolToObjectConverter}}">
+                            <Run Text="{Binding MigratedBytes, Converter={StaticResource MyFileSizeConverter}}" />
+                            <Run Text=" / " />
+                            <Run Text="{Binding TotalBytes, Converter={StaticResource MyFileSizeConverter}}" />
+                            <Run Text=" (" />
+                            <Run Text="{Binding ProgressPercentText}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding StatusText}" />
+                        <TextBlock Text="{Binding ErrorMessage}" Foreground="{ThemeResource SystemFillColorCriticalBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 0">
+                        <Button Command="{Binding RemoveTaskCommand}">
+                            <FontIcon Glyph="&#xE74D;" FontSize="10" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
         </Grid.Resources>
 
-        <Pivot>
+        <Pivot HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <PivotItem x:Uid="TaskManagerPage_Pivot_Download">
-                <StackPanel Orientation="Vertical">
-                    <CheckBox 
-                        x:Uid="TaskManagerPage_ShutdownAfterDownload" 
-                        Name="canShutdown" 
-                        Command="{Binding ChangeShuwdownBehaviousCommand}" 
-                        CommandParameter="{Binding IsChecked, ElementName=canShutdown}" 
-                        IsChecked="{Binding ShutdownAfterDownload}" />
-                    <ListView ItemsSource="{Binding DownloadTasks}" ItemTemplate="{StaticResource DownloadTaskTemplate}" />
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Margin="0 8 12 0">
+                        <CheckBox
+                            x:Uid="TaskManagerPage_ShutdownAfterDownload"
+                            Name="canShutdown"
+                            Command="{Binding ChangeShuwdownBehaviousCommand}"
+                            CommandParameter="{Binding IsChecked, ElementName=canShutdown}"
+                            IsChecked="{Binding ShutdownAfterDownload}" />
+                        <Button
+                            x:Uid="TaskManagerPage_ClearCompleted"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ClearCompletedDownloadTasksCommand}" />
+                    </Grid>
+                    <ListView
+                        Grid.Row="1"
+                        ItemsSource="{Binding DownloadTasks}"
+                        ItemTemplate="{StaticResource DownloadTaskTemplate}" />
+                </Grid>
             </PivotItem>
             <PivotItem x:Uid="TaskManagerPage_Pivot_Upload">
-                <ListView ItemsSource="{Binding UploadTasks}" ItemTemplate="{StaticResource UploadTaskTemplate}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button
+                        x:Uid="TaskManagerPage_ClearCompleted"
+                        HorizontalAlignment="Right"
+                        Margin="0 8 12 0"
+                        Command="{Binding ClearCompletedUploadTasksCommand}" />
+                    <ListView
+                        Grid.Row="1"
+                        ItemsSource="{Binding UploadTasks}"
+                        ItemTemplate="{StaticResource UploadTaskTemplate}" />
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Uid="TaskManagerPage_Pivot_Migration">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button
+                        x:Uid="TaskManagerPage_ClearCompleted"
+                        HorizontalAlignment="Right"
+                        Margin="0 8 12 0"
+                        Command="{Binding ClearCompletedMigrationTasksCommand}" />
+                    <ListView
+                        Grid.Row="1"
+                        ItemsSource="{Binding MigrationTasks}"
+                        ItemTemplate="{StaticResource MigrationTaskTemplate}" />
+                </Grid>
             </PivotItem>
         </Pivot>
     </Grid>

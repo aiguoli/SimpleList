@@ -17,11 +17,17 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ListView 
+    <ListView
+        x:Name="FileListView"
+        CanDragItems="{x:Bind ViewModel.CanSearch, Mode=OneWay}"
+        DragItemsStarting="StartFileDrag"
         ItemsSource="{x:Bind ViewModel.Files, Mode=OneWay}" 
         ItemTemplate="{StaticResource ListItemTemplate}"
         SelectionMode="Extended"
         SelectionChanged="ChangeSelectedFiles"
-        VerticalAlignment="Stretch"
-    />
+        VerticalAlignment="Stretch">
+        <ListView.ItemContainerTransitions>
+            <TransitionCollection />
+        </ListView.ItemContainerTransitions>
+    </ListView>
 </UserControl>

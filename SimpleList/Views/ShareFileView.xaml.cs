@@ -12,13 +12,11 @@ namespace SimpleList.Views
             ExpirationDateTime.MinDate = DateTime.Today;
         }
 
-        private void ContentDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
+        private async void ContentDialog_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            ShareFileViewModel vm = DataContext as ShareFileViewModel;
-            if (vm.PreventClose)
+            if (DataContext is ShareFileViewModel vm)
             {
-                args.Cancel = true;
-                vm.PreventClose = false;
+                await vm.LoadCurrentShareStatusAsync();
             }
         }
 

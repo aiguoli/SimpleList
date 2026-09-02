@@ -17,7 +17,10 @@
         <converter:BoolToNegativeVisibilityConverter x:Key="BoolToNegativeVisibilityConverter" />
     </Page.Resources>
 
-    <Grid Padding="36 0 36 0">
+    <Grid
+        Padding="36 0 36 0"
+        wuc:Growl.GrowlParent="True"
+        wuc:Growl.Token="SettingGrowl">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -31,80 +34,123 @@
                 x:Uid="SettingPage_AppearanceTitle"
                 FontWeight="Bold"
                 Margin="0 10 0 10"/>
-        <StackPanel Grid.Row="2"
-                Orientation="Vertical">
-            <wuc:SettingsCard x:Uid="SettingPage_AppTheme">
-                <wuc:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE790;"/>
-                </wuc:SettingsCard.HeaderIcon>
-                <ComboBox x:Name="themeMode"
-                        wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
-                    <ComboBoxItem x:Uid="SettingPage_Theme_Default"
-                            Tag="Default"/>
-                    <ComboBoxItem x:Uid="SettingPage_Theme_Light"
-                            Tag="Light"/>
-                    <ComboBoxItem x:Uid="SettingPage_Theme_Dark"
-                            Tag="Dark"/>
-                </ComboBox>
-            </wuc:SettingsCard>
-            <wuc:SettingsCard x:Uid="SettingPage_AppMaterial">
-                <wuc:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xF5EF;"/>
-                </wuc:SettingsCard.HeaderIcon>
-                <ComboBox x:Name="materialMode"
-                        wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
-                    <ComboBoxItem Content="None"
-                            Tag="None"/>
-                    <ComboBoxItem Content="Mica"
-                            Tag="Mica"/>
-                    <ComboBoxItem Content="MicaAlt"
-                            Tag="MicaAlt"/>
-                    <ComboBoxItem Content="Desktop Acrylic"
-                            Tag="DesktopAcrylic"/>
-                    <ComboBoxItem Content="Acrylic Base"
-                            Tag="AcrylicBase"/>
-                    <ComboBoxItem Content="Acrylic Thin"
-                            Tag="AcrylicThin"/>
-                    <ComboBoxItem Content="Transparent"
-                            Tag="Transparent"/>
-                </ComboBox>
-            </wuc:SettingsCard>
+        <ScrollViewer Grid.Row="2">
+            <StackPanel Orientation="Vertical"
+                    Padding="0 0 0 32">
+                <wuc:SettingsCard x:Uid="SettingPage_AppTheme">
+                    <wuc:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE790;"/>
+                    </wuc:SettingsCard.HeaderIcon>
+                    <ComboBox x:Name="themeMode"
+                            wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
+                        <ComboBoxItem x:Uid="SettingPage_Theme_Default"
+                                Tag="Default"/>
+                        <ComboBoxItem x:Uid="SettingPage_Theme_Light"
+                                Tag="Light"/>
+                        <ComboBoxItem x:Uid="SettingPage_Theme_Dark"
+                                Tag="Dark"/>
+                    </ComboBox>
+                </wuc:SettingsCard>
+                <wuc:SettingsCard x:Uid="SettingPage_AppMaterial">
+                    <wuc:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xF5EF;"/>
+                    </wuc:SettingsCard.HeaderIcon>
+                    <ComboBox x:Name="materialMode"
+                            wuc:ThemeServiceAttach.ThemeService="{x:Bind local:App.Current.GetThemeService}">
+                        <ComboBoxItem x:Uid="SettingPage_Material_None"
+                                Tag="None"/>
+                        <ComboBoxItem x:Uid="SettingPage_Material_Mica"
+                                Tag="Mica"/>
+                        <ComboBoxItem x:Uid="SettingPage_Material_MicaAlt"
+                                Tag="MicaAlt"/>
+                        <ComboBoxItem x:Uid="SettingPage_Material_DesktopAcrylic"
+                                Tag="DesktopAcrylic"/>
+                        <ComboBoxItem x:Uid="SettingPage_Material_AcrylicBase"
+                                Tag="AcrylicBase"/>
+                        <ComboBoxItem x:Uid="SettingPage_Material_AcrylicThin"
+                                Tag="AcrylicThin"/>
+                        <ComboBoxItem x:Uid="SettingPage_Material_Transparent"
+                                Tag="Transparent"/>
+                    </ComboBox>
+                </wuc:SettingsCard>
 
-            <TextBlock x:Uid="SettingPage_AboutTitle"
-                    FontWeight="Bold"
-                    Margin="0 10 0 10"/>
-            <wuc:SettingsExpander Header="SimpleList"
-                    Description="All free for you">
-                <wuc:SettingsExpander.HeaderIcon>
-                    <FontIcon Glyph="&#xE753;"/>
-                </wuc:SettingsExpander.HeaderIcon>
-                <wuc:SettingsExpander.Items>
-                    <wuc:SettingsCard Header="Github">
-                        <wuc:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE943;" />
-                        </wuc:SettingsCard.HeaderIcon>
-                        <HyperlinkButton Content="https://github.com/aiguoli/SimpleList"
-                                NavigateUri="https://github.com/aiguoli/SimpleList"/>
-                    </wuc:SettingsCard>
+                <TextBlock x:Uid="SettingPage_CloudTitle"
+                        FontWeight="Bold"
+                        Margin="0 10 0 10"/>
+                <wuc:SettingsExpander x:Uid="SettingPage_CloudOAuth"
+                        IsExpanded="False">
+                    <wuc:SettingsExpander.HeaderIcon>
+                        <FontIcon Glyph="&#xE753;"/>
+                    </wuc:SettingsExpander.HeaderIcon>
+                    <wuc:SettingsExpander.Items>
+                        <wuc:SettingsCard>
+                            <StackPanel Spacing="10">
+                                <TextBox
+                                    x:Name="OneDriveClientIdBox"
+                                    x:Uid="SettingPage_OneDriveClientId" />
+                                <TextBox
+                                    x:Name="GoogleClientIdBox"
+                                    x:Uid="SettingPage_GoogleClientId" />
+                                <PasswordBox
+                                    x:Name="GoogleClientSecretBox"
+                                    x:Uid="SettingPage_GoogleClientSecret"
+                                    PasswordRevealMode="Visible" />
+                                <Button
+                                    x:Name="SaveProviderSettingsButton"
+                                    x:Uid="SettingPage_SaveProviderSettings"
+                                    HorizontalAlignment="Right"
+                                    Click="SaveProviderSettings" />
+                            </StackPanel>
+                        </wuc:SettingsCard>
+                    </wuc:SettingsExpander.Items>
+                </wuc:SettingsExpander>
 
-                    <wuc:SettingsCard Header="{x:Bind Version}">
-                        <wuc:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE8EC;" />
-                        </wuc:SettingsCard.HeaderIcon>
-                        <Button x:Uid="SettingPage_CheckUpdate" Name="CheckUpdateButton" Click="CheckUpdate" Visibility="{x:Bind IsUpdateAvailable, Converter={StaticResource BoolToNegativeVisibilityConverter}, Mode=OneWay}" />
-                    </wuc:SettingsCard>
-                    <wuc:SettingsCard x:Name="StatusInfo" Visibility="Collapsed">
-                        <wuc:SettingsCard.Header>
-                            <TextBlock Name="NewVersion" x:Uid="SettingPage_NewVersionTip" />
-                        </wuc:SettingsCard.Header>
-                        <wuc:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE946;" />
-                        </wuc:SettingsCard.HeaderIcon>
-                        <HyperlinkButton Name="DownloadButton" x:Uid="SettingPage_DownloadUpdate" Click="UpdateByPowershell" Visibility="Collapsed" />
-                    </wuc:SettingsCard>
-                </wuc:SettingsExpander.Items>
-            </wuc:SettingsExpander>
+                <TextBlock x:Uid="SettingPage_AboutTitle"
+                        FontWeight="Bold"
+                        Margin="0 10 0 10"/>
+                <wuc:SettingsExpander x:Uid="SettingPage_About">
+                    <wuc:SettingsExpander.HeaderIcon>
+                        <FontIcon Glyph="&#xE753;"/>
+                    </wuc:SettingsExpander.HeaderIcon>
+                    <wuc:SettingsExpander.Items>
+                        <wuc:SettingsCard Header="Github">
+                            <wuc:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE943;" />
+                            </wuc:SettingsCard.HeaderIcon>
+                            <HyperlinkButton Content="https://github.com/aiguoli/SimpleList"
+                                    NavigateUri="https://github.com/aiguoli/SimpleList"/>
+                        </wuc:SettingsCard>
 
-        </StackPanel>
+                        <wuc:SettingsCard Header="{x:Bind Version}">
+                            <wuc:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE8EC;" />
+                            </wuc:SettingsCard.HeaderIcon>
+                            <Button x:Uid="SettingPage_CheckUpdate" Name="CheckUpdateButton" Click="CheckUpdate" Visibility="{x:Bind IsUpdateAvailable, Converter={StaticResource BoolToNegativeVisibilityConverter}, Mode=OneTime}" />
+                        </wuc:SettingsCard>
+                        <wuc:SettingsCard x:Name="StatusInfo" Visibility="Collapsed">
+                            <wuc:SettingsCard.Header>
+                                <TextBlock Name="NewVersion" x:Uid="SettingPage_NewVersionTip" />
+                            </wuc:SettingsCard.Header>
+                            <wuc:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE946;" />
+                            </wuc:SettingsCard.HeaderIcon>
+                            <StackPanel Spacing="8"
+                                    HorizontalAlignment="Stretch">
+                                <ScrollViewer MaxHeight="260"
+                                        VerticalScrollBarVisibility="Auto"
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        Visibility="{x:Bind IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneTime}">
+                                    <TextBlock x:Name="ChangelogText"
+                                            TextWrapping="Wrap"
+                                            IsTextSelectionEnabled="True" />
+                                </ScrollViewer>
+                                <HyperlinkButton Name="DownloadButton" x:Uid="SettingPage_DownloadUpdate" Click="UpdateByPowershell" Visibility="Collapsed" />
+                            </StackPanel>
+                        </wuc:SettingsCard>
+                    </wuc:SettingsExpander.Items>
+                </wuc:SettingsExpander>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

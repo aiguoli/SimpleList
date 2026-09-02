@@ -8,10 +8,8 @@
     xmlns:vm="using:SimpleList.ViewModels"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:CreateFolderViewModel}"
-    Title="Create folder"
-    PrimaryButtonText="OK"
+    x:Uid="CreateFolderView"
     IsPrimaryButtonEnabled="False"
-    CloseButtonText="Cancel"
     PrimaryButtonCommand="{Binding CreateFolderCommand}"
     DefaultButton="Primary">
 

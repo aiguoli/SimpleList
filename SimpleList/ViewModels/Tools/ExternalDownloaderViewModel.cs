@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -16,6 +17,15 @@ namespace SimpleList.ViewModels.Tools;
 
 public partial class ExternalDownloaderViewModel : ObservableObject
 {
+    public ExternalDownloaderViewModel()
+    {
+    }
+
+    public ExternalDownloaderViewModel(IEnumerable<string> downloadUrls)
+    {
+        SetDownloadUrls(downloadUrls);
+    }
+
     [RelayCommand]
     private void ParseShareUrlAsync()
     {
@@ -55,8 +65,18 @@ public partial class ExternalDownloaderViewModel : ObservableObject
                 }
                 DirectLink = $"{domain}/personal/{user}/_layouts/52/download.aspx?share={shareId}";
                 IsConverting = false;
-                CanPush = true;
+                UpdateCanPush();
             }
+            else
+            {
+                DirectLink = ShareUrl;
+                IsConverting = false;
+                UpdateCanPush();
+            }
+        }
+        else
+        {
+            IsConverting = false;
         }
     }
 
@@ -71,50 +91,89 @@ public partial class ExternalDownloaderViewModel : ObservableObject
     [RelayCommand]
     private async Task PushToDownloader()
     {
-        if (string.IsNullOrWhiteSpace(DirectLink) || !CanPush)
+        string[] downloadUrls = GetDownloadUrls();
+        if (downloadUrls.Length == 0 || !CanPush)
         {
             return;
         }
+
+        List<string> responses = [];
         switch (SelectedDownloaderType)
         {
             case DownloaderType.Aria2:
-                Aria2RpcRequest payload = new()
+                foreach (string downloadUrl in downloadUrls)
                 {
-                    jsonrpc = "2.0",
-                    method = "aria2.addUri",
-                    id = Guid.NewGuid().ToString(),
-                    @params = string.IsNullOrEmpty(RpcSecret) ? [new[] { DirectLink }] : [$"token:{RpcSecret}", new[] { DirectLink }],
-                };
-                string jsonRequest = JsonSerializer.Serialize(payload, Aria2JsonContext.Default.Aria2RpcRequest);
-                StringContent content = new(jsonRequest, Encoding.UTF8, "application/json");
-                var resp = await client.PostAsync(RpcUrl, content);
-                Result = await resp.Content.ReadAsStringAsync();
+                    Aria2RpcRequest payload = new()
+                    {
+                        jsonrpc = "2.0",
+                        method = "aria2.addUri",
+                        id = Guid.NewGuid().ToString(),
+                        @params = string.IsNullOrEmpty(RpcSecret) ? [new[] { downloadUrl }] : [$"token:{RpcSecret}", new[] { downloadUrl }],
+                    };
+                    string jsonRequest = JsonSerializer.Serialize(payload, Aria2JsonContext.Default.Aria2RpcRequest);
+                    StringContent content = new(jsonRequest, Encoding.UTF8, "application/json");
+                    var resp = await client.PostAsync(RpcUrl, content);
+                    responses.Add(await resp.Content.ReadAsStringAsync());
+                }
+                Result = string.Join(Environment.NewLine, responses);
                 break;
             case DownloaderType.IDM:
                 string idmPath = GetIDMPath();
-                ProcessStartInfo startInfo = new()
+                foreach (string downloadUrl in downloadUrls)
                 {
-                    FileName = idmPath,
-                    Arguments = $"/d \"{DirectLink}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-                Process.Start(startInfo);
+                    ProcessStartInfo startInfo = new()
+                    {
+                        FileName = idmPath,
+                        Arguments = $"/d \"{downloadUrl}\" /n",
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+                    Process.Start(startInfo);
+                }
+                Result = string.Format(Helpers.ResourceHelper.GetLocalized("ExternalDownloader_IdmSent"), downloadUrls.Length);
                 break;
             case DownloaderType.Motrix:
-                Aria2RpcRequest motrixPayload = new()
+                foreach (string downloadUrl in downloadUrls)
                 {
-                    jsonrpc = "2.0",
-                    method = "aria2.addUri",
-                    id = Guid.NewGuid().ToString(),
-                    @params = string.IsNullOrEmpty(RpcSecret) ? [new[] { DirectLink }] : [$"token:{MotrixRpcSecret}", new[] { DirectLink }],
-                };
-                string motrixRequest = JsonSerializer.Serialize(motrixPayload, Aria2JsonContext.Default.Aria2RpcRequest);
-                StringContent motrixContent = new(motrixRequest, Encoding.UTF8, "application/json");
-                var motrixResp = await client.PostAsync(MotrixRpcUrl, motrixContent);
-                Result = await motrixResp.Content.ReadAsStringAsync();
+                    Aria2RpcRequest motrixPayload = new()
+                    {
+                        jsonrpc = "2.0",
+                        method = "aria2.addUri",
+                        id = Guid.NewGuid().ToString(),
+                        @params = string.IsNullOrEmpty(MotrixRpcSecret) ? [new[] { downloadUrl }] : [$"token:{MotrixRpcSecret}", new[] { downloadUrl }],
+                    };
+                    string motrixRequest = JsonSerializer.Serialize(motrixPayload, Aria2JsonContext.Default.Aria2RpcRequest);
+                    StringContent motrixContent = new(motrixRequest, Encoding.UTF8, "application/json");
+                    var motrixResp = await client.PostAsync(MotrixRpcUrl, motrixContent);
+                    responses.Add(await motrixResp.Content.ReadAsStringAsync());
+                }
+                Result = string.Join(Environment.NewLine, responses);
                 break;
         }
+    }
+
+    private void SetDownloadUrls(IEnumerable<string> downloadUrls)
+    {
+        DirectLink = string.Join(Environment.NewLine, downloadUrls.Where(url => !string.IsNullOrWhiteSpace(url)));
+        UpdateCanPush();
+    }
+
+    private string[] GetDownloadUrls()
+    {
+        return (DirectLink ?? string.Empty)
+            .Split(["\r\n", "\n", "\r"], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(url => !string.IsNullOrWhiteSpace(url))
+            .ToArray();
+    }
+
+    private void UpdateCanPush()
+    {
+        CanPush = GetDownloadUrls().Length > 0;
+    }
+
+    partial void OnDirectLinkChanged(string value)
+    {
+        UpdateCanPush();
     }
 
     private static string GetIDMPath()
@@ -145,23 +204,43 @@ public partial class ExternalDownloaderViewModel : ObservableObject
     private readonly HttpClient client = new();
 
     // aria2 config
-    [ObservableProperty] private string _RpcUrl = "http://localhost:6800/jsonrpc";
-    [ObservableProperty] private string _RpcSecret = "";
+    [ObservableProperty]
+    public partial string RpcUrl { get; set; } = "http://localhost:6800/jsonrpc";
+
+    [ObservableProperty]
+    public partial string RpcSecret { get; set; } = "";
 
     // motrix config
-    [ObservableProperty] private string _motrixRpcUrl = "http://localhost:16800/jsonrpc";
-    [ObservableProperty] private string _motrixRpcSecret = "";
+    [ObservableProperty]
+    public partial string MotrixRpcUrl { get; set; } = "http://localhost:16800/jsonrpc";
+
+    [ObservableProperty]
+    public partial string MotrixRpcSecret { get; set; } = "";
 
     // idm config
-    [ObservableProperty] private string _idmPath = GetIDMPath();
+    [ObservableProperty]
+    public partial string IdmPath { get; set; } = GetIDMPath();
 
-    [ObservableProperty] private string[] _downloaderTypes = Enum.GetNames<DownloaderType>();
-    [ObservableProperty] private string _shareUrl;
-    [ObservableProperty] private bool _isConverting = false;
-    [ObservableProperty] private string _directLink;
-    [ObservableProperty] private DownloaderType _selectedDownloaderType;
-    [ObservableProperty] private bool _canPush = false;
-    [ObservableProperty] private string _result;
+    [ObservableProperty]
+    public partial string[] DownloaderTypes { get; set; } = Enum.GetNames<DownloaderType>();
+
+    [ObservableProperty]
+    public partial string ShareUrl { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsConverting { get; set; } = false;
+
+    [ObservableProperty]
+    public partial string DirectLink { get; set; }
+
+    [ObservableProperty]
+    public partial DownloaderType SelectedDownloaderType { get; set; }
+
+    [ObservableProperty]
+    public partial bool CanPush { get; set; } = false;
+
+    [ObservableProperty]
+    public partial string Result { get; set; }
 }
 
 public class Aria2RpcRequest

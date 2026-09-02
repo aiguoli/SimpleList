@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Graph.Models;
-using SimpleList.Models;
-using System;
+using SimpleList.Core.Models;
 using System.Threading.Tasks;
 using WinUICommunity;
 
@@ -14,13 +12,13 @@ public partial class RenameFileViewModel : ObservableObject
     {
         Drive = drive;
         _file = file;
-        _fileName = file.Name;
+        FileName = file.Name;
     }
 
     [RelayCommand]
     private async Task RenameFile()
     {
-        OneDriveResult<DriveItem> result = await Drive.Provider.RenameFile(_file.Id, FileName);
+        StorageResult<FileItem> result = await Drive.Provider.RenameAsync(_file.Id, FileName);
         if (result.IsSuccess)
         {
             Growl.Success(new GrowlInfo
@@ -44,7 +42,9 @@ public partial class RenameFileViewModel : ObservableObject
         await Drive.Refresh();
     }
 
-    [ObservableProperty] private string _fileName;
+    [ObservableProperty]
+    public partial string FileName { get; set; }
+
     private readonly FileViewModel _file;
     public DriveViewModel Drive { get; }
 }

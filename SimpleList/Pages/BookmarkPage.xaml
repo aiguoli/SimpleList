@@ -1,15 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="SimpleList.Pages.BookmarkPage"
+    x:Name="PageRoot"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:BookmarkViewModel}">
 
-    <Grid>
-        <TextBlock Margin="10" FontSize="20" Text="Bookmarks" />
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="BookmarkPage_Title" />
+        <TextBox
+            Grid.Row="1"
+            x:Uid="BookmarkPage_Search"
+            Margin="0,10,0,10"
+            Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Grid.Row="2">
+            <ListView
+                ItemsSource="{Binding Bookmarks}"
+                SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:BookmarkItemViewModel">
+                        <Grid
+                            Padding="10"
+                            DoubleTapped="OpenBookmark">
+                            <Grid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem
+                                        x:Uid="BookmarkPage_Open"
+                                        Click="OpenBookmarkMenu" />
+                                    <MenuFlyoutItem
+                                        x:Uid="BookmarkPage_Remove"
+                                        Click="RemoveBookmarkMenu"
+                                        Icon="Delete" />
+                                </MenuFlyout>
+                            </Grid.ContextFlyout>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <FontIcon
+                                Width="28"
+                                Margin="0,0,10,0"
+                                FontSize="18"
+                                Glyph="{x:Bind IconGlyph}" />
+
+                            <StackPanel Grid.Column="1" Spacing="3">
+                                <TextBlock
+                                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextTrimming="CharacterEllipsis" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind Path}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Spacing="2">
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind DriveDisplayName}" />
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind ItemType}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBlock
+                x:Uid="BookmarkPage_Empty"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Visibility="{Binding EmptyStateVisibility}" />
+        </Grid>
+
+        <StackPanel
+            Grid.Row="2"
+            MinHeight="250"
+            wuc:Growl.GrowlParent="True"
+            wuc:Growl.Token="BookmarkGrowl" />
     </Grid>
 </Page>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -126,10 +126,61 @@
   <data name="CloudPage_CreateDrive.Content" xml:space="preserve">
     <value>添加网盘</value>
   </data>
+  <data name="CreateDrive.Title" xml:space="preserve">
+    <value>添加网盘</value>
+  </data>
+  <data name="CreateDrive.PrimaryButtonText" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="CreateDrive.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CreateDrive_Provider.Text" xml:space="preserve">
+    <value>提供商</value>
+  </data>
+  <data name="CreateDrive_Provider_Local.Content" xml:space="preserve">
+    <value>本地文件夹</value>
+  </data>
+  <data name="CreateDrive_DisplayName.Header" xml:space="preserve">
+    <value>显示名称（可选）</value>
+  </data>
+  <data name="CreateDrive_DisplayName.PlaceholderText" xml:space="preserve">
+    <value>网盘名称</value>
+  </data>
+  <data name="CreateDrive_LocalPath.Header" xml:space="preserve">
+    <value>本地文件夹路径</value>
+  </data>
+  <data name="CreateDrive_LocalPath.PlaceholderText" xml:space="preserve">
+    <value>C:\Data\MyDrive</value>
+  </data>
+  <data name="CreateDrive_Browse.Text" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="CreateDrive_PikPakUsername.Header" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="CreateDrive_PikPakPassword.Header" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="CreateDrive_PikPakRememberPassword.Content" xml:space="preserve">
+    <value>记住账号和密码</value>
+  </data>
+  <data name="CreateDrive_PikPakInvalidCredentials" xml:space="preserve">
+    <value>请输入有效的 PikPak 用户名和密码。</value>
+  </data>
+  <data name="CreateDrive_LoginFailed" xml:space="preserve">
+    <value>登录失败。</value>
+  </data>
   <data name="CloudPage_CreateFolder.Text" xml:space="preserve">
     <value>新建文件夹</value>
   </data>
   <data name="CloudPage_Flyout_GetCapacity.Text" xml:space="preserve">
+    <value>查看容量</value>
+  </data>
+  <data name="CloudPage_Flyout_OpenTrash.Text" xml:space="preserve">
+    <value>回收站</value>
+  </data>
+  <data name="CloudPage_CapacityButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>查看容量</value>
   </data>
   <data name="CloudPage_Flyout_RemoveDrive.Text" xml:space="preserve">
@@ -162,6 +213,78 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>你的网盘</value>
   </data>
+  <data name="CloudPage_Subtitle.Text" xml:space="preserve">
+    <value>在这里统一查看网盘状态，并快速进入对应空间。</value>
+  </data>
+  <data name="CloudPage_StorageLabel.Text" xml:space="preserve">
+    <value>容量信息</value>
+  </data>
+  <data name="CloudPage_OpenDriveHint.Text" xml:space="preserve">
+    <value>双击卡片进入文件管理</value>
+  </data>
+  <data name="CloudPage_DriveCount" xml:space="preserve">
+    <value>已接入 {0} 个网盘</value>
+  </data>
+  <data name="CloudPage_CapacityPending" xml:space="preserve">
+    <value>等待获取容量</value>
+  </data>
+  <data name="CloudPage_CapacityPendingDetail" xml:space="preserve">
+    <value>进入页面后会自动拉取最新容量信息。</value>
+  </data>
+  <data name="CloudPage_CapacityLoading" xml:space="preserve">
+    <value>正在获取容量...</value>
+  </data>
+  <data name="CloudPage_CapacityLoadingDetail" xml:space="preserve">
+    <value>后台正在请求网盘容量，请稍候。</value>
+  </data>
+  <data name="CloudPage_CapacityLoadedDetail" xml:space="preserve">
+    <value>剩余空间 {0}</value>
+  </data>
+  <data name="CloudPage_CapacityUnavailable" xml:space="preserve">
+    <value>容量暂不可用</value>
+  </data>
+  <data name="CloudPage_CapacityTimeout" xml:space="preserve">
+    <value>容量请求超时，请稍后重试。</value>
+  </data>
+  <data name="CloudPage_PathSummary" xml:space="preserve">
+    <value>本地路径: {0}</value>
+  </data>
+  <data name="CloudPage_AccountSummary" xml:space="preserve">
+    <value>账号: {0}</value>
+  </data>
+  <data name="CloudPage_DriveIdSummary" xml:space="preserve">
+    <value>Drive ID: {0}</value>
+  </data>
+  <data name="CloudPage_LocalDriveHint" xml:space="preserve">
+    <value>本地目录不依赖远程账号。</value>
+  </data>
+  <data name="CloudPage_UnknownValue" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="CloudPage_Provider_OneDrive" xml:space="preserve">
+    <value>OneDrive</value>
+  </data>
+  <data name="CloudPage_Provider_GoogleDrive" xml:space="preserve">
+    <value>Google Drive</value>
+  </data>
+  <data name="CloudPage_Provider_Local" xml:space="preserve">
+    <value>本地存储</value>
+  </data>
+  <data name="CloudPage_Provider_PikPak" xml:space="preserve">
+    <value>PikPak</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Title" xml:space="preserve">
+    <value>删除网盘</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Content" xml:space="preserve">
+    <value>确认从网盘管理页移除 “{0}” 吗？这不会删除云端文件。</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Remove" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
   <data name="CreateFolderFail" xml:space="preserve">
     <value>文件夹创建失败</value>
   </data>
@@ -179,6 +302,57 @@
   </data>
   <data name="DeleteFileSuccess" xml:space="preserve">
     <value>文件删除成功</value>
+  </data>
+  <data name="DeleteFileView.Title" xml:space="preserve">
+    <value>删除项目</value>
+  </data>
+  <data name="DeleteFileView.PrimaryButtonText" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="DeleteFileView.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="DeleteFileView_PermanentDelete.Content" xml:space="preserve">
+    <value>永久删除</value>
+  </data>
+  <data name="DeleteFileView_ConfirmationSingle" xml:space="preserve">
+    <value>确定要删除“{0}”吗？</value>
+  </data>
+  <data name="DeleteFileView_ConfirmationMultiple" xml:space="preserve">
+    <value>确定要删除选中的 {0} 个项目吗？</value>
+  </data>
+  <data name="BatchRenameMenu.Text" xml:space="preserve">
+    <value>批量重命名</value>
+  </data>
+  <data name="DrivePage_BatchRenameButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>批量重命名</value>
+  </data>
+  <data name="BatchRenameView.Title" xml:space="preserve">
+    <value>批量重命名</value>
+  </data>
+  <data name="BatchRenameView.PrimaryButtonText" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="BatchRenameView.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="BatchRenameView_Mode.Header" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="BatchRenameView_Mode_String.Content" xml:space="preserve">
+    <value>字符串查找替换</value>
+  </data>
+  <data name="BatchRenameView_Mode_Regex.Content" xml:space="preserve">
+    <value>正则表达式</value>
+  </data>
+  <data name="BatchRenameView_Find.Header" xml:space="preserve">
+    <value>查找</value>
+  </data>
+  <data name="BatchRenameView_Replace.Header" xml:space="preserve">
+    <value>替换为</value>
+  </data>
+  <data name="BatchRenameSuccess" xml:space="preserve">
+    <value>已重命名 {0} 个项目</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>出错了</value>
@@ -200,6 +374,15 @@
   </data>
   <data name="ExternalDownloaderPage_OneDriveShareLink.Text" xml:space="preserve">
     <value>OneDrive 分享链接</value>
+  </data>
+  <data name="ExternalDownloaderPage_SourceLink.Text" xml:space="preserve">
+    <value>分享链接或下载链接</value>
+  </data>
+  <data name="ExternalDownloaderDialog_Title" xml:space="preserve">
+    <value>使用指定工具下载</value>
+  </data>
+  <data name="ExternalDownloader_NoDownloadUrl" xml:space="preserve">
+    <value>无法获取下载链接</value>
   </data>
   <data name="ExternalDownloaderPage_ParseLink.Content" xml:space="preserve">
     <value>解析链接</value>
@@ -237,11 +420,26 @@
   <data name="FileView_Flyout_CopyFilename.Text" xml:space="preserve">
     <value>文件名</value>
   </data>
+  <data name="FileView_Flyout_CopyFileId.Text" xml:space="preserve">
+    <value>文件Id</value>
+  </data>
   <data name="FileView_Flyout_Delete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
+  <data name="FileView_Flyout_PermanentDelete.Text" xml:space="preserve">
+    <value>永久删除</value>
+  </data>
+  <data name="FileView_Flyout_Restore.Text" xml:space="preserve">
+    <value>恢复</value>
+  </data>
   <data name="FileView_Flyout_Download.Text" xml:space="preserve">
     <value>下载</value>
+  </data>
+  <data name="FileView_Flyout_DownloadDefault.Text" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="FileView_Flyout_DownloadWithTool.Text" xml:space="preserve">
+    <value>使用指定工具下载</value>
   </data>
   <data name="FileView_Flyout_Open.Text" xml:space="preserve">
     <value>打开</value>
@@ -266,6 +464,72 @@
   </data>
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
     <value>快速开始</value>
+  </data>
+  <data name="HomePage_Tutorial_Title.Text" xml:space="preserve">
+    <value>欢迎使用 SimpleList</value>
+  </data>
+  <data name="HomePage_Tutorial_Subtitle.Text" xml:space="preserve">
+    <value>在一个应用中连接 OneDrive、Google Drive、本地文件夹或 PikPak。添加第一个网盘前，请先阅读下面对应平台的准备事项。</value>
+  </data>
+  <data name="HomePage_QuickStart_Step1.Text" xml:space="preserve">
+    <value>1. 完成对应平台的前置配置。Google Drive 必须先配置 OAuth 凭据才能使用。</value>
+  </data>
+  <data name="HomePage_QuickStart_Step2.Text" xml:space="preserve">
+    <value>2. 打开“网盘”，点击“添加网盘”，选择平台，然后完成登录或选择本地文件夹。</value>
+  </data>
+  <data name="HomePage_QuickStart_Step3.Text" xml:space="preserve">
+    <value>3. 双击新网盘即可浏览文件；通过右键菜单执行该平台支持的上传、下载、重命名、删除和分享等操作。</value>
+  </data>
+  <data name="HomePage_OpenDrives.Text" xml:space="preserve">
+    <value>打开网盘</value>
+  </data>
+  <data name="HomePage_GoogleNotice.Title" xml:space="preserve">
+    <value>Google Drive 需要预先配置</value>
+  </data>
+  <data name="HomePage_GoogleNotice.Message" xml:space="preserve">
+    <value>登录前，请先启用 Google Drive API，并把桌面应用类型的 OAuth Client ID 和 Client Secret 写入 appsettings.json。</value>
+  </data>
+  <data name="HomePage_OneDrive_Title.Text" xml:space="preserve">
+    <value>OneDrive</value>
+  </data>
+  <data name="HomePage_OneDrive_Content.Text" xml:space="preserve">
+    <value>通常不需要额外配置。添加网盘时选择 OneDrive，然后在微软登录窗口完成授权。OneDrive 支持上传、下载、回收站、公开链接，以及链接密码和过期时间。</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Title.Text" xml:space="preserve">
+    <value>Google Drive</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Prerequisites.Text" xml:space="preserve">
+    <value>在 Google Cloud Console 中创建或选择项目，启用 Google Drive API，配置 OAuth 同意屏，并创建“桌面应用”类型的 OAuth 客户端。复制生成的 Client ID 和 Client Secret。</value>
+  </data>
+  <data name="HomePage_ConfigPath_Label.Text" xml:space="preserve">
+    <value>请创建或编辑以下配置文件：</value>
+  </data>
+  <data name="HomePage_GoogleDrive_ConfigIntro.Text" xml:space="preserve">
+    <value>添加下面的 JSON。如果 appsettings.json 已包含其他设置，请只合并 GoogleOAuth 节点，不要覆盖整个文件。</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Restart.Text" xml:space="preserve">
+    <value>保存配置并重启 SimpleList 后再添加 Google Drive。首次登录会打开浏览器，授权得到的令牌将缓存在本机。</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Limitations.Text" xml:space="preserve">
+    <value>Google Drive 公开链接不支持密码和过期时间；PDF 转换仅支持原生 Google 文档、表格和幻灯片；继续上传时会重新创建 Google 上传会话。</value>
+  </data>
+  <data name="HomePage_Local_Title.Text" xml:space="preserve">
+    <value>本地文件夹</value>
+  </data>
+  <data name="HomePage_Local_Content.Text" xml:space="preserve">
+    <value>无需账号或 API 配置。选择“本地”，选取文件夹，并在 Windows 提示时授予访问权限。所有操作会直接修改该文件夹；云回收站、分享链接和 PDF 转换不可用。</value>
+  </data>
+  <data name="HomePage_PikPak_Title.Text" xml:space="preserve">
+    <value>PikPak</value>
+  </data>
+  <data name="HomePage_PikPak_Content.Text" xml:space="preserve">
+    <value>添加网盘时填写 PikPak 用户名和密码。登录过程中可能打开浏览器完成人机验证；仅在可信设备上启用“记住账号和密码”。</value>
+  </data>
+  <data name="HomePage_PikPak_Limitations.Title" xml:space="preserve">
+    <value>部分 PikPak 操作尚未开放</value>
+  </data>
+  <data name="HomePage_PikPak_Limitations.Message" xml:space="preserve">
+    <value>目前不支持上传文件或文件夹、创建或撤销分享链接、PDF 转换，以及以 PikPak 为目标端的文件迁移。</value>
   </data>
   <data name="InsufficientPermission" xml:space="preserve">
     <value>权限不足</value>
@@ -336,6 +600,9 @@
   <data name="RootFileName" xml:space="preserve">
     <value>根目录</value>
   </data>
+  <data name="TrashFileName" xml:space="preserve">
+    <value>回收站</value>
+  </data>
   <data name="SearchView.Title" xml:space="preserve">
     <value>搜索文件</value>
   </data>
@@ -360,6 +627,12 @@
   <data name="SettingPage_AboutTitle.Text" xml:space="preserve">
     <value>关于</value>
   </data>
+  <data name="SettingPage_About.Header" xml:space="preserve">
+    <value>SimpleList</value>
+  </data>
+  <data name="SettingPage_About.Description" xml:space="preserve">
+    <value>一处管理你的每一片云。</value>
+  </data>
   <data name="SettingPage_AppearanceTitle.Text" xml:space="preserve">
     <value>显示</value>
   </data>
@@ -372,11 +645,41 @@
   <data name="SettingPage_CheckUpdate.Content" xml:space="preserve">
     <value>检查更新</value>
   </data>
+  <data name="SettingPage_CloudOAuth.Description" xml:space="preserve">
+    <value>添加新的 OneDrive 和 Google Drive 账号时使用。</value>
+  </data>
+  <data name="SettingPage_CloudOAuth.Header" xml:space="preserve">
+    <value>云盘 OAuth</value>
+  </data>
+  <data name="SettingPage_CloudTitle.Text" xml:space="preserve">
+    <value>云盘配置</value>
+  </data>
   <data name="SettingPage_DownloadUpdate.Content" xml:space="preserve">
     <value>下载</value>
   </data>
+  <data name="SettingPage_GoogleClientId.Header" xml:space="preserve">
+    <value>Google Drive Client ID</value>
+  </data>
+  <data name="SettingPage_GoogleClientSecret.Header" xml:space="preserve">
+    <value>Google Drive Client Secret</value>
+  </data>
   <data name="SettingPage_NewVersionTip.Text" xml:space="preserve">
     <value>已经是最新版本。</value>
+  </data>
+  <data name="SettingPage_OneDriveClientId.Header" xml:space="preserve">
+    <value>OneDrive Client ID</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettings.Content" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettingsFailedTitle" xml:space="preserve">
+    <value>保存设置失败</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettingsSuccessMessage" xml:space="preserve">
+    <value>新添加的账号会使用更新后的提供商配置。</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettingsSuccessTitle" xml:space="preserve">
+    <value>设置已保存</value>
   </data>
   <data name="SettingPage_Theme_Dark.Content" xml:space="preserve">
     <value>深色</value>
@@ -423,6 +726,24 @@
   <data name="TaskManagerPage_DownloadComplted.Text" xml:space="preserve">
     <value>下载完成</value>
   </data>
+  <data name="TaskManagerPage_EstimatedTimeRemaining" xml:space="preserve">
+    <value>预计剩余 {0}</value>
+  </data>
+  <data name="TaskManagerPage_DurationHours" xml:space="preserve">
+    <value>{0} 小时</value>
+  </data>
+  <data name="TaskManagerPage_DurationHoursMinutes" xml:space="preserve">
+    <value>{0} 小时 {1} 分钟</value>
+  </data>
+  <data name="TaskManagerPage_DurationMinutesSeconds" xml:space="preserve">
+    <value>{0} 分钟 {1} 秒</value>
+  </data>
+  <data name="TaskManagerPage_DurationSeconds" xml:space="preserve">
+    <value>{0} 秒</value>
+  </data>
+  <data name="TaskManagerPage_DeleteIncompleteFileFailed" xml:space="preserve">
+    <value>无法删除未完成的下载文件：{0}</value>
+  </data>
   <data name="TaskManagerPage_OpenFolder.Text" xml:space="preserve">
     <value>打开所在文件夹</value>
   </data>
@@ -432,8 +753,47 @@
   <data name="TaskManagerPage_Pivot_Upload.Header" xml:space="preserve">
     <value>上传</value>
   </data>
+  <data name="TaskManagerPage_Pivot_Migration.Header" xml:space="preserve">
+    <value>迁移</value>
+  </data>
   <data name="TaskManagerPage_Remove.Text" xml:space="preserve">
     <value>移除</value>
+  </data>
+  <data name="TaskManagerPage_ClearCompleted.Content" xml:space="preserve">
+    <value>清空已完成任务</value>
+  </data>
+  <data name="TaskManagerPage_ClearCompleted.ToolTipService.ToolTip" xml:space="preserve">
+    <value>清空当前页面的已完成任务</value>
+  </data>
+  <data name="Trash_DeleteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>永久删除所选项目</value>
+  </data>
+  <data name="Trash_DeleteFail" xml:space="preserve">
+    <value>永久删除失败</value>
+  </data>
+  <data name="Trash_DeleteSuccess" xml:space="preserve">
+    <value>已永久删除</value>
+  </data>
+  <data name="Trash_EmptyButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>清空回收站</value>
+  </data>
+  <data name="Trash_EmptyFail" xml:space="preserve">
+    <value>清空回收站失败</value>
+  </data>
+  <data name="Trash_EmptyMenu.Text" xml:space="preserve">
+    <value>清空回收站</value>
+  </data>
+  <data name="Trash_EmptySuccess" xml:space="preserve">
+    <value>回收站已清空</value>
+  </data>
+  <data name="Trash_RestoreButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>恢复所选项目</value>
+  </data>
+  <data name="Trash_RestoreFail" xml:space="preserve">
+    <value>恢复失败</value>
+  </data>
+  <data name="Trash_RestoreSuccess" xml:space="preserve">
+    <value>恢复成功</value>
   </data>
   <data name="TaskManagerPage_Resume.Text" xml:space="preserve">
     <value>恢复</value>
@@ -449,6 +809,36 @@
   </data>
   <data name="TaskManagerPage_StartUploadDesc" xml:space="preserve">
     <value>准备上传文件：{0}</value>
+  </data>
+  <data name="TaskManagerPage_StartMigration" xml:space="preserve">
+    <value>开始迁移</value>
+  </data>
+  <data name="TaskManagerPage_StartMigrationDesc" xml:space="preserve">
+    <value>准备开始迁移 {0} 个项目</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Pending" xml:space="preserve">
+    <value>等待迁移</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Running" xml:space="preserve">
+    <value>迁移中</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Completed" xml:space="preserve">
+    <value>迁移完成</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Failed" xml:space="preserve">
+    <value>迁移失败</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Canceled" xml:space="preserve">
+    <value>已取消</value>
+  </data>
+  <data name="TaskManagerPage_MigrationCompleted" xml:space="preserve">
+    <value>迁移完成</value>
+  </data>
+  <data name="TaskManagerPage_MigrationFailed" xml:space="preserve">
+    <value>迁移失败</value>
+  </data>
+  <data name="FileView_Flyout_Migrate.Text" xml:space="preserve">
+    <value>迁移</value>
   </data>
   <data name="TaskManagerPage_Details.Content" xml:space="preserve">
     <value>查看详情</value>
@@ -490,4 +880,187 @@
   </data>
   <data name="ItemType_Folder" xml:space="preserve">
     <value>文件夹</value>
-  </data></root>
+  </data>
+  <data name="BookmarkPage_Title.Text" xml:space="preserve">
+    <value>书签</value>
+  </data>
+  <data name="BookmarkPage_Search.PlaceholderText" xml:space="preserve">
+    <value>搜索书签</value>
+  </data>
+  <data name="BookmarkPage_Open.Text" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="BookmarkPage_Remove.Text" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="BookmarkPage_Empty.Text" xml:space="preserve">
+    <value>还没有书签</value>
+  </data>
+  <data name="FileView_Flyout_AddBookmark.Text" xml:space="preserve">
+    <value>添加为书签</value>
+  </data>
+  <data name="MigrateFileView.Title" xml:space="preserve">
+    <value>选择迁移目标</value>
+  </data>
+  <data name="MigrateFileView_TargetDrive.Header" xml:space="preserve">
+    <value>目标网盘</value>
+  </data>
+  <data name="Bookmark_AddedTitle" xml:space="preserve">
+    <value>已添加书签</value>
+  </data>
+  <data name="Bookmark_ExistsTitle" xml:space="preserve">
+    <value>书签已存在</value>
+  </data>
+  <data name="Bookmark_OpenFailedTitle" xml:space="preserve">
+    <value>无法打开书签</value>
+  </data>
+  <data name="Bookmark_OpenDriveMissing" xml:space="preserve">
+    <value>此书签对应的网盘未配置。</value>
+  </data>
+  <data name="ShareStatus_Shared" xml:space="preserve">
+    <value>已分享</value>
+  </data>
+  <data name="ShareStatus_NotShared" xml:space="preserve">
+    <value>未分享</value>
+  </data>
+  <data name="ShareStatus_Unknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="ShareStatus_Unsupported" xml:space="preserve">
+    <value>不支持</value>
+  </data>
+  <data name="ShareFile_StatusLabel.Text" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="ShareFile_StatusShared" xml:space="preserve">
+    <value>当前已分享</value>
+  </data>
+  <data name="ShareFile_StatusNotShared" xml:space="preserve">
+    <value>当前未分享</value>
+  </data>
+  <data name="ShareFile_StatusUnavailable" xml:space="preserve">
+    <value>无法获取分享状态</value>
+  </data>
+  <data name="ShareFile_ConfirmShare.Content" xml:space="preserve">
+    <value>确认分享</value>
+  </data>
+  <data name="ShareFile_CancelShare.Content" xml:space="preserve">
+    <value>取消分享</value>
+  </data>
+  <data name="ShareCommunityAuth_Title" xml:space="preserve"><value>加入分享社区</value></data>
+  <data name="ShareCommunityAuth_Description" xml:space="preserve"><value>登录或注册后可以发布和收藏链接，也可以暂时以游客身份浏览。</value></data>
+  <data name="ShareCommunityAuth_Login" xml:space="preserve"><value>登录</value></data>
+  <data name="ShareCommunityAuth_Register" xml:space="preserve"><value>注册</value></data>
+  <data name="ShareCommunityAuth_Guest" xml:space="preserve"><value>游客浏览</value></data>
+  <data name="ShareCommunityAuth_Email" xml:space="preserve"><value>邮箱</value></data>
+  <data name="ShareCommunityAuth_Username" xml:space="preserve"><value>用户名</value></data>
+  <data name="ShareCommunityAuth_Password" xml:space="preserve"><value>密码</value></data>
+  <data name="ShareCommunityAuth_Logout" xml:space="preserve"><value>退出登录</value></data>
+  <data name="ShareCommunityAuth_Required" xml:space="preserve"><value>请输入邮箱和密码。</value></data>
+  <data name="ShareCommunityAuth_UsernameRequired" xml:space="preserve"><value>请输入用户名。</value></data>
+  <data name="MediaPreviewView_Title" xml:space="preserve">
+    <value>视频预览</value>
+  </data>
+  <data name="MediaPreviewView_CloseButton.Content" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="DrivePage_SearchButton.ToolTipService.ToolTip" xml:space="preserve"><value>搜索</value></data>
+  <data name="DrivePage_UploadButton.ToolTipService.ToolTip" xml:space="preserve"><value>上传文件</value></data>
+  <data name="DrivePage_CreateFolderButton.ToolTipService.ToolTip" xml:space="preserve"><value>新建文件夹</value></data>
+  <data name="DrivePage_RefreshButton.ToolTipService.ToolTip" xml:space="preserve"><value>刷新</value></data>
+  <data name="SettingPage_Material_None.Content" xml:space="preserve"><value>无</value></data>
+  <data name="SettingPage_Material_Mica.Content" xml:space="preserve"><value>云母</value></data>
+  <data name="SettingPage_Material_MicaAlt.Content" xml:space="preserve"><value>云母（替代）</value></data>
+  <data name="SettingPage_Material_DesktopAcrylic.Content" xml:space="preserve"><value>桌面亚克力</value></data>
+  <data name="SettingPage_Material_AcrylicBase.Content" xml:space="preserve"><value>基础亚克力</value></data>
+  <data name="SettingPage_Material_AcrylicThin.Content" xml:space="preserve"><value>轻薄亚克力</value></data>
+  <data name="SettingPage_Material_Transparent.Content" xml:space="preserve"><value>透明</value></data>
+  <data name="ConvertFileFormatView.Title" xml:space="preserve"><value>转换文件格式</value></data>
+  <data name="ConvertFileFormatView.PrimaryButtonText" xml:space="preserve"><value>转换</value></data>
+  <data name="ConvertFileFormatView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="ConvertFileFormatView_SupportedFormats.Text" xml:space="preserve"><value>当前支持的文件格式包括 </value></data>
+  <data name="ConvertFileFormatView_TargetFormat.Text" xml:space="preserve"><value>目标格式</value></data>
+  <data name="ConvertFileFormatView_SavePath.Text" xml:space="preserve"><value>保存路径</value></data>
+  <data name="ConvertFileFormatView_Browse.Content" xml:space="preserve"><value>浏览</value></data>
+  <data name="CreateFolderView.Title" xml:space="preserve"><value>新建文件夹</value></data>
+  <data name="CreateFolderView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="CreateFolderView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="MigrateFileView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="MigrateFileView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="ImagePreviewView.PrimaryButtonText" xml:space="preserve"><value>关闭</value></data>
+  <data name="MarkdownPreviewView.PrimaryButtonText" xml:space="preserve"><value>关闭</value></data>
+  <data name="PropertyView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="PropertyView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="RenameFileView.Title" xml:space="preserve"><value>重命名文件</value></data>
+  <data name="RenameFileView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="RenameFileView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="RenameFileView_FileName.Header" xml:space="preserve"><value>输入新文件名：</value></data>
+  <data name="RenameFileView_FileName.PlaceholderText" xml:space="preserve"><value>文件名</value></data>
+  <data name="SearchView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="SearchView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="ShareFileView.Title" xml:space="preserve"><value>分享文件</value></data>
+  <data name="ShareFileView.CloseButtonText" xml:space="preserve"><value>关闭</value></data>
+  <data name="ShareFile_Scope.Header" xml:space="preserve"><value>权限</value></data>
+  <data name="ShareFile_Scope_View.Content" xml:space="preserve"><value>查看</value></data>
+  <data name="ShareFile_Scope_Edit.Content" xml:space="preserve"><value>编辑</value></data>
+  <data name="ShareFile_ExpirationDate.Header" xml:space="preserve"><value>到期日期</value></data>
+  <data name="ShareFile_ExpirationDate.PlaceholderText" xml:space="preserve"><value>选择到期日期</value></data>
+  <data name="ShareFile_Password.Header" xml:space="preserve"><value>密码</value></data>
+  <data name="ShareFile_Password.PlaceholderText" xml:space="preserve"><value>可选</value></data>
+  <data name="ShareFile_Link.Header" xml:space="preserve"><value>分享链接</value></data>
+  <data name="ShareFile_Copy.Content" xml:space="preserve"><value>复制</value></data>
+  <data name="ShareCommunityCreateLinkView.Title" xml:space="preserve"><value>分享链接</value></data>
+  <data name="ShareCommunityCreateLinkView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="ShareCommunityCreateLinkView.CloseButtonText" xml:space="preserve"><value>关闭</value></data>
+  <data name="ShareCommunityCreateLinkPage_Title.PlaceholderText" xml:space="preserve"><value>我的照片</value></data>
+  <data name="ShareCommunityCreateLinkPage_ExpirationDate.PlaceholderText" xml:space="preserve"><value>选择日期</value></data>
+  <data name="LinkDetailsView.PrimaryButtonText" xml:space="preserve"><value>确定</value></data>
+  <data name="LinkDetailsView.CloseButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="LinkDetails_Provider.Text" xml:space="preserve"><value>服务商</value></data>
+  <data name="TaskManagerPage_PerSecond.Text" xml:space="preserve"><value>/秒</value></data>
+  <data name="DragCloudFoldersNotSupported" xml:space="preserve"><value>暂不支持将云端文件夹拖到资源管理器，请使用右键菜单中的“下载”。</value></data>
+  <data name="FileCountFormat" xml:space="preserve"><value>{0} 个文件</value></data>
+  <data name="DownloadIncompleteFormat" xml:space="preserve"><value>下载不完整：{0}</value></data>
+  <data name="DownloadCancelled" xml:space="preserve"><value>下载已取消</value></data>
+  <data name="MediaDownloadUrlUnavailable" xml:space="preserve"><value>无法获取媒体下载地址。</value></data>
+  <data name="ShareCommunityCreateLink_Validation" xml:space="preserve"><value>请输入标题、有效的公开链接并选择服务商。</value></data>
+  <data name="ExternalDownloader_IdmSent" xml:space="preserve"><value>已向 IDM 发送 {0} 个下载任务。</value></data>
+  <data name="FilePicker_AllFiles" xml:space="preserve"><value>所有文件</value></data>
+  <data name="FilePicker_PdfDocument" xml:space="preserve"><value>PDF 文档</value></data>
+  <data name="FileSize_ZeroBytes" xml:space="preserve"><value>0 字节</value></data>
+  <data name="FileSize_Unit_Bytes" xml:space="preserve"><value>字节</value></data>
+  <data name="FileSize_Unit_KB" xml:space="preserve"><value>KB</value></data>
+  <data name="FileSize_Unit_MB" xml:space="preserve"><value>MB</value></data>
+  <data name="FileSize_Unit_GB" xml:space="preserve"><value>GB</value></data>
+  <data name="FileSize_Unit_TB" xml:space="preserve"><value>TB</value></data>
+  <data name="FileSize_Unit_PB" xml:space="preserve"><value>PB</value></data>
+  <data name="FileSize_Unit_EB" xml:space="preserve"><value>EB</value></data>
+  <data name="ShareCommunity_SignInRequired" xml:space="preserve"><value>请先登录。</value></data>
+  <data name="Validation_CannotBeEmpty" xml:space="preserve"><value>{0} 不能为空</value></data>
+  <data name="Validation_CannotBeNull" xml:space="preserve"><value>{0} 不能为 null</value></data>
+  <data name="Validation_InvalidFileName" xml:space="preserve"><value>文件名“{0}”包含无效字符</value></data>
+  <data name="ThumbnailUnavailable" xml:space="preserve"><value>缩略图不可用</value></data>
+  <data name="Http_BadRequest" xml:space="preserve"><value>请求无效</value></data>
+  <data name="Http_Unauthorized" xml:space="preserve"><value>未授权</value></data>
+  <data name="Http_Forbidden" xml:space="preserve"><value>无权访问</value></data>
+  <data name="Http_NotFound" xml:space="preserve"><value>未找到</value></data>
+  <data name="Http_Conflict" xml:space="preserve"><value>发生冲突</value></data>
+  <data name="Http_TooManyRequests" xml:space="preserve"><value>请求过于频繁</value></data>
+  <data name="Http_InsufficientStorage" xml:space="preserve"><value>存储空间不足</value></data>
+  <data name="Http_ServiceUnavailable" xml:space="preserve"><value>服务不可用</value></data>
+  <data name="PikPak_UploadUnsupported" xml:space="preserve"><value>PikPak 上传需要阿里云 OSS 签名，暂不支持</value></data>
+  <data name="PikPak_ShareUnsupported" xml:space="preserve"><value>PikPak 暂不支持分享链接</value></data>
+  <data name="PikPak_PdfConversionUnsupported" xml:space="preserve"><value>PikPak 不支持转换为 PDF</value></data>
+  <data name="PikPak_AuthenticationExpired" xml:space="preserve"><value>PikPak 身份验证已过期</value></data>
+  <data name="PikPak_CaptchaExpired" xml:space="preserve"><value>PikPak 验证码令牌已过期</value></data>
+  <data name="PikPak_ApiErrorFormat" xml:space="preserve"><value>PikPak API 错误：{0}</value></data>
+  <data name="PikPak_DownloadUrlUnavailable" xml:space="preserve"><value>此 PikPak 项目没有可用的下载地址。</value></data>
+  <data name="GoogleDrive_ErrorFormat" xml:space="preserve"><value>Google Drive 错误：{0}</value></data>
+  <data name="OneDrive_ErrorFormat" xml:space="preserve"><value>OneDrive 错误：{0}</value></data>
+  <data name="Local_FolderNotFoundFormat" xml:space="preserve"><value>本地文件夹不存在：{0}</value></data>
+  <data name="Local_ThumbnailsUnavailable" xml:space="preserve"><value>本地项目没有可用的缩略图</value></data>
+  <data name="Local_RestoreUnsupported" xml:space="preserve"><value>本地项目不支持还原</value></data>
+  <data name="Local_TrashUnsupported" xml:space="preserve"><value>本地项目不支持回收站</value></data>
+  <data name="Local_ShareUnsupported" xml:space="preserve"><value>本地项目不支持分享链接</value></data>
+  <data name="Local_PdfConversionUnsupported" xml:space="preserve"><value>本地项目不支持转换为 PDF</value></data>
+</root>

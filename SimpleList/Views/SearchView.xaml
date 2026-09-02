@@ -9,8 +9,6 @@
     mc:Ignorable="d"
     x:Uid="SearchView"
     d:DataContext="{x:Bind vm:SearchViewModel}"
-    PrimaryButtonText="OK"
-    CloseButtonText="Cancel"
     DefaultButton="Primary"
     PrimaryButtonCommand="{Binding SearchCommand}">
 

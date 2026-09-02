@@ -17,5 +17,16 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <GridView ItemsSource="{x:Bind ViewModel.Files, Mode=OneWay}" ItemTemplate="{StaticResource GridItemTemplate}" />
+    <GridView
+        x:Name="FileGridView"
+        CanDragItems="{x:Bind ViewModel.CanSearch, Mode=OneWay}"
+        DragItemsStarting="StartFileDrag"
+        ItemsSource="{x:Bind ViewModel.Files, Mode=OneWay}"
+        ItemTemplate="{StaticResource GridItemTemplate}"
+        SelectionMode="Extended"
+        SelectionChanged="ChangeSelectedFiles">
+        <GridView.ItemContainerTransitions>
+            <TransitionCollection />
+        </GridView.ItemContainerTransitions>
+    </GridView>
 </UserControl>

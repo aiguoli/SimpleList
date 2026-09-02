@@ -9,12 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:ShareFileViewModel}"
-    Title="Share File"
-    PrimaryButtonText="OK"
-    PrimaryButtonCommand="{Binding ShareFileCommand}"
-    CloseButtonText="Close"
-    DefaultButton="Primary"
-    Closing="ContentDialog_Closing">
+    x:Uid="ShareFileView"
+    Loaded="ContentDialog_Loaded">
 
     <ContentControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -22,22 +18,43 @@
     </ContentControl.Resources>
 
     <StackPanel Orientation="Vertical">
-        <ComboBox Header="Scope" SelectedIndex="{Binding Type, Mode=TwoWay}">
-            <x:String>View</x:String>
-            <x:String>Edit</x:String>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBlock x:Uid="ShareFile_StatusLabel" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding ShareStatus, Mode=OneWay}" VerticalAlignment="Center" />
+            <ProgressRing
+                Width="16"
+                Height="16"
+                IsActive="{Binding IsLoadingShareStatus, Mode=OneWay}"
+                Visibility="{Binding IsLoadingShareStatus, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+        </StackPanel>
+        <ComboBox x:Uid="ShareFile_Scope" SelectedIndex="{Binding Type, Mode=TwoWay}">
+            <ComboBoxItem x:Uid="ShareFile_Scope_View" />
+            <ComboBoxItem x:Uid="ShareFile_Scope_Edit" />
         </ComboBox>
         <CalendarDatePicker 
-            PlaceholderText="Pick expiration date" 
-            Header="Expiration date" 
+            x:Uid="ShareFile_ExpirationDate"
             x:Name="ExpirationDateTime" 
+            IsEnabled="{Binding SupportsExpiration}"
             Date="{Binding ExpirationDateTime, Mode=TwoWay}" />
-        <TextBox Header="Password" PlaceholderText="Optional" Text="{Binding Password, Mode=TwoWay}" />
+        <TextBox x:Uid="ShareFile_Password" IsEnabled="{Binding SupportsPassword}" Text="{Binding Password, Mode=TwoWay}" />
+        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,12,0,0">
+            <Button
+                x:Uid="ShareFile_ConfirmShare"
+                Style="{StaticResource AccentButtonStyle}"
+                IsEnabled="{Binding IsUpdatingShare, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                Command="{Binding ShareFileCommand}" />
+            <Button
+                x:Uid="ShareFile_CancelShare"
+                IsEnabled="{Binding IsUpdatingShare, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                Command="{Binding RevokeShareCommand}"
+                Visibility="{Binding IsShared, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+        </StackPanel>
         <StackPanel 
             Orientation="Horizontal" 
             Spacing="10"
             Visibility="{Binding Finished, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
-            <TextBox Header="Share Link" Text="{Binding ShareLink}" MaxWidth="200" />
-            <Button x:Name="CopyButton" Content="Copy" VerticalAlignment="Bottom" Command="{Binding CopyToClipboardCommand}" />
+            <TextBox x:Uid="ShareFile_Link" Text="{Binding ShareLink}" MaxWidth="200" />
+            <Button x:Name="CopyButton" x:Uid="ShareFile_Copy" VerticalAlignment="Bottom" Command="{Binding CopyToClipboardCommand}" />
             <Button x:Name="QRCodeButton" VerticalAlignment="Bottom" Click="ShowQRCode">
                 <FontIcon Glyph="&#xED14;" />
             </Button>

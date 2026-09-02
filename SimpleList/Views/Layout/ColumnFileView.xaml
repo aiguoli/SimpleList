@@ -34,24 +34,53 @@
                 <MenuFlyoutItem 
                     x:Uid="FileView_Flyout_Open"  
                     Click="ShowPreviewDialogAsync" 
-                    IsEnabled="{x:Bind ViewModel.CanPreview, Mode=OneWay}"
-                    Visibility="{x:Bind ViewModel.CanPreview, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                    IsEnabled="{x:Bind ViewModel.CanOpen, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.CanOpen, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                 <!--<MenuFlyoutItem x:Uid="FileView_Flyout_Download" Command="{Binding DownloadFileCommand}" CommandParameter="{Binding Id}" IsEnabled="{Binding IsFile}" />-->
-                <MenuFlyoutItem 
+                <MenuFlyoutSubItem
                     x:Uid="FileView_Flyout_Download"
-                    Command="{x:Bind ViewModel.Drive.DownloadFilesCommand, Mode=OneWay}"
                     Icon="Download"
-                />
-                <MenuFlyoutItem x:Uid="FileView_Flyout_Delete" Click="ShowDeleteFileDialogAsync" Icon="Delete">
+                    Visibility="{x:Bind ViewModel.CanUseNormalActions, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <MenuFlyoutItem
+                        x:Uid="FileView_Flyout_DownloadDefault"
+                        Command="{x:Bind ViewModel.Drive.DownloadFilesCommand, Mode=OneWay}" />
+                    <MenuFlyoutItem
+                        x:Uid="FileView_Flyout_DownloadWithTool"
+                        Click="ShowExternalDownloaderDialogAsync"
+                        Visibility="{x:Bind ViewModel.CanDownloadWithExternalTool, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                </MenuFlyoutSubItem>
+                <MenuFlyoutItem
+                    x:Uid="FileView_Flyout_Migrate"
+                    Command="{x:Bind ViewModel.Drive.MigrateFilesCommand, Mode=OneWay}"
+                    Icon="MoveToFolder"
+                    Visibility="{x:Bind ViewModel.CanUseNormalActions, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                <MenuFlyoutItem
+                    x:Uid="FileView_Flyout_AddBookmark"
+                    Command="{x:Bind ViewModel.Drive.AddBookmarkCommand, Mode=OneWay}"
+                    CommandParameter="{x:Bind ViewModel, Mode=OneWay}"
+                    Icon="Bookmarks"
+                    Visibility="{x:Bind ViewModel.CanUseNormalActions, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Delete" Click="ShowDeleteFileDialogAsync" Icon="Delete" Visibility="{x:Bind ViewModel.CanDelete, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Delete" />
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutItem
+                    x:Uid="FileView_Flyout_Restore"
+                    Command="{x:Bind ViewModel.Drive.RestoreSelectedTrashItemsCommand, Mode=OneWay}"
+                    Icon="Undo"
+                    Visibility="{x:Bind ViewModel.CanRestoreFromTrash, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                <MenuFlyoutItem
+                    x:Uid="FileView_Flyout_PermanentDelete"
+                    Command="{x:Bind ViewModel.Drive.PermanentDeleteSelectedTrashItemsCommand, Mode=OneWay}"
+                    Icon="Delete"
+                    Visibility="{x:Bind ViewModel.CanPermanentDeleteFromTrash, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                 <MenuFlyoutSubItem x:Uid="FileView_Flyout_Copy" Icon="Copy" Visibility="{x:Bind ViewModel.CanCopy, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <MenuFlyoutItem x:Uid="FileView_Flyout_CopyFilename" Click="CopyFilename" />
                     <MenuFlyoutItem x:Uid="FileView_Flyout_CopyDownloadUrl" Click="CopyDownloadUrl" Visibility="{x:Bind ViewModel.IsFile, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                    <MenuFlyoutItem x:Uid="FileView_Flyout_CopyFileId" Click="CopyFileId" />
                 </MenuFlyoutSubItem>
-                <MenuFlyoutItem x:Uid="FileView_Flyout_Convert" Click="ShowConverFiletDialogAsync" Visibility="{x:Bind ViewModel.Name, Converter={StaticResource FileNameToCanConvertCommandVisible}, Mode=OneWay}">
+                <MenuFlyoutItem x:Uid="FileView_Flyout_Convert" Click="ShowConverFiletDialogAsync" Visibility="{x:Bind ViewModel.CanConvert, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xEA90;" />
                     </MenuFlyoutItem.Icon>
@@ -66,6 +95,7 @@
                         <KeyboardAccelerator Key="F2" />
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="BatchRenameMenu" Click="ShowBatchRenameDialogAsync" Icon="Rename" Visibility="{x:Bind ViewModel.Drive.CanShowBatchRename, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                 <MenuFlyoutItem x:Uid="FileView_Flyout_Property" Click="ShowPropertyDialogAsync">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE946;" />
@@ -81,13 +111,15 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <SymbolIcon Grid.Row="0" Symbol="Folder" Margin="5 0 5 0" Visibility="{x:Bind ViewModel.IsFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
         <SymbolIcon Grid.Row="0" Symbol="OpenFile" Margin="5 0 5 0" Visibility="{x:Bind ViewModel.IsFile, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
-        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{x:Bind ViewModel.Name, Mode=OneWay}" TextTrimming="CharacterEllipsis" ToolTipService.ToolTip="{x:Bind ViewModel.Name, Mode=OneWay}" />
+        <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.Name, Mode=OneWay}" TextTrimming="CharacterEllipsis" ToolTipService.ToolTip="{x:Bind ViewModel.Name, Mode=OneWay}" />
         <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.Size, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" />
         <TextBlock Grid.Column="3" Text="{x:Bind ViewModel.ItemType, Mode=OneWay}" />
-        <TextBlock Grid.Column="4" Text="{x:Bind ViewModel.Updated, Converter={StaticResource DateTimeOffsetToStringConverter}, Mode=OneWay}" />
+        <TextBlock Grid.Column="4" Text="{x:Bind ViewModel.ShareStatusText, Mode=OneWay}" />
+        <TextBlock Grid.Column="5" Text="{x:Bind ViewModel.Updated, Converter={StaticResource DateTimeOffsetToStringConverter}, Mode=OneWay}" />
     </Grid>
 </UserControl>

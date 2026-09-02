@@ -8,9 +8,9 @@
     xmlns:vm="using:SimpleList.ViewModels.Tools"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:LinkDetailsViewModel}"
-    PrimaryButtonText="OK"
+    x:Uid="LinkDetailsView"
     DefaultButton="Primary"
-    CloseButtonText="Cancel">
+    >
 
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
@@ -20,6 +20,7 @@
         <StackPanel Orientation="Vertical" Margin="0 0 10 0">
             <TextBlock x:Uid="LinkDetails_Title" FontWeight="Bold" />
             <TextBlock x:Uid="LinkDetails_Content" FontWeight="Bold" Margin="0 0 0 100" />
+            <TextBlock x:Uid="LinkDetails_Provider" FontWeight="Bold" />
             <TextBlock x:Uid="LinkDetails_Password" FontWeight="Bold" />
             <TextBlock x:Uid="LinkDetails_Created" FontWeight="Bold" />
             <TextBlock x:Uid="LinkDetails_Updated" FontWeight="Bold" />
@@ -29,6 +30,7 @@
         <StackPanel Grid.Column="1">
             <TextBlock Text="{Binding Title}" />
             <TextBox Text="{Binding Content}" TextWrapping="Wrap" IsReadOnly="True" Height="120" />
+            <TextBlock Text="{Binding Provider}" />
             <TextBlock Text="{Binding Password}" />
             <TextBlock Text="{Binding CreatedAt}" />
             <TextBlock Text="{Binding UpdatedAt}" />

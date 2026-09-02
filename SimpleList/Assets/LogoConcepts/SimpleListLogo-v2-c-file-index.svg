@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList 2.0 concept C — File Index</title>
+  <desc id="desc">A folded document containing a connected list index.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#7148DC"/>
+  <path d="M350 210 H610 L758 358 V790 Q758 820 728 820 H350 Q320 820 320 790 V240 Q320 210 350 210 Z"
+        fill="#FFFFFF"/>
+  <path d="M610 210 V328 Q610 358 640 358 H758 Z" fill="#65F0D2"/>
+  <path d="M410 474 V690" stroke="#65F0D2" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="410" cy="474" r="27" fill="#65F0D2"/>
+  <circle cx="410" cy="582" r="27" fill="#65F0D2"/>
+  <circle cx="410" cy="690" r="27" fill="#65F0D2"/>
+  <rect x="465" y="448" width="205" height="52" rx="26" fill="#5B52E5"/>
+  <rect x="465" y="556" width="164" height="52" rx="26" fill="#5B52E5"/>
+  <rect x="465" y="664" width="118" height="52" rx="26" fill="#5B52E5"/>
+</svg>
