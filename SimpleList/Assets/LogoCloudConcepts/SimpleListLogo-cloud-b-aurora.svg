@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList cloud concept B — Aurora Cloud</title>
+  <desc id="desc">A vibrant aurora-gradient cloud on a deep blue glass background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="122" y1="92" x2="908" y2="936" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#12284C"/>
+      <stop offset=".5" stop-color="#121B39"/>
+      <stop offset="1" stop-color="#251742"/>
+    </linearGradient>
+    <radialGradient id="aura" cx="0" cy="0" r="1" gradientTransform="translate(327 261) rotate(46) scale(580)">
+      <stop stop-color="#4BCDF3" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#8146E9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="aurora" x1="232" y1="310" x2="826" y2="730" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6AFAE0"/>
+      <stop offset=".35" stop-color="#42BEEB"/>
+      <stop offset=".68" stop-color="#5867F5"/>
+      <stop offset="1" stop-color="#A853E1"/>
+    </linearGradient>
+    <linearGradient id="auroraShade" x1="332" y1="286" x2="784" y2="711" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".48"/>
+      <stop offset=".43" stop-color="#FFFFFF" stop-opacity=".06"/>
+      <stop offset="1" stop-color="#22115E" stop-opacity=".32"/>
+    </linearGradient>
+    <clipPath id="appClip"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="38" stdDeviation="32" flood-color="#020713" flood-opacity=".62"/>
+      <feDropShadow dx="0" dy="-5" stdDeviation="10" flood-color="#84FFF0" flood-opacity=".20"/>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="9" stdDeviation="8" flood-color="#0A1234" flood-opacity=".34"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#appClip)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#bg)"/>
+    <circle cx="320" cy="265" r="520" fill="url(#aura)"/>
+    <circle cx="828" cy="823" r="360" fill="#A43FE0" opacity=".10"/>
+    <path d="M96 770 C326 628 635 813 940 590" fill="none" stroke="#7B61FF" stroke-opacity=".12" stroke-width="96"/>
+  </g>
+  <path d="M282 719 C171 719 122 586 197 505 C227 472 269 456 316 459 C312 339 405 245 518 245 C609 245 685 300 714 382 C735 374 756 370 779 370 C871 370 944 445 944 537 C944 638 863 719 762 719 Z"
+        fill="url(#aurora)" stroke="#BFFFF5" stroke-opacity=".44" stroke-width="9" filter="url(#shadow)"/>
+  <path d="M282 719 C171 719 122 586 197 505 C227 472 269 456 316 459 C312 339 405 245 518 245 C609 245 685 300 714 382 C735 374 756 370 779 370 C871 370 944 445 944 537 C944 638 863 719 762 719 Z"
+        fill="url(#auroraShade)"/>
+  <path d="M275 492 C319 455 374 448 430 464 C455 340 586 286 686 355"
+        fill="none" stroke="#FFFFFF" stroke-opacity=".40" stroke-width="20" stroke-linecap="round"/>
+  <g filter="url(#soft)" fill="#FFFFFF">
+    <circle cx="346" cy="443" r="29" fill-opacity=".94"/>
+    <circle cx="346" cy="538" r="29" fill-opacity=".87"/>
+    <circle cx="346" cy="633" r="29" fill-opacity=".80"/>
+    <rect x="407" y="415" width="348" height="56" rx="28" fill-opacity=".94"/>
+    <rect x="407" y="510" width="290" height="56" rx="28" fill-opacity=".87"/>
+    <rect x="407" y="605" width="225" height="56" rx="28" fill-opacity=".80"/>
+  </g>
+</svg>

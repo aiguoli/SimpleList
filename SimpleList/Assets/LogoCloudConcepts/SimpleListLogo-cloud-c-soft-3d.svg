@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList cloud concept C — Soft 3D</title>
+  <desc id="desc">A softly sculpted white cloud with dimensional list controls on a light periwinkle surface.</desc>
+  <defs>
+    <linearGradient id="bg" x1="142" y1="109" x2="887" y2="931" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6FBFF"/>
+      <stop offset=".52" stop-color="#E6E9FF"/>
+      <stop offset="1" stop-color="#CFC9F8"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="0" cy="0" r="1" gradientTransform="translate(270 220) rotate(48) scale(590)">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cloud" x1="460" y1="250" x2="584" y2="735" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".57" stop-color="#F7F7FF"/>
+      <stop offset="1" stop-color="#D9DAF7"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="385" y1="403" x2="719" y2="674" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5578F5"/>
+      <stop offset="1" stop-color="#7548D8"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="320" y1="420" x2="363" y2="654" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9CFFE9"/>
+      <stop offset="1" stop-color="#39D6C5"/>
+    </linearGradient>
+    <clipPath id="appClip"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath>
+    <filter id="cloudShadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="32" stdDeviation="29" flood-color="#6A65A6" flood-opacity=".34"/>
+      <feDropShadow dx="0" dy="-7" stdDeviation="9" flood-color="#FFFFFF" flood-opacity=".92"/>
+    </filter>
+    <filter id="raised" x="-40%" y="-40%" width="180%" height="200%">
+      <feDropShadow dx="0" dy="11" stdDeviation="8" flood-color="#7169AD" flood-opacity=".30"/>
+      <feDropShadow dx="0" dy="-3" stdDeviation="3" flood-color="#FFFFFF" flood-opacity=".85"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#appClip)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#bg)"/>
+    <circle cx="272" cy="220" r="520" fill="url(#bgGlow)"/>
+    <ellipse cx="538" cy="831" rx="370" ry="83" fill="#625B9D" opacity=".12"/>
+  </g>
+  <path d="M282 735 C171 735 122 602 197 521 C227 488 269 472 316 475 C312 355 405 261 518 261 C609 261 685 316 714 398 C735 390 756 386 779 386 C871 386 944 461 944 553 C944 654 863 735 762 735 Z"
+        fill="#B7B4E7" opacity=".52"/>
+  <path d="M282 710 C171 710 122 577 197 496 C227 463 269 447 316 450 C312 330 405 236 518 236 C609 236 685 291 714 373 C735 365 756 361 779 361 C871 361 944 436 944 528 C944 629 863 710 762 710 Z"
+        fill="url(#cloud)" stroke="#FFFFFF" stroke-width="9" filter="url(#cloudShadow)"/>
+  <path d="M281 481 C322 447 371 441 421 452 C449 336 567 276 670 329"
+        fill="none" stroke="#FFFFFF" stroke-opacity=".92" stroke-width="23" stroke-linecap="round"/>
+  <g filter="url(#raised)">
+    <path d="M344 428 V630" stroke="url(#mint)" stroke-width="22" stroke-linecap="round"/>
+    <circle cx="344" cy="428" r="31" fill="url(#mint)"/>
+    <circle cx="344" cy="529" r="31" fill="url(#mint)"/>
+    <circle cx="344" cy="630" r="31" fill="url(#mint)"/>
+    <rect x="407" y="399" width="346" height="58" rx="29" fill="url(#ink)"/>
+    <rect x="407" y="500" width="290" height="58" rx="29" fill="url(#ink)"/>
+    <rect x="407" y="601" width="224" height="58" rx="29" fill="url(#ink)"/>
+  </g>
+</svg>

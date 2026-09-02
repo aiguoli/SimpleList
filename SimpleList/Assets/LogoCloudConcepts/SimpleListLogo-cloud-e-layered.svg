@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList cloud concept E — Layered Clouds</title>
+  <desc id="desc">Three dimensional cloud layers converge into one indexed front cloud.</desc>
+  <defs>
+    <linearGradient id="bg" x1="120" y1="99" x2="910" y2="934" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#314C96"/>
+      <stop offset=".52" stop-color="#172B68"/>
+      <stop offset="1" stop-color="#25184F"/>
+    </linearGradient>
+    <radialGradient id="aura" cx="0" cy="0" r="1" gradientTransform="translate(305 236) rotate(49) scale(580)">
+      <stop stop-color="#67DDF4" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#67DDF4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="back" x1="340" y1="325" x2="770" y2="796" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9A67F0"/>
+      <stop offset="1" stop-color="#5E38C7"/>
+    </linearGradient>
+    <linearGradient id="middle" x1="320" y1="286" x2="790" y2="746" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5DE4E5"/>
+      <stop offset=".55" stop-color="#4D87F2"/>
+      <stop offset="1" stop-color="#5A55DA"/>
+    </linearGradient>
+    <linearGradient id="front" x1="440" y1="244" x2="584" y2="711" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".64" stop-color="#EFF6FF"/>
+      <stop offset="1" stop-color="#C8D7FC"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="374" y1="420" x2="725" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4468EB"/>
+      <stop offset="1" stop-color="#7145D2"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="336" y1="420" x2="352" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A4FFEB"/>
+      <stop offset="1" stop-color="#3CDAC6"/>
+    </linearGradient>
+    <clipPath id="clip"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath>
+    <filter id="layerShadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="22" stdDeviation="20" flood-color="#090D29" flood-opacity=".45"/>
+    </filter>
+    <filter id="frontShadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="33" stdDeviation="28" flood-color="#070B24" flood-opacity=".52"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#bg)"/>
+    <circle cx="305" cy="236" r="520" fill="url(#aura)"/>
+  </g>
+  <path transform="translate(70 112) scale(.88)" d="M282 719 C171 719 122 586 197 505 C227 472 269 456 316 459 C312 339 405 245 518 245 C609 245 685 300 714 382 C735 374 756 370 779 370 C871 370 944 445 944 537 C944 638 863 719 762 719 Z"
+        fill="url(#back)" stroke="#C89BFF" stroke-opacity=".34" stroke-width="12" filter="url(#layerShadow)"/>
+  <path transform="translate(38 62) scale(.94)" d="M282 719 C171 719 122 586 197 505 C227 472 269 456 316 459 C312 339 405 245 518 245 C609 245 685 300 714 382 C735 374 756 370 779 370 C871 370 944 445 944 537 C944 638 863 719 762 719 Z"
+        fill="url(#middle)" stroke="#9CFFF1" stroke-opacity=".36" stroke-width="11" filter="url(#layerShadow)"/>
+  <path d="M282 688 C171 688 122 555 197 474 C227 441 269 425 316 428 C312 308 405 214 518 214 C609 214 685 269 714 351 C735 343 756 339 779 339 C871 339 944 414 944 506 C944 607 863 688 762 688 Z"
+        fill="url(#front)" stroke="#FFFFFF" stroke-opacity=".72" stroke-width="10" filter="url(#frontShadow)"/>
+  <path d="M277 459 C320 423 374 417 428 432 C456 316 576 257 677 318"
+        fill="none" stroke="#FFFFFF" stroke-opacity=".60" stroke-width="20" stroke-linecap="round"/>
+  <path d="M344 411 V608" stroke="url(#mint)" stroke-width="21" stroke-linecap="round"/>
+  <circle cx="344" cy="411" r="29" fill="url(#mint)"/>
+  <circle cx="344" cy="509" r="29" fill="url(#mint)"/>
+  <circle cx="344" cy="608" r="29" fill="url(#mint)"/>
+  <rect x="404" y="383" width="340" height="56" rx="28" fill="url(#ink)"/>
+  <rect x="404" y="481" width="282" height="56" rx="28" fill="url(#ink)"/>
+  <rect x="404" y="580" width="218" height="56" rx="28" fill="url(#ink)"/>
+</svg>

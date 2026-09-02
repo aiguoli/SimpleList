@@ -362,5 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-SimepleList/SimpleList - Backup.csproj
+SimpleList/SimpleList - Backup.csproj
 cache
+*/appsettings.json
+.codex/

@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:DeleteFileViewModel}"
+    x:Uid="DeleteFileView"
     Title="Delete item"
     PrimaryButtonText="Delete"
     CloseButtonText="Cancel"
@@ -20,11 +21,12 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock>
-            <Run Text="Are you sure to delete" />
-            <Run Text="{Binding File.Name}" />
-        </TextBlock>
+        <TextBlock Text="{Binding ConfirmationMessage}" TextWrapping="Wrap" />
 
-        <CheckBox Grid.Row="1" Content="Permanent Delete" IsChecked="{Binding PermanentDelete, Mode=TwoWay}" />
+        <CheckBox
+            x:Uid="DeleteFileView_PermanentDelete"
+            Grid.Row="1"
+            Content="Permanent Delete"
+            IsChecked="{Binding PermanentDelete, Mode=TwoWay}" />
     </Grid>
 </ContentDialog>

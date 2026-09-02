@@ -48,7 +48,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Spacing="8">
-            <TextBlock x:Uid="ExternalDownloaderPage_OneDriveShareLink" />
+            <TextBlock x:Uid="ExternalDownloaderPage_SourceLink" />
             <Grid Height="32" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -83,8 +83,11 @@
                 </Grid.ColumnDefinitions>
                 <TextBox
                     x:Name="DirectLinkBox"
+                    MaxHeight="56"
                     IsReadOnly="True"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Text="{Binding DirectLink}"
+                    AcceptsReturn="True"
                     TextWrapping="Wrap" />
                 <Button
                     Grid.Column="1"

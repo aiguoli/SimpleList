@@ -10,10 +10,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:PropertyViewModel}"
+    x:Uid="PropertyView"
     Title="{Binding Name}"
-    PrimaryButtonText="OK"
-    DefaultButton="Primary"
-    CloseButtonText="Cancel">
+    DefaultButton="Primary">
 
     <ContentDialog.Resources>
         <converter:FileSizeConverter x:Key="FileSizeConverter" />

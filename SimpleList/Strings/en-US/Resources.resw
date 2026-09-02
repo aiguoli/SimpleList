@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -120,10 +120,61 @@
   <data name="CloudPage_CreateDrive.Content" xml:space="preserve">
     <value>Add drive</value>
   </data>
+  <data name="CreateDrive.Title" xml:space="preserve">
+    <value>Add drive</value>
+  </data>
+  <data name="CreateDrive.PrimaryButtonText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="CreateDrive.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CreateDrive_Provider.Text" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="CreateDrive_Provider_Local.Content" xml:space="preserve">
+    <value>Local folder</value>
+  </data>
+  <data name="CreateDrive_DisplayName.Header" xml:space="preserve">
+    <value>Display name (optional)</value>
+  </data>
+  <data name="CreateDrive_DisplayName.PlaceholderText" xml:space="preserve">
+    <value>Drive name</value>
+  </data>
+  <data name="CreateDrive_LocalPath.Header" xml:space="preserve">
+    <value>Local folder path</value>
+  </data>
+  <data name="CreateDrive_LocalPath.PlaceholderText" xml:space="preserve">
+    <value>C:\Data\MyDrive</value>
+  </data>
+  <data name="CreateDrive_Browse.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="CreateDrive_PikPakUsername.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="CreateDrive_PikPakPassword.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="CreateDrive_PikPakRememberPassword.Content" xml:space="preserve">
+    <value>Remember account and password</value>
+  </data>
+  <data name="CreateDrive_PikPakInvalidCredentials" xml:space="preserve">
+    <value>Please enter a valid PikPak username and password.</value>
+  </data>
+  <data name="CreateDrive_LoginFailed" xml:space="preserve">
+    <value>Login failed.</value>
+  </data>
   <data name="CloudPage_CreateFolder.Text" xml:space="preserve">
     <value>New Folder</value>
   </data>
   <data name="CloudPage_Flyout_GetCapacity.Text" xml:space="preserve">
+    <value>Check Storage</value>
+  </data>
+  <data name="CloudPage_Flyout_OpenTrash.Text" xml:space="preserve">
+    <value>Trash</value>
+  </data>
+  <data name="CloudPage_CapacityButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Check Storage</value>
   </data>
   <data name="CloudPage_Flyout_RemoveDrive.Text" xml:space="preserve">
@@ -156,6 +207,78 @@
   <data name="CloudPage_Title.Text" xml:space="preserve">
     <value>Your drive</value>
   </data>
+  <data name="CloudPage_Subtitle.Text" xml:space="preserve">
+    <value>Review drive health here and jump into any storage quickly.</value>
+  </data>
+  <data name="CloudPage_StorageLabel.Text" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="CloudPage_OpenDriveHint.Text" xml:space="preserve">
+    <value>Double-click the card to open file management</value>
+  </data>
+  <data name="CloudPage_DriveCount" xml:space="preserve">
+    <value>{0} drives connected</value>
+  </data>
+  <data name="CloudPage_CapacityPending" xml:space="preserve">
+    <value>Storage will load automatically</value>
+  </data>
+  <data name="CloudPage_CapacityPendingDetail" xml:space="preserve">
+    <value>Capacity details are fetched automatically after the page opens.</value>
+  </data>
+  <data name="CloudPage_CapacityLoading" xml:space="preserve">
+    <value>Loading storage...</value>
+  </data>
+  <data name="CloudPage_CapacityLoadingDetail" xml:space="preserve">
+    <value>The app is requesting quota information in the background.</value>
+  </data>
+  <data name="CloudPage_CapacityLoadedDetail" xml:space="preserve">
+    <value>{0} remaining</value>
+  </data>
+  <data name="CloudPage_CapacityUnavailable" xml:space="preserve">
+    <value>Storage unavailable</value>
+  </data>
+  <data name="CloudPage_CapacityTimeout" xml:space="preserve">
+    <value>Storage request timed out. Please try again later.</value>
+  </data>
+  <data name="CloudPage_PathSummary" xml:space="preserve">
+    <value>Local path: {0}</value>
+  </data>
+  <data name="CloudPage_AccountSummary" xml:space="preserve">
+    <value>Account: {0}</value>
+  </data>
+  <data name="CloudPage_DriveIdSummary" xml:space="preserve">
+    <value>Drive ID: {0}</value>
+  </data>
+  <data name="CloudPage_LocalDriveHint" xml:space="preserve">
+    <value>Local storage does not require a remote account.</value>
+  </data>
+  <data name="CloudPage_UnknownValue" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="CloudPage_Provider_OneDrive" xml:space="preserve">
+    <value>OneDrive</value>
+  </data>
+  <data name="CloudPage_Provider_GoogleDrive" xml:space="preserve">
+    <value>Google Drive</value>
+  </data>
+  <data name="CloudPage_Provider_Local" xml:space="preserve">
+    <value>Local Storage</value>
+  </data>
+  <data name="CloudPage_Provider_PikPak" xml:space="preserve">
+    <value>PikPak</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Title" xml:space="preserve">
+    <value>Remove drive</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Content" xml:space="preserve">
+    <value>Remove "{0}" from the drive manager? This will not delete any cloud files.</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="CloudPage_RemoveDriveDialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CreateFolderView_Label.Header" xml:space="preserve">
     <value>Type name of new folder</value>
   </data>
@@ -168,8 +291,20 @@
   <data name="FileView_Flyout_Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="FileView_Flyout_PermanentDelete.Text" xml:space="preserve">
+    <value>Permanently delete</value>
+  </data>
+  <data name="FileView_Flyout_Restore.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
   <data name="FileView_Flyout_Download.Text" xml:space="preserve">
     <value>Download</value>
+  </data>
+  <data name="FileView_Flyout_DownloadDefault.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="FileView_Flyout_DownloadWithTool.Text" xml:space="preserve">
+    <value>Download with selected tool</value>
   </data>
   <data name="FileView_Flyout_Open.Text" xml:space="preserve">
     <value>Open</value>
@@ -193,7 +328,73 @@
     <value>Click on Files in the left navigation menu, then click the "Add drive" button to log in to OneDrive. Double click to enter your drive.</value>
   </data>
   <data name="HomePage_QuickStart_Title.Text" xml:space="preserve">
-    <value>QuickStart</value>
+    <value>Quick start</value>
+  </data>
+  <data name="HomePage_Tutorial_Title.Text" xml:space="preserve">
+    <value>Welcome to SimpleList</value>
+  </data>
+  <data name="HomePage_Tutorial_Subtitle.Text" xml:space="preserve">
+    <value>Connect OneDrive, Google Drive, a local folder, or PikPak from one place. Read the provider notes below before adding your first drive.</value>
+  </data>
+  <data name="HomePage_QuickStart_Step1.Text" xml:space="preserve">
+    <value>1. Complete any provider-specific preparation below. Google Drive requires OAuth credentials before it can be used.</value>
+  </data>
+  <data name="HomePage_QuickStart_Step2.Text" xml:space="preserve">
+    <value>2. Open Drives, select Add drive, choose a provider, and complete sign-in or folder selection.</value>
+  </data>
+  <data name="HomePage_QuickStart_Step3.Text" xml:space="preserve">
+    <value>3. Double-click the new drive to browse files. Use the context menu for upload, download, rename, delete, sharing, and other supported actions.</value>
+  </data>
+  <data name="HomePage_OpenDrives.Text" xml:space="preserve">
+    <value>Open Drives</value>
+  </data>
+  <data name="HomePage_GoogleNotice.Title" xml:space="preserve">
+    <value>Google Drive requires configuration</value>
+  </data>
+  <data name="HomePage_GoogleNotice.Message" xml:space="preserve">
+    <value>Enable the Google Drive API and add a Desktop OAuth Client ID and Client Secret to appsettings.json before signing in.</value>
+  </data>
+  <data name="HomePage_OneDrive_Title.Text" xml:space="preserve">
+    <value>OneDrive</value>
+  </data>
+  <data name="HomePage_OneDrive_Content.Text" xml:space="preserve">
+    <value>No additional configuration is normally required. Select OneDrive and sign in through the Microsoft browser window. OneDrive supports uploads, downloads, trash, public links, link passwords, and expiration dates.</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Title.Text" xml:space="preserve">
+    <value>Google Drive</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Prerequisites.Text" xml:space="preserve">
+    <value>In Google Cloud Console: create or select a project, enable Google Drive API, configure the OAuth consent screen, and create OAuth credentials of type Desktop app. Copy both the Client ID and Client Secret.</value>
+  </data>
+  <data name="HomePage_ConfigPath_Label.Text" xml:space="preserve">
+    <value>Create or edit this configuration file:</value>
+  </data>
+  <data name="HomePage_GoogleDrive_ConfigIntro.Text" xml:space="preserve">
+    <value>Add the following JSON. If appsettings.json already contains other settings, merge the GoogleOAuth section instead of replacing the whole file.</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Restart.Text" xml:space="preserve">
+    <value>Save the file and restart SimpleList before adding Google Drive. The first sign-in opens a browser; the resulting token is cached locally.</value>
+  </data>
+  <data name="HomePage_GoogleDrive_Limitations.Text" xml:space="preserve">
+    <value>Google Drive public links do not support passwords or expiration dates. PDF conversion is limited to native Google Docs, Sheets, and Slides. Resuming an upload starts a new Google upload session.</value>
+  </data>
+  <data name="HomePage_Local_Title.Text" xml:space="preserve">
+    <value>Local folder</value>
+  </data>
+  <data name="HomePage_Local_Content.Text" xml:space="preserve">
+    <value>No account or API configuration is required. Select Local, choose a folder, and grant access when Windows asks. Operations modify the selected folder directly; cloud trash, share links, and PDF conversion are unavailable.</value>
+  </data>
+  <data name="HomePage_PikPak_Title.Text" xml:space="preserve">
+    <value>PikPak</value>
+  </data>
+  <data name="HomePage_PikPak_Content.Text" xml:space="preserve">
+    <value>Enter your PikPak username and password when adding the drive. Sign-in may open a browser-based CAPTCHA challenge. Enable Remember account and password only on a trusted computer.</value>
+  </data>
+  <data name="HomePage_PikPak_Limitations.Title" xml:space="preserve">
+    <value>Some PikPak operations are not available yet</value>
+  </data>
+  <data name="HomePage_PikPak_Limitations.Message" xml:space="preserve">
+    <value>Uploading files or folders, creating or revoking share links, PDF conversion, and migrations whose destination is PikPak are currently unsupported.</value>
   </data>
   <data name="LinkDetails_Content.Text" xml:space="preserve">
     <value>Content</value>
@@ -234,6 +435,9 @@
   <data name="RootFileName" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="TrashFileName" xml:space="preserve">
+    <value>Trash</value>
+  </data>
   <data name="SearchView.Title" xml:space="preserve">
     <value>Search File</value>
   </data>
@@ -258,6 +462,12 @@
   <data name="SettingPage_AboutTitle.Text" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="SettingPage_About.Header" xml:space="preserve">
+    <value>SimpleList</value>
+  </data>
+  <data name="SettingPage_About.Description" xml:space="preserve">
+    <value>One place for every cloud.</value>
+  </data>
   <data name="SettingPage_AppearanceTitle.Text" xml:space="preserve">
     <value>Appearance behavior</value>
   </data>
@@ -270,11 +480,41 @@
   <data name="SettingPage_CheckUpdate.Content" xml:space="preserve">
     <value>Check for Update</value>
   </data>
+  <data name="SettingPage_CloudOAuth.Description" xml:space="preserve">
+    <value>Used when adding new OneDrive and Google Drive accounts.</value>
+  </data>
+  <data name="SettingPage_CloudOAuth.Header" xml:space="preserve">
+    <value>Cloud drive OAuth</value>
+  </data>
+  <data name="SettingPage_CloudTitle.Text" xml:space="preserve">
+    <value>Cloud drive configuration</value>
+  </data>
   <data name="SettingPage_DownloadUpdate.Content" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="SettingPage_GoogleClientId.Header" xml:space="preserve">
+    <value>Google Drive Client ID</value>
+  </data>
+  <data name="SettingPage_GoogleClientSecret.Header" xml:space="preserve">
+    <value>Google Drive Client Secret</value>
+  </data>
   <data name="SettingPage_NewVersionTip.Text" xml:space="preserve">
     <value>You are using the latest version.</value>
+  </data>
+  <data name="SettingPage_OneDriveClientId.Header" xml:space="preserve">
+    <value>OneDrive Client ID</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettings.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettingsFailedTitle" xml:space="preserve">
+    <value>Could not save settings</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettingsSuccessMessage" xml:space="preserve">
+    <value>New accounts will use the updated provider configuration.</value>
+  </data>
+  <data name="SettingPage_SaveProviderSettingsSuccessTitle" xml:space="preserve">
+    <value>Settings saved</value>
   </data>
   <data name="SettingPage_Theme_Dark.Content" xml:space="preserve">
     <value>Dark</value>
@@ -318,6 +558,24 @@
   <data name="TaskManagerPage_DownloadComplted.Text" xml:space="preserve">
     <value>Download completed</value>
   </data>
+  <data name="TaskManagerPage_EstimatedTimeRemaining" xml:space="preserve">
+    <value>About {0} remaining</value>
+  </data>
+  <data name="TaskManagerPage_DurationHours" xml:space="preserve">
+    <value>{0}h</value>
+  </data>
+  <data name="TaskManagerPage_DurationHoursMinutes" xml:space="preserve">
+    <value>{0}h {1}m</value>
+  </data>
+  <data name="TaskManagerPage_DurationMinutesSeconds" xml:space="preserve">
+    <value>{0}m {1}s</value>
+  </data>
+  <data name="TaskManagerPage_DurationSeconds" xml:space="preserve">
+    <value>{0}s</value>
+  </data>
+  <data name="TaskManagerPage_DeleteIncompleteFileFailed" xml:space="preserve">
+    <value>Failed to delete the incomplete download file: {0}</value>
+  </data>
   <data name="TaskManagerPage_OpenFolder.Text" xml:space="preserve">
     <value>Open Folder</value>
   </data>
@@ -327,8 +585,47 @@
   <data name="TaskManagerPage_Pivot_Upload.Header" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="TaskManagerPage_Pivot_Migration.Header" xml:space="preserve">
+    <value>Migration</value>
+  </data>
   <data name="TaskManagerPage_Remove.Text" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="TaskManagerPage_ClearCompleted.Content" xml:space="preserve">
+    <value>Clear completed</value>
+  </data>
+  <data name="TaskManagerPage_ClearCompleted.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Clear completed tasks on this tab</value>
+  </data>
+  <data name="Trash_DeleteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Permanently delete selected items</value>
+  </data>
+  <data name="Trash_DeleteFail" xml:space="preserve">
+    <value>Permanent delete failed</value>
+  </data>
+  <data name="Trash_DeleteSuccess" xml:space="preserve">
+    <value>Items permanently deleted</value>
+  </data>
+  <data name="Trash_EmptyButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Empty trash</value>
+  </data>
+  <data name="Trash_EmptyFail" xml:space="preserve">
+    <value>Empty trash failed</value>
+  </data>
+  <data name="Trash_EmptyMenu.Text" xml:space="preserve">
+    <value>Empty trash</value>
+  </data>
+  <data name="Trash_EmptySuccess" xml:space="preserve">
+    <value>Trash emptied</value>
+  </data>
+  <data name="Trash_RestoreButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Restore selected items</value>
+  </data>
+  <data name="Trash_RestoreFail" xml:space="preserve">
+    <value>Restore failed</value>
+  </data>
+  <data name="Trash_RestoreSuccess" xml:space="preserve">
+    <value>Items restored</value>
   </data>
   <data name="TaskManagerPage_Resume.Text" xml:space="preserve">
     <value>Resume</value>
@@ -353,6 +650,36 @@
   </data>
   <data name="TaskManagerPage_StartUploadDesc" xml:space="preserve">
     <value>Start uploading file: {0}</value>
+  </data>
+  <data name="TaskManagerPage_StartMigration" xml:space="preserve">
+    <value>Migration Started</value>
+  </data>
+  <data name="TaskManagerPage_StartMigrationDesc" xml:space="preserve">
+    <value>Ready to migrate {0} items</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Pending" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Running" xml:space="preserve">
+    <value>Migrating</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="TaskManagerPage_MigrationStatus_Canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="TaskManagerPage_MigrationCompleted" xml:space="preserve">
+    <value>Migration completed</value>
+  </data>
+  <data name="TaskManagerPage_MigrationFailed" xml:space="preserve">
+    <value>Migration failed</value>
+  </data>
+  <data name="FileView_Flyout_Migrate.Text" xml:space="preserve">
+    <value>Migration</value>
   </data>
   <data name="TaskManagerPage_Details.Content" xml:space="preserve">
     <value>Details</value>
@@ -381,6 +708,9 @@
   <data name="FileView_Flyout_CopyDownloadUrl.Text" xml:space="preserve">
     <value>Download Url</value>
   </data>
+  <data name="FileView_Flyout_CopyFileId.Text" xml:space="preserve">
+    <value>File Id</value>
+  </data>
   <data name="ExternalDownloaderPage_Aria2Config.Text" xml:space="preserve">
     <value>Aria2 Config</value>
   </data>
@@ -398,6 +728,15 @@
   </data>
   <data name="ExternalDownloaderPage_OneDriveShareLink.Text" xml:space="preserve">
     <value>OneDrive Share Link</value>
+  </data>
+  <data name="ExternalDownloaderPage_SourceLink.Text" xml:space="preserve">
+    <value>Share link or download link</value>
+  </data>
+  <data name="ExternalDownloaderDialog_Title" xml:space="preserve">
+    <value>Download with selected tool</value>
+  </data>
+  <data name="ExternalDownloader_NoDownloadUrl" xml:space="preserve">
+    <value>Could not get download link</value>
   </data>
   <data name="ExternalDownloaderPage_ParseLink.Content" xml:space="preserve">
     <value>Parse Link</value>
@@ -432,17 +771,62 @@
   <data name="DeleteFileSuccess" xml:space="preserve">
     <value>File deleted successfully</value>
   </data>
+  <data name="DeleteFileView.Title" xml:space="preserve">
+    <value>Delete items</value>
+  </data>
+  <data name="DeleteFileView.PrimaryButtonText" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteFileView.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeleteFileView_PermanentDelete.Content" xml:space="preserve">
+    <value>Delete permanently</value>
+  </data>
+  <data name="DeleteFileView_ConfirmationSingle" xml:space="preserve">
+    <value>Are you sure you want to delete “{0}”?</value>
+  </data>
+  <data name="DeleteFileView_ConfirmationMultiple" xml:space="preserve">
+    <value>Are you sure you want to delete the selected {0} items?</value>
+  </data>
+  <data name="BatchRenameMenu.Text" xml:space="preserve">
+    <value>Batch rename</value>
+  </data>
+  <data name="DrivePage_BatchRenameButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Batch rename</value>
+  </data>
+  <data name="BatchRenameView.Title" xml:space="preserve">
+    <value>Batch rename</value>
+  </data>
+  <data name="BatchRenameView.PrimaryButtonText" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="BatchRenameView.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="BatchRenameView_Mode.Header" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="BatchRenameView_Mode_String.Content" xml:space="preserve">
+    <value>Find and replace text</value>
+  </data>
+  <data name="BatchRenameView_Mode_Regex.Content" xml:space="preserve">
+    <value>Regular expression</value>
+  </data>
+  <data name="BatchRenameView_Find.Header" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="BatchRenameView_Replace.Header" xml:space="preserve">
+    <value>Replace with</value>
+  </data>
+  <data name="BatchRenameSuccess" xml:space="preserve">
+    <value>Renamed {0} items</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
-  </data>
-  <data name="UploadFileFail" xml:space="preserve">
-    <value>File upload failed</value>
-  </data>
-  <data name="UploadFolderFail" xml:space="preserve">
-    <value>Folder upload failed</value>
   </data>
   <data name="LoginFail" xml:space="preserve">
     <value>Login failed</value>
@@ -480,4 +864,204 @@
   <data name="ItemType_Folder" xml:space="preserve">
     <value>Folder</value>
   </data>
+  <data name="BookmarkPage_Title.Text" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="BookmarkPage_Search.PlaceholderText" xml:space="preserve">
+    <value>Search bookmarks</value>
+  </data>
+  <data name="BookmarkPage_Open.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="BookmarkPage_Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="BookmarkPage_Empty.Text" xml:space="preserve">
+    <value>No bookmarks yet</value>
+  </data>
+  <data name="FileView_Flyout_AddBookmark.Text" xml:space="preserve">
+    <value>Add to bookmarks</value>
+  </data>
+  <data name="MigrateFileView.Title" xml:space="preserve">
+    <value>Select migration target</value>
+  </data>
+  <data name="MigrateFileView_TargetDrive.Header" xml:space="preserve">
+    <value>Target drive</value>
+  </data>
+  <data name="Bookmark_AddedTitle" xml:space="preserve">
+    <value>Bookmark added</value>
+  </data>
+  <data name="Bookmark_ExistsTitle" xml:space="preserve">
+    <value>Bookmark already exists</value>
+  </data>
+  <data name="Bookmark_OpenFailedTitle" xml:space="preserve">
+    <value>Could not open bookmark</value>
+  </data>
+  <data name="Bookmark_OpenDriveMissing" xml:space="preserve">
+    <value>The drive for this bookmark is not configured.</value>
+  </data>
+  <data name="ShareStatus_Shared" xml:space="preserve">
+    <value>Shared</value>
+  </data>
+  <data name="ShareStatus_NotShared" xml:space="preserve">
+    <value>Not shared</value>
+  </data>
+  <data name="ShareStatus_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ShareStatus_Unsupported" xml:space="preserve">
+    <value>Unsupported</value>
+  </data>
+  <data name="ShareFile_StatusLabel.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ShareFile_StatusShared" xml:space="preserve">
+    <value>Currently shared</value>
+  </data>
+  <data name="ShareFile_StatusNotShared" xml:space="preserve">
+    <value>Not shared yet</value>
+  </data>
+  <data name="ShareFile_StatusUnavailable" xml:space="preserve">
+    <value>Share status unavailable</value>
+  </data>
+  <data name="ShareFile_ConfirmShare.Content" xml:space="preserve">
+    <value>Confirm share</value>
+  </data>
+  <data name="ShareFile_CancelShare.Content" xml:space="preserve">
+    <value>Stop sharing</value>
+  </data>
+  <data name="ShareCommunityAuth_Title" xml:space="preserve"><value>Join the share community</value></data>
+  <data name="ShareCommunityAuth_Description" xml:space="preserve"><value>Sign in or create an account to publish and collect links. You can continue browsing as a guest.</value></data>
+  <data name="ShareCommunityAuth_Login" xml:space="preserve"><value>Sign in</value></data>
+  <data name="ShareCommunityAuth_Register" xml:space="preserve"><value>Register</value></data>
+  <data name="ShareCommunityAuth_Guest" xml:space="preserve"><value>Browse as guest</value></data>
+  <data name="ShareCommunityAuth_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="ShareCommunityAuth_Username" xml:space="preserve"><value>Username</value></data>
+  <data name="ShareCommunityAuth_Password" xml:space="preserve"><value>Password</value></data>
+  <data name="ShareCommunityAuth_Logout" xml:space="preserve"><value>Sign out</value></data>
+  <data name="ShareCommunityAuth_Required" xml:space="preserve"><value>Email and password are required.</value></data>
+  <data name="ShareCommunityAuth_UsernameRequired" xml:space="preserve"><value>Username is required.</value></data>
+  <data name="CanNotNull" xml:space="preserve">
+    <value>Cannot be empty</value>
+  </data>
+  <data name="FilenameIllegal" xml:space="preserve">
+    <value>Filename {0} is invalid</value>
+  </data>
+  <data name="PropertyViews_ChildrenCount.Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="PropertyViews_Filename.Text" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="PropertyViews_Size.Text" xml:space="preserve">
+    <value>File size</value>
+  </data>
+  <data name="PropertyViews_Updated.Text" xml:space="preserve">
+    <value>Date updated</value>
+  </data>
+  <data name="MediaPreviewView_Title" xml:space="preserve">
+    <value>Video preview</value>
+  </data>
+  <data name="MediaPreviewView_CloseButton.Content" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DrivePage_SearchButton.ToolTipService.ToolTip" xml:space="preserve"><value>Search</value></data>
+  <data name="DrivePage_UploadButton.ToolTipService.ToolTip" xml:space="preserve"><value>Upload file</value></data>
+  <data name="DrivePage_CreateFolderButton.ToolTipService.ToolTip" xml:space="preserve"><value>Create folder</value></data>
+  <data name="DrivePage_RefreshButton.ToolTipService.ToolTip" xml:space="preserve"><value>Refresh</value></data>
+  <data name="SettingPage_Material_None.Content" xml:space="preserve"><value>None</value></data>
+  <data name="SettingPage_Material_Mica.Content" xml:space="preserve"><value>Mica</value></data>
+  <data name="SettingPage_Material_MicaAlt.Content" xml:space="preserve"><value>Mica Alt</value></data>
+  <data name="SettingPage_Material_DesktopAcrylic.Content" xml:space="preserve"><value>Desktop Acrylic</value></data>
+  <data name="SettingPage_Material_AcrylicBase.Content" xml:space="preserve"><value>Acrylic Base</value></data>
+  <data name="SettingPage_Material_AcrylicThin.Content" xml:space="preserve"><value>Acrylic Thin</value></data>
+  <data name="SettingPage_Material_Transparent.Content" xml:space="preserve"><value>Transparent</value></data>
+  <data name="ConvertFileFormatView.Title" xml:space="preserve"><value>Convert File Format</value></data>
+  <data name="ConvertFileFormatView.PrimaryButtonText" xml:space="preserve"><value>Convert</value></data>
+  <data name="ConvertFileFormatView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="ConvertFileFormatView_SupportedFormats.Text" xml:space="preserve"><value>The currently supported file formats include </value></data>
+  <data name="ConvertFileFormatView_TargetFormat.Text" xml:space="preserve"><value>Target Format</value></data>
+  <data name="ConvertFileFormatView_SavePath.Text" xml:space="preserve"><value>Save Path</value></data>
+  <data name="ConvertFileFormatView_Browse.Content" xml:space="preserve"><value>Browse</value></data>
+  <data name="CreateFolderView.Title" xml:space="preserve"><value>Create folder</value></data>
+  <data name="CreateFolderView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="CreateFolderView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="MigrateFileView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="MigrateFileView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="ImagePreviewView.PrimaryButtonText" xml:space="preserve"><value>Close</value></data>
+  <data name="MarkdownPreviewView.PrimaryButtonText" xml:space="preserve"><value>Close</value></data>
+  <data name="PropertyView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="PropertyView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="RenameFileView.Title" xml:space="preserve"><value>Rename file</value></data>
+  <data name="RenameFileView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="RenameFileView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="RenameFileView_FileName.Header" xml:space="preserve"><value>Type new filename:</value></data>
+  <data name="RenameFileView_FileName.PlaceholderText" xml:space="preserve"><value>File name</value></data>
+  <data name="SearchView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="SearchView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="ShareFileView.Title" xml:space="preserve"><value>Share File</value></data>
+  <data name="ShareFileView.CloseButtonText" xml:space="preserve"><value>Close</value></data>
+  <data name="ShareFile_Scope.Header" xml:space="preserve"><value>Scope</value></data>
+  <data name="ShareFile_Scope_View.Content" xml:space="preserve"><value>View</value></data>
+  <data name="ShareFile_Scope_Edit.Content" xml:space="preserve"><value>Edit</value></data>
+  <data name="ShareFile_ExpirationDate.Header" xml:space="preserve"><value>Expiration date</value></data>
+  <data name="ShareFile_ExpirationDate.PlaceholderText" xml:space="preserve"><value>Pick expiration date</value></data>
+  <data name="ShareFile_Password.Header" xml:space="preserve"><value>Password</value></data>
+  <data name="ShareFile_Password.PlaceholderText" xml:space="preserve"><value>Optional</value></data>
+  <data name="ShareFile_Link.Header" xml:space="preserve"><value>Share Link</value></data>
+  <data name="ShareFile_Copy.Content" xml:space="preserve"><value>Copy</value></data>
+  <data name="ShareCommunityCreateLinkView.Title" xml:space="preserve"><value>Share your link</value></data>
+  <data name="ShareCommunityCreateLinkView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="ShareCommunityCreateLinkView.CloseButtonText" xml:space="preserve"><value>Close</value></data>
+  <data name="ShareCommunityCreateLinkPage_Title.PlaceholderText" xml:space="preserve"><value>My photos</value></data>
+  <data name="ShareCommunityCreateLinkPage_ExpirationDate.PlaceholderText" xml:space="preserve"><value>Pick a date</value></data>
+  <data name="LinkDetailsView.PrimaryButtonText" xml:space="preserve"><value>OK</value></data>
+  <data name="LinkDetailsView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="LinkDetails_Provider.Text" xml:space="preserve"><value>Provider</value></data>
+  <data name="TaskManagerPage_PerSecond.Text" xml:space="preserve"><value>/s</value></data>
+  <data name="DragCloudFoldersNotSupported" xml:space="preserve"><value>Dragging cloud folders to Explorer is not supported yet. Please use Download from the context menu.</value></data>
+  <data name="FileCountFormat" xml:space="preserve"><value>{0} files</value></data>
+  <data name="DownloadIncompleteFormat" xml:space="preserve"><value>Download incomplete: {0}</value></data>
+  <data name="DownloadCancelled" xml:space="preserve"><value>Download cancelled</value></data>
+  <data name="MediaDownloadUrlUnavailable" xml:space="preserve"><value>Media download URL is not available.</value></data>
+  <data name="ShareCommunityCreateLink_Validation" xml:space="preserve"><value>Please enter a title, a valid public URL, and a provider.</value></data>
+  <data name="ExternalDownloader_IdmSent" xml:space="preserve"><value>Sent {0} download(s) to IDM.</value></data>
+  <data name="FilePicker_AllFiles" xml:space="preserve"><value>All files</value></data>
+  <data name="FilePicker_PdfDocument" xml:space="preserve"><value>PDF Document</value></data>
+  <data name="FileSize_ZeroBytes" xml:space="preserve"><value>0 bytes</value></data>
+  <data name="FileSize_Unit_Bytes" xml:space="preserve"><value>bytes</value></data>
+  <data name="FileSize_Unit_KB" xml:space="preserve"><value>KB</value></data>
+  <data name="FileSize_Unit_MB" xml:space="preserve"><value>MB</value></data>
+  <data name="FileSize_Unit_GB" xml:space="preserve"><value>GB</value></data>
+  <data name="FileSize_Unit_TB" xml:space="preserve"><value>TB</value></data>
+  <data name="FileSize_Unit_PB" xml:space="preserve"><value>PB</value></data>
+  <data name="FileSize_Unit_EB" xml:space="preserve"><value>EB</value></data>
+  <data name="ShareCommunity_SignInRequired" xml:space="preserve"><value>Please sign in first.</value></data>
+  <data name="Validation_CannotBeEmpty" xml:space="preserve"><value>{0} cannot be empty</value></data>
+  <data name="Validation_CannotBeNull" xml:space="preserve"><value>{0} cannot be null</value></data>
+  <data name="Validation_InvalidFileName" xml:space="preserve"><value>Filename '{0}' contains invalid characters</value></data>
+  <data name="ThumbnailUnavailable" xml:space="preserve"><value>Thumbnail is not available</value></data>
+  <data name="Http_BadRequest" xml:space="preserve"><value>Bad Request</value></data>
+  <data name="Http_Unauthorized" xml:space="preserve"><value>Unauthorized</value></data>
+  <data name="Http_Forbidden" xml:space="preserve"><value>Forbidden</value></data>
+  <data name="Http_NotFound" xml:space="preserve"><value>Not Found</value></data>
+  <data name="Http_Conflict" xml:space="preserve"><value>Conflict</value></data>
+  <data name="Http_TooManyRequests" xml:space="preserve"><value>Too Many Requests</value></data>
+  <data name="Http_InsufficientStorage" xml:space="preserve"><value>Insufficient Storage</value></data>
+  <data name="Http_ServiceUnavailable" xml:space="preserve"><value>Service Unavailable</value></data>
+  <data name="PikPak_UploadUnsupported" xml:space="preserve"><value>PikPak upload requires Aliyun OSS signing and is not supported yet</value></data>
+  <data name="PikPak_ShareUnsupported" xml:space="preserve"><value>PikPak share links are not supported yet</value></data>
+  <data name="PikPak_PdfConversionUnsupported" xml:space="preserve"><value>PikPak does not support PDF conversion</value></data>
+  <data name="PikPak_AuthenticationExpired" xml:space="preserve"><value>PikPak authentication expired</value></data>
+  <data name="PikPak_CaptchaExpired" xml:space="preserve"><value>PikPak captcha token expired</value></data>
+  <data name="PikPak_ApiErrorFormat" xml:space="preserve"><value>PikPak API error: {0}</value></data>
+  <data name="PikPak_DownloadUrlUnavailable" xml:space="preserve"><value>Download URL is not available for this PikPak item.</value></data>
+  <data name="GoogleDrive_ErrorFormat" xml:space="preserve"><value>Google Drive error: {0}</value></data>
+  <data name="OneDrive_ErrorFormat" xml:space="preserve"><value>OneDrive error: {0}</value></data>
+  <data name="Local_FolderNotFoundFormat" xml:space="preserve"><value>Local folder does not exist: {0}</value></data>
+  <data name="Local_ThumbnailsUnavailable" xml:space="preserve"><value>Thumbnails are not available for local items</value></data>
+  <data name="Local_RestoreUnsupported" xml:space="preserve"><value>Local items do not support restore</value></data>
+  <data name="Local_TrashUnsupported" xml:space="preserve"><value>Local items do not support trash</value></data>
+  <data name="Local_ShareUnsupported" xml:space="preserve"><value>Local items do not support share links</value></data>
+  <data name="Local_PdfConversionUnsupported" xml:space="preserve"><value>Local items do not support PDF conversion</value></data>
 </root>

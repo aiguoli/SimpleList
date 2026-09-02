@@ -36,10 +36,24 @@ namespace SimpleList.Pages
                     await drive.GetFiles();
                 });
             }
+            else if (e.Parameter is BookmarkNavigationRequest bookmarkNavigation)
+            {
+                bookmarkNavigation.Drive.ExitTrashMode();
+                DataContext = bookmarkNavigation.Drive;
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await bookmarkNavigation.Drive.OpenBookmark(bookmarkNavigation.Bookmark);
+                });
+            }
         }
 
         private async void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
         {
+            if (ViewModel?.IsTrashMode == true)
+            {
+                return;
+            }
+
             var items = BreadcrumbBar.ItemsSource as ObservableCollection<BreadcrumbItem>;
             for (int i = items.Count - 1; i >= args.Index + 1; i--)
             {
@@ -51,6 +65,11 @@ namespace SimpleList.Pages
 
         private async void CreateFolderDialogAsync(object sender, RoutedEventArgs e)
         {
+            if (ViewModel?.CanEditCurrentFolder != true)
+            {
+                return;
+            }
+
             CreateFolderView dialog = new()
             {
                 XamlRoot = XamlRoot,
@@ -61,6 +80,11 @@ namespace SimpleList.Pages
 
         private async void DropToUpload(object sender, DragEventArgs e)
         {
+            if (ViewModel?.CanEditCurrentFolder != true)
+            {
+                return;
+            }
+
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
                 IReadOnlyList<IStorageItem> items = await e.DataView.GetStorageItemsAsync();
@@ -75,7 +99,7 @@ namespace SimpleList.Pages
 
         private void DisplayCopyIcon(object sender, DragEventArgs e)
         {
-            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            if (ViewModel?.CanEditCurrentFolder == true && e.DataView.Contains(StandardDataFormats.StorageItems))
             {
                 e.AcceptedOperation = DataPackageOperation.Copy;
             }
@@ -108,8 +132,29 @@ namespace SimpleList.Pages
             await dialog.ShowAsync();
         }
 
+        private async void ShowBatchRenameDialogAsync(object sender, RoutedEventArgs e)
+        {
+            DriveViewModel driveViewModel = DataContext as DriveViewModel;
+            if (driveViewModel == null || !driveViewModel.CanEditCurrentFolder || driveViewModel.SelectedItems.Count < 2)
+            {
+                return;
+            }
+
+            BatchRenameView dialog = new()
+            {
+                XamlRoot = XamlRoot,
+                DataContext = new BatchRenameViewModel(driveViewModel)
+            };
+            await dialog.ShowAsync();
+        }
+
         private async void ShowUploadFileDialogAsync(object sender, RoutedEventArgs e)
         {
+            if (ViewModel?.CanEditCurrentFolder != true)
+            {
+                return;
+            }
+
             var fileTypeFilter = new List<string> { "*" };
             Windows.Storage.Pickers.FileOpenPicker picker = new()
             {
@@ -138,6 +183,11 @@ namespace SimpleList.Pages
 
         private async void ShowUploadFolderDialogAsync(object sender, RoutedEventArgs e)
         {
+            if (ViewModel?.CanEditCurrentFolder != true)
+            {
+                return;
+            }
+
             Windows.Storage.Pickers.FolderPicker picker = new()
             {
                 SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
@@ -160,12 +210,22 @@ namespace SimpleList.Pages
 
         private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args)
         {
+            if (ViewModel?.CanEditCurrentFolder != true)
+            {
+                return;
+            }
+
             // Default action - upload files
             ShowUploadFileDialogAsync(sender, new RoutedEventArgs());
         }
 
         private void SplitButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ViewModel?.CanEditCurrentFolder != true)
+            {
+                return;
+            }
+
             ShowUploadFileDialogAsync(sender, e);
         }
     }

@@ -12,7 +12,9 @@ public class PropertyViewModel : ObservableObject
     }
 
     private readonly FileViewModel[] _files;
-    public string Name => _files.Length == 1 ? _files[0].Name : $"{_files.Length} files";
+    public string Name => _files.Length == 1
+        ? _files[0].Name
+        : string.Format(Helpers.ResourceHelper.GetLocalized("FileCountFormat"), _files.Length);
     public long? Size => _files.Length == 1 ? _files[0].Size : _files.Sum(f => f.Size);
     public DateTimeOffset? Updated => _files.Length == 1 ? _files[0].Updated : null;
     public bool IsFolder => _files.Length == 1 && _files[0].IsFolder;

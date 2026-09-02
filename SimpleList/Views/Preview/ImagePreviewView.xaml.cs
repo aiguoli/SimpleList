@@ -16,5 +16,15 @@ namespace SimpleList.Views.Preview
             PreviewViewModel vm = DataContext as PreviewViewModel;
             _ = vm.LoadImageContent();
         }
+
+        private void PreviewImage_ImageOpened(object sender, RoutedEventArgs e)
+        {
+            (DataContext as PreviewViewModel)?.CompleteImageLoading();
+        }
+
+        private void PreviewImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            (DataContext as PreviewViewModel)?.CompleteImageLoading();
+        }
     }
 }

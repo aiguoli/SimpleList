@@ -1,17 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using SimpleList.Services;
 using SimpleList.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -26,7 +15,68 @@ namespace SimpleList.Views.Layout
         public GridCloudView()
         {
             this.InitializeComponent();
-            this.DataContextChanged += (s, e) => Bindings.Update();
+            this.DataContextChanged += (s, e) =>
+            {
+                Bindings.Update();
+                ObserveFiles();
+            };
+            Loaded += (s, e) => SelectPendingBookmarkItem();
         }
+
+        private void ChangeSelectedFiles(object sender, SelectionChangedEventArgs e)
+        {
+            if ((DataContext as DriveViewModel).SelectedItems == null) return;
+            (DataContext as DriveViewModel).SelectedItems.Clear();
+            foreach (FileViewModel item in (sender as GridView).SelectedItems.Cast<FileViewModel>())
+            {
+                (DataContext as DriveViewModel).SelectedItems.Add(item);
+            }
+        }
+
+        private void StartFileDrag(object sender, DragItemsStartingEventArgs e)
+        {
+            FileDragDropService.ConfigureDragItems(e, ViewModel);
+        }
+
+        private void SelectPendingBookmarkItem()
+        {
+            if (ViewModel?.PendingSelectedItemId == null)
+            {
+                return;
+            }
+
+            FileViewModel item = ViewModel.Files.FirstOrDefault(file => file.Id == ViewModel.PendingSelectedItemId);
+            if (item == null)
+            {
+                return;
+            }
+
+            FileGridView.SelectedItem = item;
+            FileGridView.ScrollIntoView(item);
+            ViewModel.PendingSelectedItemId = null;
+        }
+
+        private void ObserveFiles()
+        {
+            if (ViewModel == null || ReferenceEquals(_observedViewModel, ViewModel))
+            {
+                return;
+            }
+
+            if (_observedViewModel != null)
+            {
+                _observedViewModel.Files.CollectionChanged -= Files_CollectionChanged;
+            }
+
+            _observedViewModel = ViewModel;
+            _observedViewModel.Files.CollectionChanged += Files_CollectionChanged;
+        }
+
+        private void Files_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            SelectPendingBookmarkItem();
+        }
+
+        private DriveViewModel _observedViewModel;
     }
 }

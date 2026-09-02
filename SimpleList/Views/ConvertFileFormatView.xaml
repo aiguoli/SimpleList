@@ -8,10 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:ConvertFileFormatViewModel}"
-    Title="Convert File Format"
-    PrimaryButtonText="Convert"
+    x:Uid="ConvertFileFormatView"
     DefaultButton="Primary"
-    CloseButtonText="Cancel">
+    >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -21,20 +20,20 @@
         </Grid.RowDefinitions>
 
         <TextBlock Margin="0 0 0 10" TextWrapping="Wrap">
-            <Run Text="The currently supported file formats include " />
+            <Run x:Uid="ConvertFileFormatView_SupportedFormats" />
             <Run Text="{Binding FormattedExtensions}" />
         </TextBlock>
 
         <RelativePanel Grid.Row="1">
-            <TextBlock Text="Target Format" FontWeight="Bold"  RelativePanel.AlignLeftWithPanel="True" />
+            <TextBlock x:Uid="ConvertFileFormatView_TargetFormat" FontWeight="Bold" RelativePanel.AlignLeftWithPanel="True" />
             <ComboBox ItemsSource="{Binding TargetFormats}" SelectedIndex="0" SelectedItem="{Binding SelectedFormat, Mode=TwoWay}"  RelativePanel.AlignRightWithPanel="True" />
         </RelativePanel>
 
         <RelativePanel Grid.Row="2">
-            <TextBlock Text="Save Path" FontWeight="Bold" RelativePanel.AlignLeftWithPanel="True" />
+            <TextBlock x:Uid="ConvertFileFormatView_SavePath" FontWeight="Bold" RelativePanel.AlignLeftWithPanel="True" />
             <StackPanel Orientation="Horizontal"  RelativePanel.AlignRightWithPanel="True">
                 <TextBox Text="{Binding SavedFilePath}" IsEnabled="False" />
-                <Button Content="Browser" Command="{Binding ConvertFileFormatCommand}" />
+                <Button x:Uid="ConvertFileFormatView_Browse" Command="{Binding ConvertFileFormatCommand}" />
             </StackPanel>
         </RelativePanel>
     </Grid>

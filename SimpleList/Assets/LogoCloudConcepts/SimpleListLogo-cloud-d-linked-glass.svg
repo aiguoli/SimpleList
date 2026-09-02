@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList cloud concept D — Linked Glass</title>
+  <desc id="desc">A dimensional glass cloud containing two interlocking links, modernizing the original SimpleList symbol.</desc>
+  <defs>
+    <linearGradient id="bg" x1="127" y1="103" x2="907" y2="923" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#65D7F8"/>
+      <stop offset=".48" stop-color="#4B72EE"/>
+      <stop offset="1" stop-color="#7239BD"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(290 220) rotate(46) scale(610)">
+      <stop stop-color="#FFFFFF" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cloud" x1="468" y1="244" x2="594" y2="735" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".98"/>
+      <stop offset=".54" stop-color="#ECF6FF" stop-opacity=".93"/>
+      <stop offset="1" stop-color="#BBD0FF" stop-opacity=".90"/>
+    </linearGradient>
+    <linearGradient id="linkA" x1="292" y1="455" x2="566" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#526AF4"/>
+      <stop offset="1" stop-color="#7544CE"/>
+    </linearGradient>
+    <linearGradient id="linkB" x1="468" y1="455" x2="744" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8EFFE8"/>
+      <stop offset="1" stop-color="#38D6C3"/>
+    </linearGradient>
+    <clipPath id="clip"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="35" stdDeviation="29" flood-color="#1E2C74" flood-opacity=".40"/>
+    </filter>
+    <filter id="raised" x="-40%" y="-40%" width="180%" height="200%">
+      <feDropShadow dx="0" dy="11" stdDeviation="8" flood-color="#243273" flood-opacity=".33"/>
+      <feDropShadow dx="0" dy="-3" stdDeviation="3" flood-color="#FFFFFF" flood-opacity=".75"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#bg)"/>
+    <circle cx="290" cy="220" r="530" fill="url(#glow)"/>
+    <path d="M52 774 C346 596 648 862 986 610" fill="none" stroke="#40239B" stroke-opacity=".16" stroke-width="120"/>
+  </g>
+  <path d="M282 719 C171 719 122 586 197 505 C227 472 269 456 316 459 C312 339 405 245 518 245 C609 245 685 300 714 382 C735 374 756 370 779 370 C871 370 944 445 944 537 C944 638 863 719 762 719 Z"
+        fill="url(#cloud)" stroke="#FFFFFF" stroke-opacity=".76" stroke-width="10" filter="url(#shadow)"/>
+  <path d="M278 491 C322 453 376 447 431 463 C458 346 582 286 682 348"
+        fill="none" stroke="#FFFFFF" stroke-opacity=".58" stroke-width="21" stroke-linecap="round"/>
+  <g filter="url(#raised)">
+    <rect x="292" y="463" width="286" height="142" rx="71" fill="none" stroke="url(#linkA)" stroke-width="49"/>
+    <rect x="466" y="463" width="286" height="142" rx="71" fill="none" stroke="url(#linkB)" stroke-width="49"/>
+    <path d="M500 486 C526 467 554 463 578 463" fill="none" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

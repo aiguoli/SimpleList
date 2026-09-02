@@ -1,6 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SimpleList.Models;
+using SimpleList.Core.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WinUICommunity;
@@ -11,64 +12,67 @@ public partial class DeleteFileViewModel : ObservableObject
 {
     public DeleteFileViewModel(FileViewModel[] files)
     {
-        _files = files;
+        Files = files;
     }
 
     [RelayCommand]
     public async Task DeleteFile()
     {
-        if (_files.Count() == 0) return;
-        if (PermanentDelete)
+        FileViewModel[] files = Files?.ToArray() ?? [];
+        if (files.Length == 0)
         {
-            OneDriveResult<bool>[] results = await Task.WhenAll(_files.Select(file => file.Drive.Provider.PermanentDeleteItem(file.Id)));
-            if (results.All(result => result.IsSuccess && result.Data))
+            return;
+        }
+
+        List<StorageResult<bool>> results = new(files.Length);
+        foreach (FileViewModel file in files)
+        {
+            try
             {
-                Growl.Success(new GrowlInfo
-                {
-                    Title = Helpers.ResourceHelper.GetLocalized("DeleteFileSuccess"),
-                    StaysOpen = false,
-                    Token = "DriveGrowl"
-                });
+                StorageResult<bool> result = PermanentDelete
+                    ? await file.Drive.Provider.PermanentDeleteAsync(file.Id)
+                    : await file.Drive.Provider.DeleteAsync(file.Id);
+                results.Add(result);
             }
-            else
+            catch (System.Exception ex)
             {
-                Growl.Error(new GrowlInfo
-                {
-                    Title = Helpers.ResourceHelper.GetLocalized("DeleteFileFail"),
-                    StaysOpen = false,
-                    Message = string.Join(", ", results.Where(result => !result.IsSuccess).Select(result => result.ErrorMessage)),
-                    Token = "DriveGrowl"
-                });
-                return;
+                results.Add(StorageResult<bool>.Failure(ex.Message, StorageErrorType.Unknown, ex));
             }
         }
-        else
+
+        // Refresh only after every item has been attempted so large batches do not
+        // replace the collection while deletion is still in progress.
+        await Task.WhenAll(files.Select(file => file.Drive).Distinct().Select(drive => drive.Refresh()));
+
+        if (results.All(result => result.IsSuccess && result.Data))
         {
-            OneDriveResult<bool>[] results = await Task.WhenAll(_files.Select(file => file.Drive.Provider.DeleteItem(file.Id)));
-            if (results.All(result => result.IsSuccess && result.Data))
+            Growl.Success(new GrowlInfo
             {
-                Growl.Success(new GrowlInfo
-                {
-                    Title = Helpers.ResourceHelper.GetLocalized("DeleteFileSuccess"),
-                    StaysOpen = false,
-                    Token = "DriveGrowl"
-                });
-            }
-            else
-            {
-                Growl.Error(new GrowlInfo
-                {
-                    Title = Helpers.ResourceHelper.GetLocalized("DeleteFileFail"),
-                    StaysOpen = false,
-                    Message = string.Join(", ", results.Where(result => !result.IsSuccess).Select(result => result.ErrorMessage)),
-                    Token = "DriveGrowl"
-                });
-                return;
-            }
+                Title = Helpers.ResourceHelper.GetLocalized("DeleteFileSuccess"),
+                StaysOpen = false,
+                Token = "DriveGrowl"
+            });
+            return;
         }
-        await _files[0].Drive.Refresh();
+
+        Growl.Error(new GrowlInfo
+        {
+            Title = Helpers.ResourceHelper.GetLocalized("DeleteFileFail"),
+            StaysOpen = false,
+            Message = string.Join(", ", results
+                .Where(result => !result.IsSuccess || !result.Data)
+                .Select(result => result.ErrorMessage)
+                .Where(message => !string.IsNullOrWhiteSpace(message))),
+            Token = "DriveGrowl"
+        });
     }
 
-    [ObservableProperty] private bool _permanentDelete;
-    [ObservableProperty] private FileViewModel[] _files;
+    public string ConfirmationMessage => Files?.Length == 1
+        ? string.Format(Helpers.ResourceHelper.GetLocalized("DeleteFileView_ConfirmationSingle"), Files[0].Name)
+        : string.Format(Helpers.ResourceHelper.GetLocalized("DeleteFileView_ConfirmationMultiple"), Files?.Length ?? 0);
+
+    [ObservableProperty]
+    public partial bool PermanentDelete { get; set; }
+    [ObservableProperty]
+    public partial FileViewModel[] Files { get; set; }
 }

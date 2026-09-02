@@ -2,13 +2,13 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+	<LangVersion>14.0</LangVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>SimpleList</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platform>x64</Platform>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsPackageType>None</WindowsPackageType>
@@ -22,7 +22,7 @@
     <AssemblyName>SimpleList</AssemblyName>
     <Authors>Thawne</Authors>
     <PackageProjectUrl>https://github.com/aiguoli/SimpleList</PackageProjectUrl>
-    <AssemblyVersion>1.16.1</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
     <PackageIcon>Assets\128.png</PackageIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -30,10 +30,11 @@
   <PropertyGroup Condition="'$(PublishFlavor)' == 'Portable'">
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <SelfContained>true</SelfContained>
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishReadyToRun>true</PublishReadyToRun>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <!-- Single-file extraction crashes during WinUI/XAML initialization, including with Windows App SDK 2.4.0. -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   <PropertyGroup Condition="'$(PublishFlavor)' == 'Slim'">
     <WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
@@ -45,6 +46,10 @@
     <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>PublishFlavor</_Parameter1>
+      <_Parameter2>$(PublishFlavor)</_Parameter2>
+    </AssemblyAttribute>
     <TrimmerRootAssembly Include="Microsoft.Identity.Client" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +59,10 @@
     <None Remove="Assets\File.png" />
     <None Remove="Assets\Folder.png" />
     <None Remove="Assets\link-share.png" />
+    <None Remove="Assets\ProviderLogos\GoogleDrive.png" />
+    <None Remove="Assets\ProviderLogos\Local.png" />
+    <None Remove="Assets\ProviderLogos\OneDrive.png" />
+    <None Remove="Assets\ProviderLogos\PikPak.png" />
     <None Remove="Controls\ItemCard.xaml" />
     <None Remove="Pages\BookmarkPage.xaml" />
     <None Remove="Pages\CloudPage.xaml" />
@@ -65,6 +74,7 @@
     <None Remove="Pages\Tools\ExternalDownloader.xaml" />
     <None Remove="Pages\Tools\ShareCommunity.xaml" />
     <None Remove="Views\ConvertFileFormatView.xaml" />
+    <None Remove="Views\BatchRenameView.xaml" />
     <None Remove="Views\CreateDrive.xaml" />
     <None Remove="Views\CreateFolderView.xaml" />
     <None Remove="Views\DeleteFileView.xaml" />
@@ -74,6 +84,7 @@
     <None Remove="Views\Layout\GridCloudView.xaml" />
     <None Remove="Views\Layout\GridFileView.xaml" />
     <None Remove="Views\Layout\ImageCloudView.xaml" />
+    <None Remove="Views\MigrateFileView.xaml" />
     <None Remove="Views\Preview\ImagePreviewView.xaml" />
     <None Remove="Views\Preview\MarkdownPreviewView.xaml" />
     <None Remove="Views\Preview\MediaPreviewView.xaml" />
@@ -92,18 +103,17 @@
     <PackageReference Include="Downloader" Version="5.5.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
-    <PackageReference Include="Microsoft.Graph" Version="5.105.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.84.0" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.84.0" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.22.2" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.0.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1839" />
-    <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.1.0" />
     <PackageReference Include="QRCoder" Version="1.8.0" />
-    <PackageReference Include="QRCoder.Xaml" Version="1.8.0" />
     <PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
     <PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleList.Core\SimpleList.Core.csproj" />
   </ItemGroup>
   <!-- 
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
@@ -132,6 +142,18 @@
     <Content Update="Assets\link-share.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\ProviderLogos\GoogleDrive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\ProviderLogos\Local.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\ProviderLogos\OneDrive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\ProviderLogos\PikPak.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -146,8 +168,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Update="appsettings.json">
+    <None Update="appsettings.defaults.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </None>
+    <None Update="appsettings.json" Condition="Exists('appsettings.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>
     <None Update="Assets\128.png">
       <Pack>True</Pack>
@@ -163,6 +192,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\SearchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\MigrateFileView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Preview\MediaPreviewView.xaml">
@@ -217,6 +249,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\ConvertFileFormatView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\BatchRenameView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

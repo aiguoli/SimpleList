@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SimpleList 2.0 concept B — Provider Hub</title>
+  <desc id="desc">Three provider nodes converge on a central unified list index.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#17233F"/>
+  <path d="M512 520 L512 282 M512 520 L310 660 M512 520 L714 660"
+        fill="none" stroke="#FFFFFF" stroke-width="54" stroke-linecap="round"/>
+  <circle cx="512" cy="282" r="92" fill="#FFFFFF"/>
+  <circle cx="310" cy="660" r="92" fill="#FFFFFF"/>
+  <circle cx="714" cy="660" r="92" fill="#FFFFFF"/>
+  <circle cx="512" cy="282" r="29" fill="#5162EE"/>
+  <circle cx="310" cy="660" r="29" fill="#5162EE"/>
+  <circle cx="714" cy="660" r="29" fill="#5162EE"/>
+  <circle cx="512" cy="520" r="139" fill="#65F0D2"/>
+  <rect x="447" y="455" width="130" height="30" rx="15" fill="#17233F"/>
+  <rect x="447" y="505" width="105" height="30" rx="15" fill="#17233F"/>
+  <rect x="447" y="555" width="78" height="30" rx="15" fill="#17233F"/>
+</svg>

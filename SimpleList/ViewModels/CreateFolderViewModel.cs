@@ -1,7 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Graph.Models;
-using SimpleList.Models;
+using SimpleList.Core.Models;
 using System.Threading.Tasks;
 using WinUICommunity;
 
@@ -17,7 +16,7 @@ public partial class CreateFolderViewModel : ObservableObject
     [RelayCommand]
     private async Task CreateFolder()
     {
-        OneDriveResult<DriveItem> result = await Drive.Provider.CreateFolder(Drive.ParentItemId, FolderName);
+        StorageResult<FileItem> result = await Drive.Provider.CreateFolderAsync(Drive.ParentItemId, FolderName);
         if (result.IsSuccess)
         {
             await Drive.Refresh();
@@ -27,7 +26,8 @@ public partial class CreateFolderViewModel : ObservableObject
                 StaysOpen = false,
                 Token = "DriveGrowl"
             });
-        } else
+        }
+        else
         {
             Growl.Error(new GrowlInfo
             {
@@ -39,6 +39,8 @@ public partial class CreateFolderViewModel : ObservableObject
         }
     }
 
-    [ObservableProperty] private string _folderName;
+    [ObservableProperty]
+    public partial string FolderName { get; set; }
+
     public DriveViewModel Drive;
 }

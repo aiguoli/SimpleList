@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="SimpleList.Views.MigrateFileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CommunityToolkit.WinUI.Converters"
+    xmlns:vm="using:SimpleList.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{x:Bind vm:MigrateFileViewModel}"
+    x:Uid="MigrateFileView"
+    DefaultButton="Primary">
+
+    <ContentDialog.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </ContentDialog.Resources>
+
+    <Grid Width="520" MinHeight="420" RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ComboBox
+            x:Uid="MigrateFileView_TargetDrive"
+            ItemsSource="{Binding Cloud.Drives}"
+            SelectedItem="{Binding TargetDrive, Mode=TwoWay}"
+            DisplayMemberPath="DisplayName"
+            HorizontalAlignment="Stretch" />
+
+        <BreadcrumbBar
+            Grid.Row="1"
+            ItemsSource="{Binding BreadcrumbItems}"
+            ItemClicked="BreadcrumbBar_ItemClicked">
+            <BreadcrumbBar.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </BreadcrumbBar.ItemTemplate>
+        </BreadcrumbBar>
+
+        <Grid Grid.Row="2">
+            <ProgressRing
+                IsActive="{Binding IsLoading}"
+                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <ListView
+                ItemsSource="{Binding Folders}"
+                DoubleTapped="FolderList_DoubleTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FileViewModel">
+                        <Grid Padding="6" ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <SymbolIcon Symbol="Folder" />
+                            <TextBlock Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</ContentDialog>

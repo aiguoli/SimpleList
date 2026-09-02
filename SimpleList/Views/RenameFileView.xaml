@@ -8,11 +8,9 @@
     xmlns:vm="using:SimpleList.ViewModels"
     mc:Ignorable="d"
     d:DataContext="{x:Bind vm:RenameFileViewModel}"
-    Title="Rename file"
-    PrimaryButtonText="OK"
-    CloseButtonText="Cancel"
+    x:Uid="RenameFileView"
     PrimaryButtonCommand="{Binding RenameFileCommand}"
     DefaultButton="Primary">
 
-    <TextBox Header="Type new filename:" PlaceholderText="File name" Text="{Binding FileName, Mode=TwoWay}" />
+    <TextBox x:Uid="RenameFileView_FileName" Text="{Binding FileName, Mode=TwoWay}" />
 </ContentDialog>

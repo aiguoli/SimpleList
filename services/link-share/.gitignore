@@ -1,0 +1,8 @@
+.env
+data.db
+data.db-shm
+data.db-wal
+link-share.log
+.idea/
+.gocache/
+.gomodcache/
