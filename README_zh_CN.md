@@ -109,19 +109,19 @@ dotnet publish .\SimpleList\SimpleList.csproj -c Release -r win-x64 -p:Platform=
 
 | 首页与提供商说明 | 添加网盘 |
 | --- | --- |
-| ![首页](./ScreenShots/HomePage.png) | ![添加网盘](./ScreenShots/AddDrive.png) |
+| ![首页](./ScreenShots/HomePage_cn.png) | ![添加网盘](./ScreenShots/AddDrive_cn.png) |
 
 | 已连接网盘 | 文件浏览器 |
 | --- | --- |
-| ![网盘总览](./ScreenShots/CloudPage.png) | ![文件浏览](./ScreenShots/DrivePage.png) |
+| ![网盘总览](./ScreenShots/CloudPage_cn.png) | ![文件浏览](./ScreenShots/DrivePage_cn.png) |
 
 | 任务管理器 | 设置 |
 | --- | --- |
-| ![任务管理器](./ScreenShots/TaskManager.png) | ![设置](./ScreenShots/Settings.png) |
+| ![任务管理器](./ScreenShots/TaskManager_cn.png) | ![设置](./ScreenShots/Settings_cn.png) |
 
 | 工具 | 书签 |
 | --- | --- |
-| ![工具](./ScreenShots/ToolsPage.png) | ![书签](./ScreenShots/Bookmarks.png) |
+| ![工具](./ScreenShots/ToolsPage_cn.png) | ![书签](./ScreenShots/Bookmarks_cn.png) |
 
 ## Star 趋势
 
