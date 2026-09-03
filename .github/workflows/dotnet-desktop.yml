@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         platform: [x64, x86, arm64]
-        publish_flavor: [Portable, Slim]
+        publish_flavor: [Portable, SingleFile, Slim]
 
     steps:
     - uses: actions/checkout@v4
@@ -156,15 +156,18 @@ jobs:
           cat > RELEASE_BODY.md <<'EOF'
           ## Package Flavors / 安装包版本说明
 
-          - **Portable**: Self-contained package. No preinstalled .NET runtime required. Larger size.
+          - **Portable**: Self-contained multi-file package. No preinstalled .NET runtime required. Larger size.
+          - **SingleFile**: Self-contained single-executable package. No preinstalled .NET runtime required.
           - **Slim**: Framework-dependent package. Smaller size, but requires runtime dependencies on target machine.
 
-          - **Portable（便携版）**：自包含版本，通常不需要预装 .NET 运行时，体积较大。
+          - **Portable（便携版）**：自包含多文件版本，通常不需要预装 .NET 运行时，体积较大。
+          - **SingleFile（单文件版）**：自包含单可执行文件版本，通常不需要预装 .NET 运行时。
           - **Slim（轻量版）**：依赖运行时版本，体积更小，但目标机器需满足运行时依赖。
 
           ### Artifact Naming / 产物命名
 
           - `SimpleList-vVERSION-PLATFORM-Portable.zip`
+          - `SimpleList-vVERSION-PLATFORM-SingleFile.zip`
           - `SimpleList-vVERSION-PLATFORM-Slim.zip`
 
           ---
