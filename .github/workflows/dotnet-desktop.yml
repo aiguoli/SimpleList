@@ -68,7 +68,7 @@ jobs:
     strategy:
       matrix:
         platform: [x64, x86, arm64]
-        publish_flavor: [Portable, Slim]
+        publish_flavor: [Portable, Slim, SingleFile]
 
     steps:
     - uses: actions/checkout@v4
@@ -187,12 +187,14 @@ jobs:
           ### English
 
           - **Portable (recommended for most users)**: Self-contained package that includes the required .NET and Windows App SDK runtime components. No runtime installation is normally required, but the download is larger.
+          - **SingleFile**: Self-contained single-executable build. WinUI dependencies are bundled into the executable and extracted automatically when the app starts.
           - **Slim**: Smaller, framework-dependent package. The target machine must already have the matching architecture of **.NET 10 Desktop Runtime** and **Windows App Runtime 2.4** installed. SimpleList does **not** automatically install missing runtimes. If the app does not start, install both runtimes manually or use the Portable package.
           - End users only need the runtimes above; the developer-facing Windows App SDK is not required.
 
           ### 中文
 
           - **Portable（便携版，推荐大多数用户）**：自包含版本，已包含所需的 .NET 和 Windows App SDK 运行时组件，通常无需另外安装运行时，但下载体积较大。
+          - **SingleFile（单文件版）**：自包含的单可执行文件版本；WinUI 依赖会打包进可执行文件，并在启动时自动解压。
           - **Slim（轻量版）**：依赖运行时的精简版本，体积较小。目标机器必须预先安装与系统架构匹配的 **.NET 10 Desktop Runtime** 和 **Windows App Runtime 2.4**。SimpleList 当前**不会自动安装**缺失的运行时；如果程序无法启动，请手动安装这两个运行时，或改用 Portable 版本。
           - 普通用户只需安装上述运行时，不需要安装开发用途的 Windows App SDK。
 
@@ -207,6 +209,7 @@ jobs:
           ### Artifact Naming / 产物命名
 
           - `SimpleList-vVERSION-PLATFORM-Portable.zip`
+          - `SimpleList-vVERSION-PLATFORM-SingleFile.zip`
           - `SimpleList-vVERSION-PLATFORM-Slim.zip`
 
           ---

@@ -51,6 +51,9 @@ jobs:
       - name: Publish slim release
         run: dotnet publish SimpleList/SimpleList.csproj -c Release -r win-x64 -p:Platform=x64 -p:PublishFlavor=Slim --output artifacts/win-x64-slim
 
+      - name: Publish single-file release
+        run: dotnet publish SimpleList/SimpleList.csproj -c Release -r win-x64 -p:Platform=x64 -p:PublishFlavor=SingleFile --output artifacts/win-x64-single-file
+
       - name: Verify release contents
         shell: pwsh
         run: |
@@ -59,12 +62,27 @@ jobs:
             'artifacts/win-x64-portable/appsettings.defaults.json',
             'artifacts/win-x64-slim/SimpleList.exe',
             'artifacts/win-x64-slim/SimpleList.dll',
-            'artifacts/win-x64-slim/appsettings.defaults.json'
+            'artifacts/win-x64-slim/appsettings.defaults.json',
+            'artifacts/win-x64-single-file/SimpleList.exe',
+            'artifacts/win-x64-single-file/appsettings.defaults.json'
           )
 
           foreach ($file in $requiredFiles) {
             if (-not (Test-Path $file)) {
               throw "Missing release file: $file"
+            }
+          }
+
+          $forbiddenFiles = @(
+            'artifacts/win-x64-portable/appsettings.json',
+            'artifacts/win-x64-slim/appsettings.json',
+            'artifacts/win-x64-single-file/appsettings.json',
+            'artifacts/win-x64-single-file/SimpleList.dll'
+          )
+
+          foreach ($file in $forbiddenFiles) {
+            if (Test-Path $file) {
+              throw "Unexpected release file: $file"
             }
           }
 
@@ -85,5 +103,15 @@ jobs:
           path: |
             artifacts/win-x64-slim/**
             !artifacts/win-x64-slim/appsettings.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload single-file build
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimpleList-win-x64-single-file
+          path: |
+            artifacts/win-x64-single-file/**
+            !artifacts/win-x64-single-file/appsettings.json
           if-no-files-found: error
           retention-days: 7

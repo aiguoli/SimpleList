@@ -26,15 +26,28 @@
     <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
     <PackageIcon>Assets\128.png</PackageIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Never let local build output, caches, logs, or developer settings become publish content. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**;cache\**;**\*.log;appsettings.json;Properties\launchSettings.json;Properties\PublishProfiles\**</DefaultItemExcludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(PublishFlavor)' == 'Portable'">
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <SelfContained>true</SelfContained>
-    <!-- Single-file extraction crashes during WinUI/XAML initialization, including with Windows App SDK 2.4.0. -->
     <PublishSingleFile>false</PublishSingleFile>
     <PublishReadyToRun>false</PublishReadyToRun>
     <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
     <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(PublishFlavor)' == 'SingleFile'">
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <!-- WinUI requires its native and XAML content to be available as loose files at runtime. -->
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(PublishFlavor)' == 'Slim'">
     <WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
@@ -169,11 +182,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.defaults.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </None>
-    <None Update="appsettings.json" Condition="Exists('appsettings.json')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -331,6 +339,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </PRIResource>
   </ItemGroup>
+
+  <Target Name="RemovePrivateFilesFromPublish" AfterTargets="Publish">
+    <ItemGroup>
+      <PrivatePublishFile Include="$(PublishDir)appsettings.json" />
+      <PrivatePublishFile Include="$(PublishDir)**\*.pdb" Condition="'$(PublishFlavor)' == 'SingleFile'" />
+    </ItemGroup>
+    <Delete Files="@(PrivatePublishFile)" />
+  </Target>
 
   <!-- Workaround for MSB3030: Remove WinUICommunity assets from output copy list since they are missing in the net10 runtime projection -->
   <Target Name="RemoveMissingWinUICommunityAssets" BeforeTargets="_CopyOutOfDateSourceItemsToOutputDirectory;CopyFilesToOutputDirectory">
