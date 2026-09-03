@@ -56,16 +56,18 @@ Google OAuth tokens are stored under `cache/GoogleDriveTokenCache/`. OneDrive us
 
 ## Release packages
 
-GitHub Releases publish x64, x86, and ARM64 builds in two flavors:
+GitHub Releases publish x64, x86, and ARM64 builds in three flavors:
 
 | Flavor | Description | Best for |
 | --- | --- | --- |
 | Portable | Self-contained; includes the required .NET and Windows App Runtime components. | Most users |
+| SingleFile | Self-contained single executable; bundled WinUI files are extracted automatically at startup. | Users who prefer one application binary |
 | Slim | Smaller framework-dependent package; requires the matching .NET 10 Desktop Runtime and Windows App Runtime 2.4. | Machines with runtimes already installed |
 
 Artifact examples:
 
 - `SimpleList-vVERSION-x64-Portable.zip`
+- `SimpleList-vVERSION-x64-SingleFile.zip`
 - `SimpleList-vVERSION-x64-Slim.zip`
 
 ## Architecture
@@ -89,7 +91,7 @@ dotnet build SimpleList.sln -c Debug -p:Platform=x64
 dotnet test SimpleList.Tests\SimpleList.Tests.csproj -c Release -p:Platform=x64
 ```
 
-The current suite contains 63 .NET tests. The Share Community service has its own Go checks:
+The current suite contains 71 .NET tests. The Share Community service has its own Go checks:
 
 ```powershell
 cd services\link-share
@@ -103,7 +105,9 @@ Publish a self-contained x64 build:
 dotnet publish .\SimpleList\SimpleList.csproj -c Release -r win-x64 -p:Platform=x64 -p:PublishFlavor=Portable
 ```
 
-Pull requests affecting the desktop app run tests, build the WinUI project, publish a trimmed Portable package, and verify required release files. Changes under `services/link-share` run Go tests, vet, and build independently.
+Use `-p:PublishFlavor=SingleFile` for the single-executable build.
+
+Pull requests affecting the desktop app run tests, build the WinUI project, publish Portable, SingleFile, and Slim packages, and verify required release files. Changes under `services/link-share` run Go tests, vet, and build independently.
 
 ## Screenshots
 

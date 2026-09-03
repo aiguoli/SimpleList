@@ -121,7 +121,9 @@ namespace SimpleList.Pages
                 string assetName = $@"SimpleList-{ver.TagName}-{archName}-{flavor}.zip";
                 string legacyAssetName = $@"SimpleList-{ver.TagName}-{archName}.zip";
                 var asset = Array.Find(ver.Assets, asset => string.Equals(asset.Name, assetName, StringComparison.OrdinalIgnoreCase))
-                    ?? Array.Find(ver.Assets, asset => string.Equals(asset.Name, legacyAssetName, StringComparison.OrdinalIgnoreCase));
+                    ?? (string.Equals(flavor, "Portable", StringComparison.OrdinalIgnoreCase)
+                        ? Array.Find(ver.Assets, asset => string.Equals(asset.Name, legacyAssetName, StringComparison.OrdinalIgnoreCase))
+                        : null);
                 zipballUrl = asset?.Url;
                 ChangelogText.Text = ver.Changelog;
                 NewVersion.Text = ver.TagName;
@@ -181,21 +183,40 @@ namespace SimpleList.Pages
 
         private void UpdateByPowershell(object sender, RoutedEventArgs e)
         {
-            if (zipballUrl == null)
+            if (!Utils.IsValidUrl(zipballUrl))
             {
                 return;
             }
+
+            DownloadButton.IsEnabled = false;
             var zipFile = Path.Combine(Path.GetTempPath(), $@"{Path.GetRandomFileName()}.zip");
+            string executablePath = Environment.ProcessPath ?? Path.Combine(AppContext.BaseDirectory, "SimpleList.exe");
+            string installDirectory = Path.GetDirectoryName(executablePath) ?? AppContext.BaseDirectory;
+            int processId = Environment.ProcessId;
             string psScript = $@"
-                Stop-Process -Name '{Process.GetCurrentProcess().ProcessName}' -Force
-                Start-BitsTransfer -Source '{zipballUrl}' -Destination '{zipFile}' -DisplayName 'SimpleList Update'
-                Expand-Archive -Path '{zipFile}' -DestinationPath '{Environment.CurrentDirectory}' -Force
-                Remove-Item -Path {zipFile}
-                Start-Process '{Path.Combine(Environment.CurrentDirectory, "SimpleList.exe")}'
-                Pause
+                $ErrorActionPreference = 'Stop'
+                Start-BitsTransfer -Source '{EscapePowerShellLiteral(zipballUrl)}' -Destination '{EscapePowerShellLiteral(zipFile)}' -DisplayName 'SimpleList Update'
+                Stop-Process -Id {processId} -Force
+                Wait-Process -Id {processId} -ErrorAction SilentlyContinue
+                Expand-Archive -LiteralPath '{EscapePowerShellLiteral(zipFile)}' -DestinationPath '{EscapePowerShellLiteral(installDirectory)}' -Force
+                Remove-Item -LiteralPath '{EscapePowerShellLiteral(zipFile)}' -Force
+                Start-Process -FilePath '{EscapePowerShellLiteral(executablePath)}'
             ";
-            Process.Start("PowerShell", psScript);
+            ProcessStartInfo startInfo = new()
+            {
+                FileName = "powershell.exe",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+            startInfo.ArgumentList.Add("-NoProfile");
+            startInfo.ArgumentList.Add("-ExecutionPolicy");
+            startInfo.ArgumentList.Add("Bypass");
+            startInfo.ArgumentList.Add("-Command");
+            startInfo.ArgumentList.Add(psScript);
+            Process.Start(startInfo);
         }
+
+        private static string EscapePowerShellLiteral(string value) => value.Replace("'", "''");
 
         private string zipballUrl;
         public string Version => Utils.GetVersion();
@@ -218,9 +239,14 @@ namespace SimpleList.Pages
                 return "Portable";
             }
 
+            if (string.Equals(flavor, "SingleFile", StringComparison.OrdinalIgnoreCase))
+            {
+                return "SingleFile";
+            }
+
             if (AppContext.GetData("IsSingleFile") is bool isSingleFile && isSingleFile)
             {
-                return "Portable";
+                return "SingleFile";
             }
 
             return File.Exists(Path.Combine(AppContext.BaseDirectory, "SimpleList.dll")) ? "Slim" : "Portable";

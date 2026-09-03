@@ -56,16 +56,18 @@ Google OAuth 令牌默认保存在 `cache/GoogleDriveTokenCache/`。OneDrive 使
 
 ## 发布包
 
-GitHub Releases 为 x64、x86 与 ARM64 提供两种版本：
+GitHub Releases 为 x64、x86 与 ARM64 提供三种版本：
 
 | 版本 | 说明 | 适用场景 |
 | --- | --- | --- |
 | Portable | 自包含版本，已带有所需的 .NET 与 Windows App Runtime 组件。 | 推荐大多数用户使用 |
+| SingleFile | 自包含单可执行文件版本；打包的 WinUI 文件会在启动时自动解压。 | 希望只保留一个程序文件的用户 |
 | Slim | 体积更小，目标机器需预装匹配架构的 .NET 10 Desktop Runtime 与 Windows App Runtime 2.4。 | 已安装运行时的电脑 |
 
 产物名称示例：
 
 - `SimpleList-vVERSION-x64-Portable.zip`
+- `SimpleList-vVERSION-x64-SingleFile.zip`
 - `SimpleList-vVERSION-x64-Slim.zip`
 
 ## 项目结构
@@ -89,7 +91,7 @@ dotnet build SimpleList.sln -c Debug -p:Platform=x64
 dotnet test SimpleList.Tests\SimpleList.Tests.csproj -c Release -p:Platform=x64
 ```
 
-当前共有 63 个 .NET 测试。分享社区服务使用独立的 Go 检查：
+当前共有 71 个 .NET 测试。分享社区服务使用独立的 Go 检查：
 
 ```powershell
 cd services\link-share
@@ -103,7 +105,9 @@ go vet ./...
 dotnet publish .\SimpleList\SimpleList.csproj -c Release -r win-x64 -p:Platform=x64 -p:PublishFlavor=Portable
 ```
 
-桌面端相关的 Pull Request 会运行测试、构建 WinUI 项目、发布裁剪后的 Portable 包，并检查必需的发布文件。`services/link-share` 下的改动会独立运行 Go test、vet 与 build。
+将参数改为 `-p:PublishFlavor=SingleFile` 即可发布单可执行文件版本。
+
+桌面端相关的 Pull Request 会运行测试、构建 WinUI 项目，发布 Portable、SingleFile 与 Slim 三种包，并检查必需的发布文件。`services/link-share` 下的改动会独立运行 Go test、vet 与 build。
 
 ## 界面截图
 

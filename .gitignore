@@ -364,5 +364,5 @@ FodyWeavers.xsd
 
 SimpleList/SimpleList - Backup.csproj
 cache
-*/appsettings.json
+appsettings.json
 .codex/
