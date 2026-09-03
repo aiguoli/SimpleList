@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using WinUICommunity;
 
@@ -22,11 +24,12 @@ namespace SimpleList.Pages
         private async void CheckUpdate(object sender, RoutedEventArgs e)
         {
             CheckUpdateButton.IsEnabled = false;
+            zipballUrl = null;
+            IsUpdateAvailable = false;
             var ver = await UpdateHelper.CheckUpdateAsync("aiguoli", "SimpleList");
             if (ver.IsExistNewVersion)
             {
                 // Update App
-                IsUpdateAvailable = true;
                 var arch = RuntimeInformation.ProcessArchitecture;
                 var archMap = new Dictionary<Architecture, string>
                 {
@@ -34,17 +37,25 @@ namespace SimpleList.Pages
                     { Architecture.X86, "x86" },
                     { Architecture.Arm64, "arm64" },
                 };
-                zipballUrl = Array.Find(ver.Assets, asset => asset.Name == $@"SimpleList-{ver.TagName}-{archMap[arch]}.zip")?.Url;
+                string archName = archMap.TryGetValue(arch, out string mappedArch) ? mappedArch : arch.ToString().ToLowerInvariant();
+                string flavor = GetCurrentPublishFlavor();
+                string assetName = $@"SimpleList-{ver.TagName}-{archName}-{flavor}.zip";
+                string legacyAssetName = $@"SimpleList-{ver.TagName}-{archName}.zip";
+                var asset = Array.Find(ver.Assets, asset => string.Equals(asset.Name, assetName, StringComparison.OrdinalIgnoreCase))
+                    ?? Array.Find(ver.Assets, asset => string.Equals(asset.Name, legacyAssetName, StringComparison.OrdinalIgnoreCase));
+                zipballUrl = asset?.Url;
+                IsUpdateAvailable = Utils.IsValidUrl(zipballUrl);
                 StatusInfo.Description = ver.Changelog;
                 NewVersion.Text = ver.TagName;
                 StatusInfo.Visibility = Visibility.Visible;
-                DownloadButton.Visibility = Visibility.Visible;
+                DownloadButton.Visibility = IsUpdateAvailable ? Visibility.Visible : Visibility.Collapsed;
             }
             else
             {
                 StatusInfo.Visibility = Visibility.Visible;
                 DownloadButton.Visibility = Visibility.Collapsed;
             }
+            Bindings.Update();
             CheckUpdateButton.IsEnabled = true;
         }
 
@@ -110,5 +121,35 @@ namespace SimpleList.Pages
         private string zipballUrl;
         public string Version => Utils.GetVersion();
         public bool IsUpdateAvailable { get; set; } = false;
+
+        private static string GetCurrentPublishFlavor()
+        {
+            string flavor = Assembly.GetEntryAssembly()?
+                .GetCustomAttributes<AssemblyMetadataAttribute>()
+                .FirstOrDefault(attribute => attribute.Key == "PublishFlavor")
+                ?.Value;
+
+            if (string.Equals(flavor, "SingleFile", StringComparison.OrdinalIgnoreCase))
+            {
+                return "SingleFile";
+            }
+
+            if (string.Equals(flavor, "Slim", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Slim";
+            }
+
+            if (string.Equals(flavor, "Portable", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Portable";
+            }
+
+            if (AppContext.GetData("IsSingleFile") is bool isSingleFile && isSingleFile)
+            {
+                return "SingleFile";
+            }
+
+            return File.Exists(Path.Combine(AppContext.BaseDirectory, "SimpleList.dll")) ? "Slim" : "Portable";
+        }
     }
 }

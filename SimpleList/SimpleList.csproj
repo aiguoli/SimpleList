@@ -53,6 +53,10 @@
     <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>PublishFlavor</_Parameter1>
+      <_Parameter2>$(PublishFlavor)</_Parameter2>
+    </AssemblyAttribute>
     <TrimmerRootAssembly Include="Microsoft.Identity.Client" />
   </ItemGroup>
   <ItemGroup>
