@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Models;
+using SimpleList.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -58,6 +59,7 @@ public partial class BatchRenameViewModel : ObservableObject
 
         if (errors.Count == 0)
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_BatchRenamed", successCount.ToString(), OperationLogLevel.Success);
             Growl.Success(new GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("Success"),
@@ -68,6 +70,11 @@ public partial class BatchRenameViewModel : ObservableObject
         }
         else
         {
+            OperationLogger.Record(
+                "OperationLog_Category_File",
+                "OperationLog_Action_BatchRenamed",
+                $"{successCount}/{PreviewItems.Count}; {string.Join("; ", errors)}",
+                OperationLogLevel.Warning);
             Growl.Error(new GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("Error"),

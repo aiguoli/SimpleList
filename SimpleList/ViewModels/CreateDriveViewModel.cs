@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Contracts;
 using SimpleList.Core.Models;
+using SimpleList.Helpers;
 using System.IO;
 using System.Threading.Tasks;
 using WinUICommunity;
@@ -62,10 +63,20 @@ namespace SimpleList.ViewModels
                     : DisplayName;
                 DriveViewModel driveViewModel = new(drive, driveName);
                 _cloud.AddDrive(driveViewModel);
+                OperationLogger.Record(
+                    "OperationLog_Category_Drive",
+                    "OperationLog_Action_DriveAdded",
+                    $"{driveName} · {drive.ProviderType}",
+                    OperationLogLevel.Success);
                 return true;
             }
             else
             {
+                OperationLogger.Record(
+                    "OperationLog_Category_Drive",
+                    "OperationLog_Action_DriveAdded",
+                    result.ErrorMessage,
+                    OperationLogLevel.Error);
                 ShowCreateDriveError(result.ErrorMessage ?? Helpers.ResourceHelper.GetLocalized("CreateDrive_LoginFailed"));
                 return false;
             }

@@ -70,18 +70,45 @@ public partial class App : Application
         var logMessage = $"{DateTime.Now}: {title}\n{sender}\n{exception}\n\n";
 
         File.AppendAllText(logFilePath, logMessage);
+        try
+        {
+            Current?.Services?.GetService<OperationLogService>()?.Record(
+                Helpers.ResourceHelper.GetLocalized("OperationLog_Category_System"),
+                title,
+                exception?.Message,
+                Core.Models.OperationLogLevel.Error);
+        }
+        catch (Exception)
+        {
+            // Error reporting must never cause a second unhandled exception.
+        }
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         //Current.Resources["Configuration"] = Configuration;
         //string backdropType = Configuration.GetSection("Material").Value;
+        await GetService<OperationLogService>().InitializeAsync();
         m_window = new MainWindow
         {
             Title = Assembly.GetEntryAssembly().GetName().Name,
         };
 
         m_window.Activate();
+        GetService<OperationLogService>().Record(
+            Helpers.ResourceHelper.GetLocalized("OperationLog_Category_System"),
+            Helpers.ResourceHelper.GetLocalized("OperationLog_Action_AppStarted"),
+            Utils.GetVersion());
+        try
+        {
+            CloudViewModel cloud = GetService<CloudViewModel>();
+            await cloud.LoadDrivesFromDisk();
+            await GetService<TaskManagerViewModel>().LoadTasksFromDiskAsync(cloud);
+        }
+        catch (Exception ex)
+        {
+            LogError("Unable to restore persisted tasks", this, ex);
+        }
         m_window.DispatcherQueue.TryEnqueue(() =>
         {
             var themeService = GetThemeService;
@@ -129,6 +156,10 @@ public partial class App : Application
         services.AddSingleton<ShareCommunityTokenStore>();
         services.AddSingleton<ShareCommunityApiClient>();
         services.AddTransient<ShareCommunityViewModel>();
+        services.AddSingleton(sp => new OperationLogService(Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SimpleList",
+            "logs")));
         return services.BuildServiceProvider();
     }
 

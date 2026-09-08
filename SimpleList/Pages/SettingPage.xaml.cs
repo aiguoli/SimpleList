@@ -52,6 +52,11 @@ namespace SimpleList.Pages
                 File.WriteAllText(settingsPath, settings.ToJsonString(options));
                 App.Current.ReloadSettings();
 
+                Helpers.OperationLogger.Record(
+                    "OperationLog_Category_Settings",
+                    "OperationLog_Action_SettingsSaved",
+                    level: Core.Models.OperationLogLevel.Success);
+
                 Growl.Success(new GrowlInfo
                 {
                     Title = AppResourceHelper.GetLocalized("SettingPage_SaveProviderSettingsSuccessTitle"),
@@ -62,6 +67,11 @@ namespace SimpleList.Pages
             }
             catch (Exception ex)
             {
+                Helpers.OperationLogger.Record(
+                    "OperationLog_Category_Settings",
+                    "OperationLog_Action_SettingsSaved",
+                    ex.Message,
+                    Core.Models.OperationLogLevel.Error);
                 Growl.Error(new GrowlInfo
                 {
                     Title = AppResourceHelper.GetLocalized("SettingPage_SaveProviderSettingsFailedTitle"),

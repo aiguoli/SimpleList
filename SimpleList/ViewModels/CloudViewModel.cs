@@ -48,7 +48,14 @@ namespace SimpleList.ViewModels
         [RelayCommand]
         public void RemoveDrive(DriveViewModel drive)
         {
-            Drives.Remove(drive);
+            if (Drives.Remove(drive))
+            {
+                OperationLogger.Record(
+                    "OperationLog_Category_Drive",
+                    "OperationLog_Action_DriveRemoved",
+                    drive.DisplayName,
+                    OperationLogLevel.Success);
+            }
         }
 
         private async Task SaveDrivesToDisk()

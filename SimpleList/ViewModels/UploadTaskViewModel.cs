@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
 using SimpleList.Core.Models;
+using SimpleList.Core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +18,25 @@ public partial class UploadTaskViewModel : ObservableObject
     {
         _itemId = itemId;
         _item = item;
+        _itemPath = item?.Path;
+        _name = item?.Name;
+        _isFolder = item is StorageFolder;
         Drive = drive;
+    }
+
+    internal UploadTaskViewModel(DriveViewModel drive, PersistentTaskDTO persistedTask, IStorageItem item)
+        : this(drive, persistedTask.ItemId, item)
+    {
+        _itemPath = persistedTask.Path;
+        _name = persistedTask.Name;
+        _isFolder = persistedTask.IsFolder;
+        ResumeToken = persistedTask.ResumeToken;
+        ProgressValue = persistedTask.Progress;
+        UploadedBytes = (ulong)Math.Max(0, persistedTask.TransferredBytes);
+        TotalBytes = (ulong)Math.Max(0, persistedTask.TotalBytes);
+        Completed = persistedTask.Completed;
+        IsPaused = persistedTask.IsPaused && !persistedTask.Completed;
+        IsUploading = false;
     }
 
     private Task _uploadTask;
@@ -47,7 +66,7 @@ public partial class UploadTaskViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(PauseCommand))]
     public partial bool IsPaused { get; set; } = false;
 
-    public bool IsFolder => _item is StorageFolder;
+    public bool IsFolder => _isFolder;
     public ObservableCollection<UploadFileProgressViewModel> FolderUploadItems { get; } = [];
     public string ProgressPercentText => $"{ProgressValue}%";
     public string CompletedText
@@ -115,13 +134,18 @@ public partial class UploadTaskViewModel : ObservableObject
     private bool CanResume => IsPaused;
     
     public DriveViewModel Drive;
-    public string Name => _item.Name;
+    public string Name => _name;
 
     private readonly string _itemId;
     private readonly IStorageItem _item;
+    private readonly string _itemPath;
+    private readonly string _name;
+    private readonly bool _isFolder;
     private readonly TaskManagerViewModel _manager = App.GetService<TaskManagerViewModel>();
     private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
-    private string _uploadUrl = null;
+    internal string ResumeToken { get; private set; }
+    internal string PersistentItemId => _itemId;
+    internal string PersistentItemPath => _itemPath;
 
     private void UpdateOnUiThread(Action action)
     {
@@ -188,7 +212,7 @@ public partial class UploadTaskViewModel : ObservableObject
 
     public async Task StartUpload()
     {
-        if (_isCanceled || (_uploadTask != null && !_uploadTask.IsCompleted))
+        if (_item == null || _isCanceled || (_uploadTask != null && !_uploadTask.IsCompleted))
             return;
 
         CancellationTokenSource uploadCancellation = new();
@@ -299,12 +323,16 @@ public partial class UploadTaskViewModel : ObservableObject
                 
                 if (_item is StorageFile file)
                 {
-                    var result = await Drive.Provider.UploadFileAsync(file, _itemId, progress, _uploadUrl, (url) => _uploadUrl = url, uploadCancellation.Token);
+                    StorageResult<FileItem> result = await UploadFileWithResumeFallbackAsync(
+                        file,
+                        progress,
+                        uploadCancellation.Token);
                     
                     uploadCancellation.Token.ThrowIfCancellationRequested();
                     
                     if (result.IsSuccess)
                     {
+                        UpdateResumeToken(null);
                         MarkUploadCompleted();
                         ShowUploadSuccess();
                     }
@@ -363,5 +391,50 @@ public partial class UploadTaskViewModel : ObservableObject
         catch (OperationCanceledException)
         {
         }
+    }
+
+    private async Task<StorageResult<FileItem>> UploadFileWithResumeFallbackAsync(
+        StorageFile file,
+        IProgress<long> progress,
+        CancellationToken cancellationToken)
+    {
+        string resumeToken = ResumeToken;
+        StorageResult<FileItem> result = await Drive.Provider.UploadFileAsync(
+            file,
+            _itemId,
+            progress,
+            resumeToken,
+            UpdateResumeToken,
+            cancellationToken);
+
+        if (result.IsSuccess || cancellationToken.IsCancellationRequested || string.IsNullOrWhiteSpace(resumeToken))
+        {
+            return result;
+        }
+
+        // The persisted upload session may have expired or been invalidated. In that
+        // case create a fresh session and restart the file, as a safe fallback.
+        UpdateResumeToken(null);
+        UpdateOnUiThread(() =>
+        {
+            UploadedBytes = 0;
+            ProgressValue = 0;
+        });
+        return await Drive.Provider.UploadFileAsync(
+            file,
+            _itemId,
+            progress,
+            null,
+            UpdateResumeToken,
+            cancellationToken);
+    }
+
+    private void UpdateResumeToken(string value)
+    {
+        UpdateOnUiThread(() =>
+        {
+            ResumeToken = value;
+            OnPropertyChanged(nameof(ResumeToken));
+        });
     }
 }

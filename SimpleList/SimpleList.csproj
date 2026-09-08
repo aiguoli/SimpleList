@@ -68,6 +68,7 @@
     <None Remove="Pages\CloudPage.xaml" />
     <None Remove="Pages\DrivePage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
+    <None Remove="Pages\OperationLogPage.xaml" />
     <None Remove="Pages\SettingPage.xaml" />
     <None Remove="Pages\TaskManagerPage.xaml" />
     <None Remove="Pages\ToolPage.xaml" />
@@ -281,6 +282,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\OperationLogPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Pages\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Models;
+using SimpleList.Helpers;
 using System.Threading.Tasks;
 using WinUICommunity;
 
@@ -19,6 +20,7 @@ public partial class CreateFolderViewModel : ObservableObject
         StorageResult<FileItem> result = await Drive.Provider.CreateFolderAsync(Drive.ParentItemId, FolderName);
         if (result.IsSuccess)
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_FolderCreated", FolderName, OperationLogLevel.Success);
             await Drive.Refresh();
             Growl.Success(new GrowlInfo
             {
@@ -29,6 +31,7 @@ public partial class CreateFolderViewModel : ObservableObject
         }
         else
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_FolderCreated", $"{FolderName}: {result.ErrorMessage}", OperationLogLevel.Error);
             Growl.Error(new GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("CreateFolderFail"),

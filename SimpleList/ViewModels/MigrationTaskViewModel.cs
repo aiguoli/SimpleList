@@ -100,6 +100,16 @@ public partial class MigrationTaskViewModel : ObservableObject
         return _task;
     }
 
+    internal void RestoreState(MigrationStatus status, int progress, long migratedBytes, long totalBytes, string errorMessage)
+    {
+        Status = status;
+        ProgressValue = progress;
+        MigratedBytes = migratedBytes;
+        TotalBytes = totalBytes;
+        ErrorMessage = errorMessage;
+        _migratedBytesBacking = migratedBytes;
+    }
+
     private async Task RunAsync()
     {
         bool acquiredRootSlot = false;

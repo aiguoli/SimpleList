@@ -1064,4 +1064,45 @@
   <data name="Local_TrashUnsupported" xml:space="preserve"><value>Local items do not support trash</value></data>
   <data name="Local_ShareUnsupported" xml:space="preserve"><value>Local items do not support share links</value></data>
   <data name="Local_PdfConversionUnsupported" xml:space="preserve"><value>Local items do not support PDF conversion</value></data>
+  <data name="NavigationBar_Logs.Content" xml:space="preserve"><value>Logs</value></data>
+  <data name="OperationLogPage_Title.Text" xml:space="preserve"><value>Operation logs</value></data>
+  <data name="OperationLogPage_Subtitle.Text" xml:space="preserve"><value>View up to 500 application and user operations from the last 30 days.</value></data>
+  <data name="OperationLogPage_Clear.Content" xml:space="preserve"><value>Clear logs</value></data>
+  <data name="OperationLogPage_Clear.ToolTipService.ToolTip" xml:space="preserve"><value>Delete all operation logs</value></data>
+  <data name="OperationLogPage_RealtimeInfo.Title" xml:space="preserve"><value>Real-time logging is on</value></data>
+  <data name="OperationLogPage_RealtimeInfo.Message" xml:space="preserve"><value>New operations appear at the top automatically and are saved locally.</value></data>
+  <data name="OperationLogPage_Empty.Text" xml:space="preserve"><value>No operation logs yet</value></data>
+  <data name="OperationLogPage_ClearDialog_Title" xml:space="preserve"><value>Clear operation logs?</value></data>
+  <data name="OperationLogPage_ClearDialog_Content" xml:space="preserve"><value>This permanently deletes every locally stored operation log.</value></data>
+  <data name="OperationLogPage_ClearDialog_Confirm" xml:space="preserve"><value>Clear</value></data>
+  <data name="OperationLogPage_ClearDialog_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="OperationLog_Level_Information" xml:space="preserve"><value>Information</value></data>
+  <data name="OperationLog_Level_Success" xml:space="preserve"><value>Success</value></data>
+  <data name="OperationLog_Level_Warning" xml:space="preserve"><value>Warning</value></data>
+  <data name="OperationLog_Level_Error" xml:space="preserve"><value>Error</value></data>
+  <data name="OperationLog_Category_System" xml:space="preserve"><value>System</value></data>
+  <data name="OperationLog_Category_Navigation" xml:space="preserve"><value>Navigation</value></data>
+  <data name="OperationLog_Category_Drive" xml:space="preserve"><value>Drive</value></data>
+  <data name="OperationLog_Category_File" xml:space="preserve"><value>File</value></data>
+  <data name="OperationLog_Category_Bookmark" xml:space="preserve"><value>Bookmark</value></data>
+  <data name="OperationLog_Category_Task" xml:space="preserve"><value>Task</value></data>
+  <data name="OperationLog_Category_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="OperationLog_Action_AppStarted" xml:space="preserve"><value>Application started</value></data>
+  <data name="OperationLog_Action_OpenPage" xml:space="preserve"><value>Opened page</value></data>
+  <data name="OperationLog_Page_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="OperationLog_Action_DriveAdded" xml:space="preserve"><value>Added drive</value></data>
+  <data name="OperationLog_Action_DriveRemoved" xml:space="preserve"><value>Removed drive</value></data>
+  <data name="OperationLog_Action_FolderCreated" xml:space="preserve"><value>Created folder</value></data>
+  <data name="OperationLog_Action_Renamed" xml:space="preserve"><value>Renamed item</value></data>
+  <data name="OperationLog_Action_BatchRenamed" xml:space="preserve"><value>Batch renamed items</value></data>
+  <data name="OperationLog_Action_Deleted" xml:space="preserve"><value>Deleted items</value></data>
+  <data name="OperationLog_Action_Restored" xml:space="preserve"><value>Restored items</value></data>
+  <data name="OperationLog_Action_TrashEmptied" xml:space="preserve"><value>Emptied recycle bin</value></data>
+  <data name="OperationLog_Action_BookmarkAdded" xml:space="preserve"><value>Added bookmark</value></data>
+  <data name="OperationLog_Action_BookmarkRemoved" xml:space="preserve"><value>Removed bookmark</value></data>
+  <data name="OperationLog_Action_BookmarkOpened" xml:space="preserve"><value>Opened bookmark</value></data>
+  <data name="OperationLog_Action_DownloadQueued" xml:space="preserve"><value>Download task</value></data>
+  <data name="OperationLog_Action_UploadQueued" xml:space="preserve"><value>Upload task</value></data>
+  <data name="OperationLog_Action_MigrationQueued" xml:space="preserve"><value>Migration task</value></data>
+  <data name="OperationLog_Action_SettingsSaved" xml:space="preserve"><value>Saved cloud settings</value></data>
 </root>

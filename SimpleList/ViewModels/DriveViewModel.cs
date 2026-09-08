@@ -537,14 +537,21 @@ public partial class DriveViewModel : ObservableObject
             return;
         }
 
+        string[] itemNames = SelectedItems.Select(file => file.Name).ToArray();
         StorageResult<FileItem>[] results = await Task.WhenAll(SelectedItems.Select(file => Provider.RestoreAsync(file.Id)));
         if (results.All(result => result.IsSuccess))
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_Restored", string.Join(", ", itemNames), OperationLogLevel.Success);
             ShowSuccess("Trash_RestoreSuccess");
             await Refresh();
         }
         else
         {
+            OperationLogger.Record(
+                "OperationLog_Category_File",
+                "OperationLog_Action_Restored",
+                string.Join(", ", results.Where(result => !result.IsSuccess).Select(result => result.ErrorMessage)),
+                OperationLogLevel.Error);
             ShowError("Trash_RestoreFail", results.Where(result => !result.IsSuccess).Select(result => result.ErrorMessage));
         }
     }
@@ -557,14 +564,21 @@ public partial class DriveViewModel : ObservableObject
             return;
         }
 
+        string[] itemNames = SelectedItems.Select(file => file.Name).ToArray();
         StorageResult<bool>[] results = await Task.WhenAll(SelectedItems.Select(file => Provider.PermanentDeleteAsync(file.Id)));
         if (results.All(result => result.IsSuccess && result.Data))
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_Deleted", string.Join(", ", itemNames), OperationLogLevel.Success);
             ShowSuccess("Trash_DeleteSuccess");
             await Refresh();
         }
         else
         {
+            OperationLogger.Record(
+                "OperationLog_Category_File",
+                "OperationLog_Action_Deleted",
+                string.Join(", ", results.Where(result => !result.IsSuccess || !result.Data).Select(result => result.ErrorMessage)),
+                OperationLogLevel.Error);
             ShowError("Trash_DeleteFail", results.Where(result => !result.IsSuccess).Select(result => result.ErrorMessage));
         }
     }
@@ -580,11 +594,13 @@ public partial class DriveViewModel : ObservableObject
         StorageResult<bool> result = await Provider.EmptyTrashAsync();
         if (result.IsSuccess && result.Data)
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_TrashEmptied", DisplayName, OperationLogLevel.Success);
             ShowSuccess("Trash_EmptySuccess");
             await Refresh();
         }
         else
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_TrashEmptied", result.ErrorMessage, OperationLogLevel.Error);
             ShowError("Trash_EmptyFail", [result.ErrorMessage]);
         }
     }
@@ -654,6 +670,12 @@ public partial class DriveViewModel : ObservableObject
         BookmarkDTO bookmark = CreateBookmark(file);
         BookmarkStore bookmarkStore = new(Path.Combine(Directory.GetCurrentDirectory(), "cache", "bookmarks.json"));
         bool added = await bookmarkStore.AddAsync(bookmark);
+
+        OperationLogger.Record(
+            "OperationLog_Category_Bookmark",
+            "OperationLog_Action_BookmarkAdded",
+            file.Name,
+            added ? OperationLogLevel.Success : OperationLogLevel.Information);
 
         Growl.Info(new GrowlInfo
         {

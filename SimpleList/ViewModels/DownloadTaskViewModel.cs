@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Downloader;
 using Microsoft.UI.Dispatching;
 using SimpleList.Core.Models;
+using SimpleList.Core.Models.DTO;
 using SimpleList.Core.Services;
 using SimpleList.Models;
 using System;
@@ -26,6 +27,8 @@ public partial class DownloadTaskViewModel : ObservableObject
     {
         _itemId = itemId;
         _target = target;
+        _persistedTargetPath = target?.Path;
+        _persistedTargetIsFolder = target?.IsOfType(StorageItemTypes.Folder) == true;
         Drive = drive;
         _onCompleted = onCompleted;
     }
@@ -38,12 +41,29 @@ public partial class DownloadTaskViewModel : ObservableObject
         _onCompleted = onCompleted;
     }
 
+    internal DownloadTaskViewModel(DriveViewModel drive, PersistentTaskDTO persistedTask, IStorageItem target, EventHandler<AsyncCompletedEventArgs> onCompleted = null)
+        : this(drive, persistedTask.ItemId, target, onCompleted)
+    {
+        _persistedTargetPath = persistedTask.Path;
+        _persistedTargetIsFolder = persistedTask.IsFolder;
+        Name = persistedTask.Name;
+        Progress = persistedTask.Progress;
+        DownloadedBytes = persistedTask.TransferredBytes;
+        TotalBytes = persistedTask.TotalBytes;
+        Completed = persistedTask.Completed;
+        IsPaused = persistedTask.IsPaused && !persistedTask.Completed;
+        IsDownloading = !Completed && !IsPaused;
+        _needsRestart = IsPaused;
+        SetDownloadRootPathFromPersistedTarget();
+    }
+
     private DownloadService CreateDownloadService(string itemId)
     {
         var downloadOpt = new DownloadConfiguration()
         {
             ChunkCount = 8,
             ParallelDownload = true,
+            EnableAutoResumeDownload = true,
             DownloadFileExtension = PartialDownloadExtension
         };
         DownloadService downloader = new(downloadOpt);
@@ -541,6 +561,13 @@ public partial class DownloadTaskViewModel : ObservableObject
         IsDownloading = true;
         ResetSpeedTracking(false);
 
+        if (_needsRestart)
+        {
+            _needsRestart = false;
+            await StartDownload(false);
+            return;
+        }
+
         foreach (DownloadItem downloadItem in DownloadList)
         {
             if (downloadItem.DownloadService == null) continue;
@@ -887,9 +914,12 @@ public partial class DownloadTaskViewModel : ObservableObject
     private readonly TaskManagerViewModel _manager = App.GetService<TaskManagerViewModel>();
     private readonly DispatcherQueue _dispatcher = DispatcherQueue.GetForCurrentThread();
     private readonly EventHandler<AsyncCompletedEventArgs> _onCompleted;
+    private readonly string _persistedTargetPath;
+    private readonly bool _persistedTargetIsFolder;
     private CancellationTokenSource _downloadCts;
     private Task _activeDownloadOperation = Task.CompletedTask;
     private bool _isCancellationRequested;
+    private bool _needsRestart;
     private DateTime _lastSpeedSampleTime;
     private long _lastSpeedSampleBytes;
     private DateTime _lastProgressTime;
@@ -919,4 +949,23 @@ public partial class DownloadTaskViewModel : ObservableObject
     public DateTime FinishTime { get; private set; }
     public string Name { get; private set; }
     public bool CanOpenFolder => !string.IsNullOrWhiteSpace(_downloadRootPath);
+
+    internal DriveViewModel PersistentDrive => Drive;
+    internal string PersistentItemId => _itemId;
+    internal string PersistentTargetPath => _persistedTargetPath;
+    internal bool PersistentTargetIsFolder => _persistedTargetIsFolder;
+    internal bool CanPersist => _streamTarget == null && !string.IsNullOrWhiteSpace(_persistedTargetPath);
+
+    private void SetDownloadRootPathFromPersistedTarget()
+    {
+        if (string.IsNullOrWhiteSpace(_persistedTargetPath))
+        {
+            return;
+        }
+
+        _downloadRootPath = _persistedTargetIsFolder
+            ? _persistedTargetPath
+            : Path.GetDirectoryName(_persistedTargetPath);
+        OnPropertyChanged(nameof(CanOpenFolder));
+    }
 }

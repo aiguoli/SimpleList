@@ -1063,4 +1063,45 @@
   <data name="Local_TrashUnsupported" xml:space="preserve"><value>本地项目不支持回收站</value></data>
   <data name="Local_ShareUnsupported" xml:space="preserve"><value>本地项目不支持分享链接</value></data>
   <data name="Local_PdfConversionUnsupported" xml:space="preserve"><value>本地项目不支持转换为 PDF</value></data>
+  <data name="NavigationBar_Logs.Content" xml:space="preserve"><value>日志</value></data>
+  <data name="OperationLogPage_Title.Text" xml:space="preserve"><value>操作日志</value></data>
+  <data name="OperationLogPage_Subtitle.Text" xml:space="preserve"><value>查看最近 30 天内最多 500 条应用与用户操作记录。</value></data>
+  <data name="OperationLogPage_Clear.Content" xml:space="preserve"><value>清空日志</value></data>
+  <data name="OperationLogPage_Clear.ToolTipService.ToolTip" xml:space="preserve"><value>删除全部操作日志</value></data>
+  <data name="OperationLogPage_RealtimeInfo.Title" xml:space="preserve"><value>实时记录已开启</value></data>
+  <data name="OperationLogPage_RealtimeInfo.Message" xml:space="preserve"><value>新的操作会自动显示在列表顶部，并同步保存到本地。</value></data>
+  <data name="OperationLogPage_Empty.Text" xml:space="preserve"><value>暂无操作日志</value></data>
+  <data name="OperationLogPage_ClearDialog_Title" xml:space="preserve"><value>清空操作日志？</value></data>
+  <data name="OperationLogPage_ClearDialog_Content" xml:space="preserve"><value>此操作会删除本地保存的全部操作日志，且无法撤销。</value></data>
+  <data name="OperationLogPage_ClearDialog_Confirm" xml:space="preserve"><value>清空</value></data>
+  <data name="OperationLogPage_ClearDialog_Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="OperationLog_Level_Information" xml:space="preserve"><value>信息</value></data>
+  <data name="OperationLog_Level_Success" xml:space="preserve"><value>成功</value></data>
+  <data name="OperationLog_Level_Warning" xml:space="preserve"><value>警告</value></data>
+  <data name="OperationLog_Level_Error" xml:space="preserve"><value>错误</value></data>
+  <data name="OperationLog_Category_System" xml:space="preserve"><value>系统</value></data>
+  <data name="OperationLog_Category_Navigation" xml:space="preserve"><value>导航</value></data>
+  <data name="OperationLog_Category_Drive" xml:space="preserve"><value>驱动器</value></data>
+  <data name="OperationLog_Category_File" xml:space="preserve"><value>文件</value></data>
+  <data name="OperationLog_Category_Bookmark" xml:space="preserve"><value>书签</value></data>
+  <data name="OperationLog_Category_Task" xml:space="preserve"><value>任务</value></data>
+  <data name="OperationLog_Category_Settings" xml:space="preserve"><value>设置</value></data>
+  <data name="OperationLog_Action_AppStarted" xml:space="preserve"><value>应用已启动</value></data>
+  <data name="OperationLog_Action_OpenPage" xml:space="preserve"><value>打开页面</value></data>
+  <data name="OperationLog_Page_Settings" xml:space="preserve"><value>设置</value></data>
+  <data name="OperationLog_Action_DriveAdded" xml:space="preserve"><value>添加驱动器</value></data>
+  <data name="OperationLog_Action_DriveRemoved" xml:space="preserve"><value>移除驱动器</value></data>
+  <data name="OperationLog_Action_FolderCreated" xml:space="preserve"><value>创建文件夹</value></data>
+  <data name="OperationLog_Action_Renamed" xml:space="preserve"><value>重命名</value></data>
+  <data name="OperationLog_Action_BatchRenamed" xml:space="preserve"><value>批量重命名</value></data>
+  <data name="OperationLog_Action_Deleted" xml:space="preserve"><value>删除项目</value></data>
+  <data name="OperationLog_Action_Restored" xml:space="preserve"><value>还原项目</value></data>
+  <data name="OperationLog_Action_TrashEmptied" xml:space="preserve"><value>清空回收站</value></data>
+  <data name="OperationLog_Action_BookmarkAdded" xml:space="preserve"><value>添加书签</value></data>
+  <data name="OperationLog_Action_BookmarkRemoved" xml:space="preserve"><value>移除书签</value></data>
+  <data name="OperationLog_Action_BookmarkOpened" xml:space="preserve"><value>打开书签</value></data>
+  <data name="OperationLog_Action_DownloadQueued" xml:space="preserve"><value>下载任务</value></data>
+  <data name="OperationLog_Action_UploadQueued" xml:space="preserve"><value>上传任务</value></data>
+  <data name="OperationLog_Action_MigrationQueued" xml:space="preserve"><value>迁移任务</value></data>
+  <data name="OperationLog_Action_SettingsSaved" xml:space="preserve"><value>保存云服务设置</value></data>
 </root>

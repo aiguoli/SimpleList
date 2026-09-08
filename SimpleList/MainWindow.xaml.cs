@@ -1,6 +1,8 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using SimpleList.Core.Services;
+using SimpleList.Helpers;
 using SimpleList.Pages;
 using System;
 
@@ -27,12 +29,14 @@ namespace SimpleList
             if (args.IsSettingsSelected)
             {
                 contentFrame.Navigate(typeof(SettingPage));
+                RecordNavigation(ResourceHelper.GetLocalized("OperationLog_Page_Settings"));
             }
             else
             {
                 if (args.SelectedItem is NavigationViewItem { Tag: string tag })
                 {
                     contentFrame.Navigate(ResolveNavigationPage(tag));
+                    RecordNavigation((args.SelectedItem as NavigationViewItem)?.Content?.ToString() ?? tag);
                 }
             }
         }
@@ -46,6 +50,7 @@ namespace SimpleList
                 "TaskManagerPage" => typeof(TaskManagerPage),
                 "ToolPage" => typeof(ToolPage),
                 "BookmarkPage" => typeof(BookmarkPage),
+                "OperationLogPage" => typeof(OperationLogPage),
                 _ => throw new ArgumentOutOfRangeException(nameof(tag), tag, "Unknown navigation page")
             };
         }
@@ -65,6 +70,7 @@ namespace SimpleList
                 not null when pageType == typeof(TaskManagerPage) => TaskManagerItem,
                 not null when pageType == typeof(ToolPage) => ToolPageItem,
                 not null when pageType == typeof(BookmarkPage) => BookmarkItem,
+                not null when pageType == typeof(OperationLogPage) => OperationLogItem,
                 _ => null
             };
 
@@ -78,6 +84,14 @@ namespace SimpleList
             _isUpdatingNavigationSelection = false;
         }
         public Frame RootFrame => contentFrame;
+
+        private static void RecordNavigation(string destination)
+        {
+            App.GetService<OperationLogService>().Record(
+                ResourceHelper.GetLocalized("OperationLog_Category_Navigation"),
+                ResourceHelper.GetLocalized("OperationLog_Action_OpenPage"),
+                destination);
+        }
     }
 
 }

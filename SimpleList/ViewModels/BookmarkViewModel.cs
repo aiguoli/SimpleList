@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using SimpleList.Core.Models.DTO;
 using SimpleList.Core.Services;
+using SimpleList.Core.Models;
+using SimpleList.Helpers;
 using SimpleList.Models;
 using SimpleList.Pages;
 using System.Collections.Generic;
@@ -41,6 +43,11 @@ namespace SimpleList.ViewModels
             await _bookmarkStore.RemoveAsync(bookmark.Source);
             _allBookmarks.RemoveAll(item => BookmarkStore.IsSameBookmark(item, bookmark.Source));
             ApplyFilter();
+            OperationLogger.Record(
+                "OperationLog_Category_Bookmark",
+                "OperationLog_Action_BookmarkRemoved",
+                bookmark.Name,
+                OperationLogLevel.Success);
         }
 
         [RelayCommand]
@@ -51,6 +58,11 @@ namespace SimpleList.ViewModels
             DriveViewModel drive = cloud.GetDrive(bookmark.Source.ProviderType, bookmark.Source.AccountId, bookmark.Source.DriveId);
             if (drive == null)
             {
+                OperationLogger.Record(
+                    "OperationLog_Category_Bookmark",
+                    "OperationLog_Action_BookmarkOpened",
+                    bookmark.Name,
+                    OperationLogLevel.Error);
                 ShowOpenFailed(SimpleList.Helpers.ResourceHelper.GetLocalized("Bookmark_OpenDriveMissing"));
                 return;
             }
@@ -60,6 +72,11 @@ namespace SimpleList.ViewModels
                 Drive = drive,
                 Bookmark = bookmark.Source
             });
+            OperationLogger.Record(
+                "OperationLog_Category_Bookmark",
+                "OperationLog_Action_BookmarkOpened",
+                bookmark.Name,
+                OperationLogLevel.Success);
         }
 
         partial void OnSearchTextChanged(string value)

@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Models;
+using SimpleList.Helpers;
 using System.Threading.Tasks;
 using WinUICommunity;
 
@@ -21,6 +22,7 @@ public partial class RenameFileViewModel : ObservableObject
         StorageResult<FileItem> result = await Drive.Provider.RenameAsync(_file.Id, FileName);
         if (result.IsSuccess)
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_Renamed", $"{_file.Name} → {FileName}", OperationLogLevel.Success);
             Growl.Success(new GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("Success"),
@@ -30,6 +32,7 @@ public partial class RenameFileViewModel : ObservableObject
         }
         else
         {
+            OperationLogger.Record("OperationLog_Category_File", "OperationLog_Action_Renamed", $"{_file.Name}: {result.ErrorMessage}", OperationLogLevel.Error);
             Growl.Error(new GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("Error"),

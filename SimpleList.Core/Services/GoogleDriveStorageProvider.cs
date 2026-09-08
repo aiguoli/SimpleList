@@ -318,12 +318,12 @@ public class GoogleDriveStorageProvider : StorageProviderBase, IStorageProvider
             var upload = _driveService.Files.Create(metadata, stream, "application/octet-stream");
             upload.ChunkSize = UploadChunkSize;
             upload.Fields = "id,name,mimeType,size,parents,modifiedTime,createdTime";
+            upload.UploadSessionData += session =>
+                resumeTokenCallback?.Invoke(session.UploadUri.AbsoluteUri);
 
             upload.ProgressChanged += p =>
             {
                 progress?.Report(p.BytesSent);
-                // Note: Google Drive SDK's resumable upload URI is managed internally;
-                // resume after pause re-initiates the upload session.
             };
 
             IUploadProgress result;

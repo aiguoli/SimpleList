@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Models;
+using SimpleList.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,11 +41,22 @@ public partial class DeleteFileViewModel : ObservableObject
             }
         }
 
+        bool allSucceeded = results.All(result => result.IsSuccess && result.Data);
+        string errorMessage = string.Join(", ", results
+            .Where(result => !result.IsSuccess || !result.Data)
+            .Select(result => result.ErrorMessage)
+            .Where(message => !string.IsNullOrWhiteSpace(message)));
+        OperationLogger.Record(
+            "OperationLog_Category_File",
+            "OperationLog_Action_Deleted",
+            allSucceeded ? string.Join(", ", files.Select(file => file.Name)) : errorMessage,
+            allSucceeded ? OperationLogLevel.Success : OperationLogLevel.Error);
+
         // Refresh only after every item has been attempted so large batches do not
         // replace the collection while deletion is still in progress.
         await Task.WhenAll(files.Select(file => file.Drive).Distinct().Select(drive => drive.Refresh()));
 
-        if (results.All(result => result.IsSuccess && result.Data))
+        if (allSucceeded)
         {
             Growl.Success(new GrowlInfo
             {
@@ -59,10 +71,7 @@ public partial class DeleteFileViewModel : ObservableObject
         {
             Title = Helpers.ResourceHelper.GetLocalized("DeleteFileFail"),
             StaysOpen = false,
-            Message = string.Join(", ", results
-                .Where(result => !result.IsSuccess || !result.Data)
-                .Select(result => result.ErrorMessage)
-                .Where(message => !string.IsNullOrWhiteSpace(message))),
+            Message = errorMessage,
             Token = "DriveGrowl"
         });
     }
