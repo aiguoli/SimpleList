@@ -10,12 +10,10 @@ namespace SimpleList.Views;
 public sealed partial class PikPakOfflineDownloadView : ContentDialog
 {
     private readonly IOfflineDownloadProvider _provider;
-    private readonly string _parentId;
 
-    public PikPakOfflineDownloadView(IOfflineDownloadProvider provider, string parentId)
+    public PikPakOfflineDownloadView(IOfflineDownloadProvider provider)
     {
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-        _parentId = parentId;
         InitializeComponent();
     }
 
@@ -38,10 +36,7 @@ public sealed partial class PikPakOfflineDownloadView : ContentDialog
 
         try
         {
-            StorageResult<OfflineDownloadTask> result = await _provider.CreateOfflineDownloadAsync(
-                SourceUrl.Text,
-                _parentId,
-                FileName.Text);
+            StorageResult<OfflineDownloadTask> result = await _provider.CreateOfflineDownloadAsync(SourceUrl.Text);
 
             if (!result.IsSuccess)
             {

@@ -1110,11 +1110,9 @@
   <data name="PikPakOfflineDownloadView.Title" xml:space="preserve"><value>PikPak offline download</value></data>
   <data name="PikPakOfflineDownloadView.PrimaryButtonText" xml:space="preserve"><value>Create task</value></data>
   <data name="PikPakOfflineDownloadView.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
-  <data name="PikPakOfflineDownload_Hint.Text" xml:space="preserve"><value>The task will be saved in the current folder. HTTP, HTTPS, and magnet links are supported.</value></data>
+  <data name="PikPakOfflineDownload_Hint.Text" xml:space="preserve"><value>The task will be saved in PikPak's Downloads folder. HTTP, HTTPS, and magnet links are supported.</value></data>
   <data name="PikPakOfflineDownload_Source.Header" xml:space="preserve"><value>Download link</value></data>
   <data name="PikPakOfflineDownload_Source.PlaceholderText" xml:space="preserve"><value>Paste an HTTP, HTTPS, or magnet link</value></data>
-  <data name="PikPakOfflineDownload_FileName.Header" xml:space="preserve"><value>File name (optional)</value></data>
-  <data name="PikPakOfflineDownload_FileName.PlaceholderText" xml:space="preserve"><value>Leave blank to let PikPak detect it</value></data>
   <data name="PikPak_OfflineDownloadInvalidResponse" xml:space="preserve"><value>PikPak did not return a valid offline download task.</value></data>
   <data name="PikPakOfflineDownload_Success" xml:space="preserve"><value>Offline download task created</value></data>
   <data name="OperationLog_Action_OfflineDownloadCreated" xml:space="preserve"><value>Created offline download task</value></data>

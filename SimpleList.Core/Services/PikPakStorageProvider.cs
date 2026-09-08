@@ -245,8 +245,6 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider, IOff
 
     public Task<StorageResult<OfflineDownloadTask>> CreateOfflineDownloadAsync(
         string sourceUrl,
-        string parentId,
-        string fileName = null,
         CancellationToken ct = default)
     {
         return ExecuteAsync(async () =>
@@ -257,11 +255,14 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider, IOff
                 body: new PikPakOfflineDownloadRequest
                 {
                     Kind = "drive#file",
-                    Name = fileName?.Trim() ?? string.Empty,
+                    FolderType = "DOWNLOAD",
                     UploadType = "UPLOAD_TYPE_URL",
                     Url = new PikPakOfflineDownloadUrl { Url = sourceUrl.Trim() },
-                    ParentId = NormalizeId(parentId),
-                    FolderType = string.Empty,
+                    Params = new PikPakOfflineDownloadParams
+                    {
+                        WithThumbnail = "true",
+                        From = "manual",
+                    },
                 },
                 ct: ct).ConfigureAwait(false);
 
@@ -284,7 +285,6 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider, IOff
         }, () =>
         {
             ValidateNotEmpty(sourceUrl, nameof(sourceUrl));
-            ValidateNotEmpty(parentId, nameof(parentId));
         });
     }
 
@@ -1129,8 +1129,8 @@ public class PikPakOfflineDownloadRequest
     [JsonPropertyName("kind")]
     public string Kind { get; set; }
 
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
+    [JsonPropertyName("folder_type")]
+    public string FolderType { get; set; }
 
     [JsonPropertyName("upload_type")]
     public string UploadType { get; set; }
@@ -1138,17 +1138,23 @@ public class PikPakOfflineDownloadRequest
     [JsonPropertyName("url")]
     public PikPakOfflineDownloadUrl Url { get; set; }
 
-    [JsonPropertyName("parent_id")]
-    public string ParentId { get; set; }
-
-    [JsonPropertyName("folder_type")]
-    public string FolderType { get; set; }
+    [JsonPropertyName("params")]
+    public PikPakOfflineDownloadParams Params { get; set; }
 }
 
 public class PikPakOfflineDownloadUrl
 {
     [JsonPropertyName("url")]
     public string Url { get; set; }
+}
+
+public class PikPakOfflineDownloadParams
+{
+    [JsonPropertyName("with_thumbnail")]
+    public string WithThumbnail { get; set; }
+
+    [JsonPropertyName("from")]
+    public string From { get; set; }
 }
 
 public class PikPakOfflineDownloadResponse

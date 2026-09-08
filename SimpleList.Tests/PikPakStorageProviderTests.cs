@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -214,7 +215,7 @@ public class PikPakStorageProviderTests
     }
 
     [Fact]
-    public async Task CreateOfflineDownload_SendsUrlTaskToCurrentFolder()
+    public async Task CreateOfflineDownload_SendsWebCompatibleUrlTask()
     {
         Queue<Func<HttpRequestMessage, HttpResponseMessage>> responses = new([
             request =>
@@ -238,10 +239,16 @@ public class PikPakStorageProviderTests
                 Assert.Equal("/drive/v1/files", request.RequestUri.AbsolutePath);
                 Assert.Equal("Bearer", request.Headers.Authorization?.Scheme);
                 string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                Assert.Contains("\"upload_type\":\"UPLOAD_TYPE_URL\"", body);
-                Assert.Contains("\"url\":{\"url\":\"magnet:?xt=urn:btih:1234\"}", body);
-                Assert.Contains("\"parent_id\":\"folder-1\"", body);
-                Assert.Contains("\"name\":\"example.iso\"", body);
+                using JsonDocument document = JsonDocument.Parse(body);
+                JsonElement root = document.RootElement;
+                Assert.Equal("drive#file", root.GetProperty("kind").GetString());
+                Assert.Equal("DOWNLOAD", root.GetProperty("folder_type").GetString());
+                Assert.Equal("UPLOAD_TYPE_URL", root.GetProperty("upload_type").GetString());
+                Assert.Equal("magnet:?xt=urn:btih:1234", root.GetProperty("url").GetProperty("url").GetString());
+                Assert.Equal("true", root.GetProperty("params").GetProperty("with_thumbnail").GetString());
+                Assert.Equal("manual", root.GetProperty("params").GetProperty("from").GetString());
+                Assert.False(root.TryGetProperty("parent_id", out _));
+                Assert.False(root.TryGetProperty("name", out _));
                 return Json("""
                     {
                       "task": {
@@ -260,9 +267,7 @@ public class PikPakStorageProviderTests
         var provider = new PikPakStorageProvider("Root", "me@example.com", "secret", httpClient: httpClient);
 
         StorageResult<OfflineDownloadTask> result = await provider.CreateOfflineDownloadAsync(
-            "magnet:?xt=urn:btih:1234",
-            "folder-1",
-            "example.iso");
+            "magnet:?xt=urn:btih:1234");
 
         Assert.True(result.IsSuccess);
         Assert.Equal("task-1", result.Data.Id);
@@ -276,7 +281,7 @@ public class PikPakStorageProviderTests
     {
         var provider = new PikPakStorageProvider("Root", "me@example.com", "secret");
 
-        StorageResult<OfflineDownloadTask> result = await provider.CreateOfflineDownloadAsync(" ", "Root");
+        StorageResult<OfflineDownloadTask> result = await provider.CreateOfflineDownloadAsync(" ");
 
         Assert.False(result.IsSuccess);
         Assert.Equal(StorageErrorType.InvalidRequest, result.ErrorType);

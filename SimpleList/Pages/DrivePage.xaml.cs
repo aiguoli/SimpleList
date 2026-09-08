@@ -88,7 +88,7 @@ namespace SimpleList.Pages
                 return;
             }
 
-            PikPakOfflineDownloadView dialog = new(provider, ViewModel.ParentItemId)
+            PikPakOfflineDownloadView dialog = new(provider)
             {
                 XamlRoot = XamlRoot,
             };

@@ -18,9 +18,6 @@
             x:Uid="PikPakOfflineDownload_Source"
             TextChanged="SourceUrl_TextChanged"
             TextWrapping="Wrap" />
-        <TextBox
-            x:Name="FileName"
-            x:Uid="PikPakOfflineDownload_FileName" />
         <ProgressBar
             x:Name="SubmitProgress"
             IsIndeterminate="True"
