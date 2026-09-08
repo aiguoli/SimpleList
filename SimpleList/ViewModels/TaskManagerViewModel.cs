@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
-using WinUICommunity;
+using DevWinUI;
 using SimpleList.Core.Models;
 using SimpleList.Core.Models.DTO;
 using SimpleList.Core.Services;

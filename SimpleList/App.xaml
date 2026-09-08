@@ -9,7 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
-                <ResourceDictionary Source="ms-appx:///WinUICommunity.Components/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="ms-appx:///DevWinUI/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
             <!-- TitleBar -->

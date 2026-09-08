@@ -18,7 +18,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
-using WinUICommunity;
+using DevWinUI;
+using Utils = SimpleList.Services.Utils;
 
 namespace SimpleList;
 
@@ -114,16 +115,17 @@ public partial class App : Application
             var themeService = GetThemeService;
             if (themeService != null)
             {
-                themeService.Initialize(m_window, true, "theme.json");
-
                 string cfgMaterial = Configuration.GetSection("Material").Value;
                 string cfgTheme = Configuration.GetSection("Theme").Value;
 
                 var backdropType = Enum.TryParse(cfgMaterial, out BackdropType parsedBackdrop) ? parsedBackdrop : BackdropType.Mica;
                 var elementTheme = Enum.TryParse(cfgTheme, out ElementTheme parsedTheme) ? parsedTheme : ElementTheme.Default;
 
-                themeService.ConfigBackdrop(backdropType);
-                themeService.ConfigElementTheme(elementTheme);
+                themeService
+                    .Initialize(m_window)
+                    .ConfigureAutoSave(true)
+                    .ConfigureBackdrop(backdropType)
+                    .ConfigureElementTheme(elementTheme);
             }
         });
         //string selectedTheme = Configuration.GetSection("Theme").Value;

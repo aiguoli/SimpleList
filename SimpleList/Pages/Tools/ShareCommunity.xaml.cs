@@ -7,7 +7,8 @@ using SimpleList.ViewModels.Tools;
 using SimpleList.Views.Tools;
 using System;
 using System.Threading.Tasks;
-using WinUICommunity;
+using DevWinUI;
+using TextBox = Microsoft.UI.Xaml.Controls.TextBox;
 
 namespace SimpleList.Pages.Tools;
 
