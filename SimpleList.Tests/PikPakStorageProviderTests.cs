@@ -213,6 +213,75 @@ public class PikPakStorageProviderTests
         Assert.Equal(StorageErrorType.InvalidRequest, result.ErrorType);
     }
 
+    [Fact]
+    public async Task CreateOfflineDownload_SendsUrlTaskToCurrentFolder()
+    {
+        Queue<Func<HttpRequestMessage, HttpResponseMessage>> responses = new([
+            request =>
+            {
+                Assert.Contains("/shield/captcha/init", request.RequestUri.ToString());
+                return Json("""{"captcha_token":"captcha-1"}""");
+            },
+            request =>
+            {
+                Assert.Contains("/v1/auth/signin", request.RequestUri.ToString());
+                return Json("""{"refresh_token":"refresh-1","access_token":"access-1","sub":"user-1"}""");
+            },
+            request =>
+            {
+                Assert.Contains("/shield/captcha/init", request.RequestUri.ToString());
+                return Json("""{"captcha_token":"captcha-2"}""");
+            },
+            request =>
+            {
+                Assert.Equal(HttpMethod.Post, request.Method);
+                Assert.Equal("/drive/v1/files", request.RequestUri.AbsolutePath);
+                Assert.Equal("Bearer", request.Headers.Authorization?.Scheme);
+                string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                Assert.Contains("\"upload_type\":\"UPLOAD_TYPE_URL\"", body);
+                Assert.Contains("\"url\":{\"url\":\"magnet:?xt=urn:btih:1234\"}", body);
+                Assert.Contains("\"parent_id\":\"folder-1\"", body);
+                Assert.Contains("\"name\":\"example.iso\"", body);
+                return Json("""
+                    {
+                      "task": {
+                        "id": "task-1",
+                        "file_id": "file-1",
+                        "file_name": "example.iso",
+                        "phase": "PHASE_TYPE_PENDING",
+                        "progress": 0
+                      }
+                    }
+                    """);
+            },
+        ]);
+
+        using HttpClient httpClient = new(new StubHandler(request => responses.Dequeue()(request)));
+        var provider = new PikPakStorageProvider("Root", "me@example.com", "secret", httpClient: httpClient);
+
+        StorageResult<OfflineDownloadTask> result = await provider.CreateOfflineDownloadAsync(
+            "magnet:?xt=urn:btih:1234",
+            "folder-1",
+            "example.iso");
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal("task-1", result.Data.Id);
+        Assert.Equal("file-1", result.Data.FileId);
+        Assert.Equal("PHASE_TYPE_PENDING", result.Data.Phase);
+        Assert.Empty(responses);
+    }
+
+    [Fact]
+    public async Task CreateOfflineDownload_RejectsEmptySourceBeforeLogin()
+    {
+        var provider = new PikPakStorageProvider("Root", "me@example.com", "secret");
+
+        StorageResult<OfflineDownloadTask> result = await provider.CreateOfflineDownloadAsync(" ", "Root");
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(StorageErrorType.InvalidRequest, result.ErrorType);
+    }
+
     private static HttpResponseMessage Json(string json)
     {
         return new HttpResponseMessage(HttpStatusCode.OK)

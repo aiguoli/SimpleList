@@ -86,6 +86,7 @@
     <None Remove="Views\Layout\GridFileView.xaml" />
     <None Remove="Views\Layout\ImageCloudView.xaml" />
     <None Remove="Views\MigrateFileView.xaml" />
+    <None Remove="Views\PikPakOfflineDownloadView.xaml" />
     <None Remove="Views\Preview\ImagePreviewView.xaml" />
     <None Remove="Views\Preview\MarkdownPreviewView.xaml" />
     <None Remove="Views\Preview\MediaPreviewView.xaml" />
@@ -283,6 +284,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\OperationLogPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\PikPakOfflineDownloadView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Pages\HomePage.xaml">

@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using SimpleList.Models;
+using SimpleList.Core.Contracts;
 using SimpleList.ViewModels;
 using SimpleList.Views;
 using System;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using WinUICommunity;
 
 namespace SimpleList.Pages
 {
@@ -76,6 +78,32 @@ namespace SimpleList.Pages
                 DataContext = new CreateFolderViewModel(DataContext as DriveViewModel)
             };
             await dialog.ShowAsync();
+        }
+
+        private async void ShowOfflineDownloadDialogAsync(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel?.CanCreateOfflineDownload != true
+                || ViewModel.Provider is not IOfflineDownloadProvider provider)
+            {
+                return;
+            }
+
+            PikPakOfflineDownloadView dialog = new(provider, ViewModel.ParentItemId)
+            {
+                XamlRoot = XamlRoot,
+            };
+
+            await dialog.ShowAsync();
+            if (dialog.Succeeded)
+            {
+                Growl.Success(new GrowlInfo
+                {
+                    Title = Helpers.ResourceHelper.GetLocalized("PikPakOfflineDownload_Success"),
+                    StaysOpen = false,
+                    Token = "DriveGrowl",
+                });
+                await ViewModel.Refresh();
+            }
         }
 
         private async void DropToUpload(object sender, DragEventArgs e)

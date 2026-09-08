@@ -107,6 +107,13 @@
                         FontSize="14"
                         Glyph="&#xE8F4;" />
                 </Button>
+                <Button x:Uid="DrivePage_OfflineDownloadButton" Margin="0,0,5,0" Click="ShowOfflineDownloadDialogAsync" Visibility="{x:Bind ViewModel.CanCreateOfflineDownload, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <FontIcon
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Glyph="&#xE896;" />
+                </Button>
                 <Button x:Uid="DrivePage_BatchRenameButton" Margin="0,0,5,0" Click="ShowBatchRenameDialogAsync" IsEnabled="{x:Bind ViewModel.CanBatchRename, Mode=OneWay}" Visibility="{x:Bind ViewModel.CanEditCurrentFolder, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <FontIcon
                         HorizontalAlignment="Right"
@@ -181,6 +188,11 @@
                             <KeyboardAccelerator Key="N" Modifiers="Control,Shift" />
                         </MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Uid="CloudPage_OfflineDownload"
+                        Click="ShowOfflineDownloadDialogAsync"
+                        Icon="Download"
+                        Visibility="{x:Bind ViewModel.CanCreateOfflineDownload, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                     <MenuFlyoutSubItem x:Uid="CloudPage_Layout">
                         <MenuFlyoutItem
                             x:Uid="CloudPage_Layout_Column"

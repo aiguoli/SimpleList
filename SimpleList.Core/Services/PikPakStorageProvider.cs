@@ -20,7 +20,7 @@ using Windows.Storage;
 
 namespace SimpleList.Core.Services;
 
-public class PikPakStorageProvider : StorageProviderBase, IStorageProvider
+public class PikPakStorageProvider : StorageProviderBase, IStorageProvider, IOfflineDownloadProvider
 {
     private const string ClientId = "YUMx5nI8ZU8Ap8pm";
     private const string ClientSecret = "dbw2OtmVEeuUvIptb1Coyg";
@@ -241,6 +241,51 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider
     public Task<StorageResult<string>> GetDownloadUrlAsync(string itemId, CancellationToken ct = default)
     {
         return ExecuteAsync(() => GetDownloadUrlInternalAsync(itemId, ct), () => ValidateNotEmpty(itemId, nameof(itemId)));
+    }
+
+    public Task<StorageResult<OfflineDownloadTask>> CreateOfflineDownloadAsync(
+        string sourceUrl,
+        string parentId,
+        string fileName = null,
+        CancellationToken ct = default)
+    {
+        return ExecuteAsync(async () =>
+        {
+            PikPakOfflineDownloadResponse response = await RequestAsync<PikPakOfflineDownloadResponse>(
+                HttpMethod.Post,
+                $"{DriveApiBaseUrl}/drive/v1/files",
+                body: new PikPakOfflineDownloadRequest
+                {
+                    Kind = "drive#file",
+                    Name = fileName?.Trim() ?? string.Empty,
+                    UploadType = "UPLOAD_TYPE_URL",
+                    Url = new PikPakOfflineDownloadUrl { Url = sourceUrl.Trim() },
+                    ParentId = NormalizeId(parentId),
+                    FolderType = string.Empty,
+                },
+                ct: ct).ConfigureAwait(false);
+
+            if (response?.Task == null || string.IsNullOrWhiteSpace(response.Task.Id))
+            {
+                throw new InvalidOperationException(L(
+                    "PikPak_OfflineDownloadInvalidResponse",
+                    "PikPak did not return an offline download task."));
+            }
+
+            return new OfflineDownloadTask
+            {
+                Id = response.Task.Id,
+                FileId = response.Task.FileId,
+                FileName = response.Task.FileName,
+                Phase = response.Task.Phase,
+                Message = response.Task.Message,
+                Progress = response.Task.Progress,
+            };
+        }, () =>
+        {
+            ValidateNotEmpty(sourceUrl, nameof(sourceUrl));
+            ValidateNotEmpty(parentId, nameof(parentId));
+        });
     }
 
     public Task<StorageResult<FileItem>> CreateFolderAsync(string parentId, string name, string conflictBehavior = "rename", CancellationToken ct = default)
@@ -877,6 +922,11 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider
             return (T)(object)JsonSerializer.Deserialize(json, PikPakSourceGenerationContext.Default.PikPakAboutResponse);
         }
 
+        if (typeof(T) == typeof(PikPakOfflineDownloadResponse))
+        {
+            return (T)(object)JsonSerializer.Deserialize(json, PikPakSourceGenerationContext.Default.PikPakOfflineDownloadResponse);
+        }
+
         if (typeof(T) == typeof(PikPakErrorResponse))
         {
             return (T)(object)JsonSerializer.Deserialize(json, PikPakSourceGenerationContext.Default.PikPakErrorResponse);
@@ -898,6 +948,7 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider
             PikPakRefreshTokenRequest value => JsonSerializer.Serialize(value, PikPakSourceGenerationContext.Default.PikPakRefreshTokenRequest),
             PikPakCaptchaInitRequest value => JsonSerializer.Serialize(value, PikPakSourceGenerationContext.Default.PikPakCaptchaInitRequest),
             PikPakCreateFolderRequest value => JsonSerializer.Serialize(value, PikPakSourceGenerationContext.Default.PikPakCreateFolderRequest),
+            PikPakOfflineDownloadRequest value => JsonSerializer.Serialize(value, PikPakSourceGenerationContext.Default.PikPakOfflineDownloadRequest),
             PikPakRenameRequest value => JsonSerializer.Serialize(value, PikPakSourceGenerationContext.Default.PikPakRenameRequest),
             PikPakIdsRequest value => JsonSerializer.Serialize(value, PikPakSourceGenerationContext.Default.PikPakIdsRequest),
             _ => throw new NotSupportedException($"Unsupported PikPak request body: {body.GetType().FullName}"),
@@ -946,11 +997,13 @@ public class PikPakStorageProvider : StorageProviderBase, IStorageProvider
 [JsonSerializable(typeof(PikPakAuthResponse))]
 [JsonSerializable(typeof(PikPakCaptchaResponse))]
 [JsonSerializable(typeof(PikPakAboutResponse))]
+[JsonSerializable(typeof(PikPakOfflineDownloadResponse))]
 [JsonSerializable(typeof(PikPakErrorResponse))]
 [JsonSerializable(typeof(PikPakSignInRequest))]
 [JsonSerializable(typeof(PikPakRefreshTokenRequest))]
 [JsonSerializable(typeof(PikPakCaptchaInitRequest))]
 [JsonSerializable(typeof(PikPakCreateFolderRequest))]
+[JsonSerializable(typeof(PikPakOfflineDownloadRequest))]
 [JsonSerializable(typeof(PikPakRenameRequest))]
 [JsonSerializable(typeof(PikPakIdsRequest))]
 public partial class PikPakSourceGenerationContext : JsonSerializerContext
@@ -1069,6 +1122,60 @@ public class PikPakCreateFolderRequest
 
     [JsonPropertyName("name")]
     public string Name { get; set; }
+}
+
+public class PikPakOfflineDownloadRequest
+{
+    [JsonPropertyName("kind")]
+    public string Kind { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
+    [JsonPropertyName("upload_type")]
+    public string UploadType { get; set; }
+
+    [JsonPropertyName("url")]
+    public PikPakOfflineDownloadUrl Url { get; set; }
+
+    [JsonPropertyName("parent_id")]
+    public string ParentId { get; set; }
+
+    [JsonPropertyName("folder_type")]
+    public string FolderType { get; set; }
+}
+
+public class PikPakOfflineDownloadUrl
+{
+    [JsonPropertyName("url")]
+    public string Url { get; set; }
+}
+
+public class PikPakOfflineDownloadResponse
+{
+    [JsonPropertyName("task")]
+    public PikPakOfflineTask Task { get; set; }
+}
+
+public class PikPakOfflineTask
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; }
+
+    [JsonPropertyName("file_id")]
+    public string FileId { get; set; }
+
+    [JsonPropertyName("file_name")]
+    public string FileName { get; set; }
+
+    [JsonPropertyName("phase")]
+    public string Phase { get; set; }
+
+    [JsonPropertyName("message")]
+    public string Message { get; set; }
+
+    [JsonPropertyName("progress")]
+    public long Progress { get; set; }
 }
 
 public class PikPakRenameRequest

@@ -820,6 +820,7 @@ public partial class DriveViewModel : ObservableObject
         OnPropertyChanged(nameof(CanEditCurrentFolder));
         OnPropertyChanged(nameof(CanSearch));
         OnPropertyChanged(nameof(CanManageTrash));
+        OnPropertyChanged(nameof(CanCreateOfflineDownload));
         UpdateSelectionStatus();
     }
 
@@ -896,6 +897,7 @@ public partial class DriveViewModel : ObservableObject
     public bool CanManageTrash => Provider.SupportsTrash;
     public bool CanEditCurrentFolder => CanWrite && !IsTrashMode;
     public bool CanSearch => !IsTrashMode;
+    public bool CanCreateOfflineDownload => Provider is IOfflineDownloadProvider && !IsTrashMode;
     public string ProviderDisplayName => Provider.ProviderType switch
     {
         ProviderType.OneDrive => ResourceHelper.GetLocalized("CloudPage_Provider_OneDrive"),
