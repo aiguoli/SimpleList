@@ -4,5 +4,5 @@ namespace SimpleList.Core.Contracts;
 
 public interface IStorageProviderFactory
 {
-    IStorageProvider Create(ProviderType providerType, string driveId = null, string accountId = null);
+    IStorageProvider Create(ProviderType providerType, string driveId = null, string accountId = null, string siteUrl = null);
 }

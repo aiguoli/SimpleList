@@ -6,4 +6,5 @@ public enum ProviderType
     GoogleDrive = 1,
     Local = 2,
     PikPak = 3,
+    SharePoint = 4,
 }

@@ -4,7 +4,7 @@ English | [简体中文](./README_zh_CN.md)
 
 ![SimpleList](https://socialify.git.ci/aiguoli/simplelist/image?description=1&font=Raleway&language=1&name=1&stargazers=1&theme=Light)
 
-SimpleList is a WinUI 3 multi-cloud file manager for Windows. It brings OneDrive, Google Drive, local folders, and PikPak into one interface, with cross-provider migration, task tracking, bookmarks, previews, sharing, and trash management.
+SimpleList is a WinUI 3 multi-cloud file manager for Windows. It brings OneDrive, SharePoint, Google Drive, local folders, and PikPak into one interface, with cross-provider migration, task tracking, bookmarks, previews, sharing, and trash management.
 
 ## Highlights
 
@@ -19,28 +19,30 @@ SimpleList is a WinUI 3 multi-cloud file manager for Windows. It brings OneDrive
 
 ## Provider support
 
-| Capability | OneDrive | Google Drive | Local folder | PikPak |
-| --- | :---: | :---: | :---: | :---: |
-| Browse / search / download | ✅ | ✅ | ✅ | ✅ |
-| Upload files and folders | ✅ | ✅ | ✅ | — |
-| Rename / delete | ✅ | ✅ | ✅ | ✅ |
-| Trash management | ✅ | ✅ | — | ✅ |
-| Public share links | ✅ | ✅ | — | — |
-| Link password / expiration | ✅ | — | — | — |
-| Migrate from this provider | ✅ | ✅ | ✅ | ✅ |
-| Migrate to this provider | ✅ | ✅ | ✅ | — |
-| Convert to PDF | ✅ | Native Google Docs only | — | — |
+| Capability | OneDrive | SharePoint | Google Drive | Local folder | PikPak |
+| --- | :---: | :---: | :---: | :---: | :---: |
+| Browse / search / download | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Upload files and folders | ✅ | ✅ | ✅ | ✅ | — |
+| Rename / delete | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Trash management | ✅ | — | ✅ | — | ✅ |
+| Public share links | ✅ | ✅ | ✅ | — | — |
+| Link password / expiration | ✅ | Expiration only | — | — | — |
+| Migrate from this provider | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Migrate to this provider | ✅ | ✅ | ✅ | ✅ | — |
+| Convert to PDF | ✅ | ✅ | Native Google Docs only | — | — |
 
-PikPak upload, share-link creation, PDF conversion, and use as a migration destination are not available yet.
+SharePoint connects to a site's default document library. SharePoint recycle-bin management and link passwords are not available. PikPak upload, share-link creation, PDF conversion, and use as a migration destination are not available yet.
 
 ## Quick start
 
 1. Download the `Portable` package for your architecture from GitHub Releases.
 2. Extract the archive and run `SimpleList.exe`.
 3. Open **Files**, choose **Add drive**, and select a provider.
-4. Complete the provider sign-in, or select a local folder.
+4. Complete the provider sign-in, enter a SharePoint site URL, or select a local folder.
 
 Google Drive requires a Desktop OAuth client. Open **Settings → Cloud OAuth** and enter the Client ID and Client Secret created in Google Cloud Console after enabling the Drive API and configuring the OAuth consent screen.
+
+For SharePoint, enter a site URL such as `https://contoso.sharepoint.com/sites/team` and sign in with a work or school account. SimpleList requests Microsoft Graph site-read and file-read/write scopes; your Microsoft 365 administrator may need to grant consent.
 
 ## Configuration
 
@@ -52,7 +54,7 @@ Release defaults are shipped in `SimpleList/appsettings.defaults.json`. User ove
 
 For compatibility, an `appsettings.json` beside `SimpleList.exe` is also loaded when present. User settings take precedence over both the release defaults and the legacy side-by-side file.
 
-Google OAuth tokens are stored under `cache/GoogleDriveTokenCache/`. OneDrive uses the MSAL cache, while PikPak and Share Community credentials use Windows Password Vault.
+Google OAuth tokens are stored under `cache/GoogleDriveTokenCache/`. OneDrive and SharePoint use the MSAL cache, while PikPak and Share Community credentials use Windows Password Vault.
 
 ## Release packages
 
@@ -73,7 +75,7 @@ Artifact examples:
 The repository contains three .NET projects and one independently deployed service:
 
 - **SimpleList** — WinUI 3 desktop UI, dependency injection, provider setup, and task orchestration.
-- **SimpleList.Core** — provider-neutral contracts and models, plus OneDrive, Google Drive, local, and PikPak providers.
+- **SimpleList.Core** — provider-neutral contracts and models, plus OneDrive, SharePoint, Google Drive, local, and PikPak providers.
 - **SimpleList.Tests** — xUnit coverage for storage results, migrations, paging, path boundaries, provider mapping, authentication helpers, and persistence.
 - **services/link-share** — Go/Fiber Share Community backend with SQLite, access/refresh tokens, and compatible v1/v2 APIs.
 
@@ -89,7 +91,7 @@ dotnet build SimpleList.sln -c Debug -p:Platform=x64
 dotnet test SimpleList.Tests\SimpleList.Tests.csproj -c Release -p:Platform=x64
 ```
 
-The current suite contains 63 .NET tests. The Share Community service has its own Go checks:
+The current suite contains 90 .NET tests. The Share Community service has its own Go checks:
 
 ```powershell
 cd services\link-share

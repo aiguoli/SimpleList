@@ -33,6 +33,6 @@ SQLite 使用纯 Go 驱动，Windows 本地开发不需要安装 GCC 或启用 C
 - `PATCH /api/v2/links/:id`、`DELETE /api/v2/links/:id`：需要登录并校验所有者。
 - `PUT|DELETE /api/v2/links/:id/collection`、`GET /api/v2/collections`：收藏管理。
 
-v2 使用 `provider_type` 区分网盘。OneDrive 和 Google Drive 可发布到社区；Local 与 PikPak 会出现在能力清单中，但当前不支持公开分享。
+v2 使用 `provider_type` 区分网盘。OneDrive、SharePoint 和 Google Drive 可发布到社区；Local 与 PikPak 会出现在能力清单中，但当前不支持公开分享。SharePoint 支持链接过期时间，但不支持链接密码。
 
 首次打开旧数据库时会创建迁移记录，并将没有 `provider_type` 的旧链接回填为 `onedrive`。上线前仍应备份 `data.db`。

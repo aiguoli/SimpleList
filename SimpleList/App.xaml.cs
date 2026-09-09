@@ -173,6 +173,20 @@ public partial class App : Application
             accountId);
     }
 
+    public static SharePointStorageProvider CreateSharePointProvider(
+        string siteUrl,
+        string driveId = null,
+        string accountId = null)
+    {
+        return new SharePointStorageProvider(
+            Current.BuildPublicApp(),
+            siteUrl,
+            GetService<Task<MsalCacheHelper>>(),
+            GetService<IStringLocalizer>(),
+            driveId,
+            accountId);
+    }
+
     public static GoogleDriveStorageProvider CreateGoogleDriveProvider(
         string driveId = null,
         string accountId = null,

@@ -72,6 +72,7 @@ namespace SimpleList.ViewModels
                         HomeAccountId = drive.Provider.AccountId,
                         DriveId = drive.Provider.DriveId,
                         CredentialStoreKey = (drive.Provider as GoogleDriveStorageProvider)?.CredentialStoreKey,
+                        SiteUrl = (drive.Provider as SharePointStorageProvider)?.SiteUrl,
                     }
                 };
                 drives.Add(driveDTO);
@@ -102,6 +103,10 @@ namespace SimpleList.ViewModels
                                 drive.Provider.CredentialStoreKey),
                             Core.Models.ProviderType.Local => App.CreateLocalProvider(drive.Provider?.DriveId ?? drive.Provider?.HomeAccountId),
                             Core.Models.ProviderType.PikPak => App.CreatePikPakProvider(drive.Provider?.DriveId ?? "Root", drive.Provider.HomeAccountId),
+                            Core.Models.ProviderType.SharePoint => App.CreateSharePointProvider(
+                                drive.Provider.SiteUrl,
+                                drive.Provider.DriveId,
+                                drive.Provider.HomeAccountId),
                             _ => App.CreateOneDriveProvider(drive.Provider.DriveId, drive.Provider.HomeAccountId),
                         };
                         Drives.Add(new DriveViewModel(provider, drive.DisplayName));

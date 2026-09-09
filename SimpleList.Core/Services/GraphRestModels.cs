@@ -10,6 +10,18 @@ internal sealed class GraphUser
     public string DisplayName { get; set; }
 }
 
+internal sealed class GraphSite
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; }
+
+    [JsonPropertyName("displayName")]
+    public string DisplayName { get; set; }
+
+    [JsonPropertyName("webUrl")]
+    public string WebUrl { get; set; }
+}
+
 internal sealed class GraphDrive
 {
     [JsonPropertyName("id")]
@@ -236,6 +248,7 @@ internal sealed class GraphCreateLinkRequest
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 [JsonSerializable(typeof(GraphUser))]
+[JsonSerializable(typeof(GraphSite))]
 [JsonSerializable(typeof(GraphDrive))]
 [JsonSerializable(typeof(GraphDriveItem))]
 [JsonSerializable(typeof(GraphDriveItemCollection))]

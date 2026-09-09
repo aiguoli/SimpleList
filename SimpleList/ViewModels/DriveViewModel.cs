@@ -904,9 +904,12 @@ public partial class DriveViewModel : ObservableObject
         ProviderType.GoogleDrive => ResourceHelper.GetLocalized("CloudPage_Provider_GoogleDrive"),
         ProviderType.Local => ResourceHelper.GetLocalized("CloudPage_Provider_Local"),
         ProviderType.PikPak => ResourceHelper.GetLocalized("CloudPage_Provider_PikPak"),
+        ProviderType.SharePoint => ResourceHelper.GetLocalized("CloudPage_Provider_SharePoint"),
         _ => Provider.ProviderType.ToString()
     };
-    public ImageSource ProviderLogoSource => new BitmapImage(new Uri($"ms-appx:///Assets/ProviderLogos/{ProviderLogoFileName}"));
+    public ImageSource ProviderLogoSource => Provider.ProviderType == ProviderType.SharePoint
+        ? new SvgImageSource(new Uri("ms-appx:///Assets/ProviderLogos/SharePoint.svg"))
+        : new BitmapImage(new Uri($"ms-appx:///Assets/ProviderLogos/{ProviderLogoFileName}"));
     private string ProviderLogoFileName => Provider.ProviderType switch
     {
         ProviderType.OneDrive => "OneDrive.png",

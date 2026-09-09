@@ -117,4 +117,31 @@ public class DriveDtoMigrationTests
         Assert.Equal("https://dav.example.com", roundtripped[0].Provider.DriveId);
         Assert.Equal("me@example.com", roundtripped[0].Provider.HomeAccountId);
     }
+
+    [Fact]
+    public void SharePoint_Roundtrip_PreservesSiteUrl()
+    {
+        var input = new List<DriveDTO>
+        {
+            new()
+            {
+                DisplayName = "Team site",
+                ProviderType = ProviderType.SharePoint,
+                Provider = new ProviderDTO
+                {
+                    DriveId = "drive-2",
+                    HomeAccountId = "account-2",
+                    SiteUrl = "https://contoso.sharepoint.com/sites/team",
+                },
+            }
+        };
+
+        string json = JsonSerializer.Serialize(input, DriveDTOSourceGenerationContext.Default.ListDriveDTO);
+        var roundtripped = JsonSerializer.Deserialize(json, DriveDTOSourceGenerationContext.Default.ListDriveDTO);
+
+        Assert.NotNull(roundtripped);
+        Assert.Single(roundtripped);
+        Assert.Equal(ProviderType.SharePoint, roundtripped[0].ProviderType);
+        Assert.Equal("https://contoso.sharepoint.com/sites/team", roundtripped[0].Provider.SiteUrl);
+    }
 }

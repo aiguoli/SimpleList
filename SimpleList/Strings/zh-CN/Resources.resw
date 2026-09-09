@@ -168,6 +168,18 @@
   <data name="CreateDrive_PikPakInvalidCredentials" xml:space="preserve">
     <value>请输入有效的 PikPak 用户名和密码。</value>
   </data>
+  <data name="CreateDrive_SharePointSiteUrl.Header" xml:space="preserve">
+    <value>SharePoint 站点地址</value>
+  </data>
+  <data name="CreateDrive_SharePointSiteUrl.PlaceholderText" xml:space="preserve">
+    <value>https://contoso.sharepoint.com/sites/team</value>
+  </data>
+  <data name="CreateDrive_SharePointHint.Text" xml:space="preserve">
+    <value>将添加站点的默认文档库。你的组织可能需要管理员批准权限。</value>
+  </data>
+  <data name="CreateDrive_SharePointInvalidSiteUrl" xml:space="preserve">
+    <value>请输入有效的 SharePoint 站点地址，例如 https://contoso.sharepoint.com/sites/team。</value>
+  </data>
   <data name="CreateDrive_LoginFailed" xml:space="preserve">
     <value>登录失败。</value>
   </data>
@@ -272,6 +284,9 @@
   </data>
   <data name="CloudPage_Provider_PikPak" xml:space="preserve">
     <value>PikPak</value>
+  </data>
+  <data name="CloudPage_Provider_SharePoint" xml:space="preserve">
+    <value>SharePoint</value>
   </data>
   <data name="CloudPage_RemoveDriveDialog_Title" xml:space="preserve">
     <value>删除网盘</value>
@@ -469,7 +484,7 @@
     <value>欢迎使用 SimpleList</value>
   </data>
   <data name="HomePage_Tutorial_Subtitle.Text" xml:space="preserve">
-    <value>在一个应用中连接 OneDrive、Google Drive、本地文件夹或 PikPak。添加第一个网盘前，请先阅读下面对应平台的准备事项。</value>
+    <value>在一个应用中连接 OneDrive、SharePoint、Google Drive、本地文件夹或 PikPak。添加第一个网盘前，请先阅读下面对应平台的准备事项。</value>
   </data>
   <data name="HomePage_QuickStart_Step1.Text" xml:space="preserve">
     <value>1. 完成对应平台的前置配置。Google Drive 必须先配置 OAuth 凭据才能使用。</value>
@@ -494,6 +509,12 @@
   </data>
   <data name="HomePage_OneDrive_Content.Text" xml:space="preserve">
     <value>通常不需要额外配置。添加网盘时选择 OneDrive，然后在微软登录窗口完成授权。OneDrive 支持上传、下载、回收站、公开链接，以及链接密码和过期时间。</value>
+  </data>
+  <data name="HomePage_SharePoint_Title.Text" xml:space="preserve">
+    <value>SharePoint</value>
+  </data>
+  <data name="HomePage_SharePoint_Content.Text" xml:space="preserve">
+    <value>选择 SharePoint，输入类似 https://contoso.sharepoint.com/sites/team 的站点地址，并使用工作或学校账号登录。SimpleList 会连接站点的默认文档库；Microsoft 365 管理员可能需要批准站点读取权限。暂不支持管理 SharePoint 回收站和分享链接密码。</value>
   </data>
   <data name="HomePage_GoogleDrive_Title.Text" xml:space="preserve">
     <value>Google Drive</value>
@@ -646,7 +667,7 @@
     <value>检查更新</value>
   </data>
   <data name="SettingPage_CloudOAuth.Description" xml:space="preserve">
-    <value>添加新的 OneDrive 和 Google Drive 账号时使用。</value>
+    <value>添加新的 OneDrive、SharePoint 和 Google Drive 账号时使用。</value>
   </data>
   <data name="SettingPage_CloudOAuth.Header" xml:space="preserve">
     <value>云盘 OAuth</value>
@@ -667,7 +688,7 @@
     <value>已经是最新版本。</value>
   </data>
   <data name="SettingPage_OneDriveClientId.Header" xml:space="preserve">
-    <value>OneDrive Client ID</value>
+    <value>Microsoft Graph Client ID（OneDrive / SharePoint）</value>
   </data>
   <data name="SettingPage_SaveProviderSettings.Content" xml:space="preserve">
     <value>保存</value>
@@ -1057,6 +1078,7 @@
   <data name="PikPak_DownloadUrlUnavailable" xml:space="preserve"><value>此 PikPak 项目没有可用的下载地址。</value></data>
   <data name="GoogleDrive_ErrorFormat" xml:space="preserve"><value>Google Drive 错误：{0}</value></data>
   <data name="OneDrive_ErrorFormat" xml:space="preserve"><value>OneDrive 错误：{0}</value></data>
+  <data name="SharePoint_ErrorFormat" xml:space="preserve"><value>SharePoint 错误：{0}</value></data>
   <data name="Local_FolderNotFoundFormat" xml:space="preserve"><value>本地文件夹不存在：{0}</value></data>
   <data name="Local_ThumbnailsUnavailable" xml:space="preserve"><value>本地项目没有可用的缩略图</value></data>
   <data name="Local_RestoreUnsupported" xml:space="preserve"><value>本地项目不支持还原</value></data>

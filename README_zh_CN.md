@@ -4,7 +4,7 @@
 
 ![SimpleList](https://socialify.git.ci/aiguoli/simplelist/image?description=1&font=Raleway&language=1&name=1&stargazers=1&theme=Light)
 
-SimpleList 是一个面向 Windows 的 WinUI 3 多网盘文件管理器。它把 OneDrive、Google Drive、本地文件夹和 PikPak 集中到同一个界面，并提供跨网盘迁移、任务管理、书签、预览、分享与回收站等功能。
+SimpleList 是一个面向 Windows 的 WinUI 3 多网盘文件管理器。它把 OneDrive、SharePoint、Google Drive、本地文件夹和 PikPak 集中到同一个界面，并提供跨网盘迁移、任务管理、书签、预览、分享与回收站等功能。
 
 ## 主要功能
 
@@ -19,28 +19,30 @@ SimpleList 是一个面向 Windows 的 WinUI 3 多网盘文件管理器。它把
 
 ## 提供商能力
 
-| 能力 | OneDrive | Google Drive | 本地文件夹 | PikPak |
-| --- | :---: | :---: | :---: | :---: |
-| 浏览 / 搜索 / 下载 | ✅ | ✅ | ✅ | ✅ |
-| 上传文件和文件夹 | ✅ | ✅ | ✅ | — |
-| 重命名 / 删除 | ✅ | ✅ | ✅ | ✅ |
-| 回收站管理 | ✅ | ✅ | — | ✅ |
-| 公开分享链接 | ✅ | ✅ | — | — |
-| 链接密码 / 过期时间 | ✅ | — | — | — |
-| 作为迁移来源 | ✅ | ✅ | ✅ | ✅ |
-| 作为迁移目标 | ✅ | ✅ | ✅ | — |
-| 转换为 PDF | ✅ | 仅原生 Google 文档 | — | — |
+| 能力 | OneDrive | SharePoint | Google Drive | 本地文件夹 | PikPak |
+| --- | :---: | :---: | :---: | :---: | :---: |
+| 浏览 / 搜索 / 下载 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 上传文件和文件夹 | ✅ | ✅ | ✅ | ✅ | — |
+| 重命名 / 删除 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 回收站管理 | ✅ | — | ✅ | — | ✅ |
+| 公开分享链接 | ✅ | ✅ | ✅ | — | — |
+| 链接密码 / 过期时间 | ✅ | 仅过期时间 | — | — | — |
+| 作为迁移来源 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 作为迁移目标 | ✅ | ✅ | ✅ | ✅ | — |
+| 转换为 PDF | ✅ | ✅ | 仅原生 Google 文档 | — | — |
 
-PikPak 暂不支持上传、创建分享链接、PDF 转换，也不能作为文件迁移的目标端。
+SharePoint 当前连接站点的默认文档库，暂不支持管理站点回收站和设置分享链接密码。PikPak 暂不支持上传、创建分享链接、PDF 转换，也不能作为文件迁移的目标端。
 
 ## 快速开始
 
 1. 从 GitHub Releases 下载与你的系统架构匹配的 `Portable` 压缩包。
 2. 解压后运行 `SimpleList.exe`。
 3. 打开 **文件**，点击 **添加网盘**，选择提供商。
-4. 完成登录，或选择一个本地文件夹。
+4. 完成登录、填写 SharePoint 站点地址，或选择一个本地文件夹。
 
 Google Drive 需要桌面应用类型的 OAuth 客户端。请先在 Google Cloud Console 中启用 Drive API、配置 OAuth 同意屏并创建凭据，然后在 **设置 → 云盘 OAuth** 中填写 Client ID 与 Client Secret。
+
+使用 SharePoint 时，请填写类似 `https://contoso.sharepoint.com/sites/team` 的站点地址，并使用工作或学校账号登录。SimpleList 会请求 Microsoft Graph 的站点读取和文件读写权限，你的 Microsoft 365 管理员可能需要批准授权。
 
 ## 配置文件
 
@@ -52,7 +54,7 @@ Google Drive 需要桌面应用类型的 OAuth 客户端。请先在 Google Clou
 
 为兼容旧版本，应用仍会读取与 `SimpleList.exe` 同目录的 `appsettings.json`。LocalAppData 中的用户设置优先级最高。
 
-Google OAuth 令牌默认保存在 `cache/GoogleDriveTokenCache/`。OneDrive 使用 MSAL 缓存；PikPak 与分享社区凭据使用 Windows Password Vault。
+Google OAuth 令牌默认保存在 `cache/GoogleDriveTokenCache/`。OneDrive 与 SharePoint 使用 MSAL 缓存；PikPak 与分享社区凭据使用 Windows Password Vault。
 
 ## 发布包
 
@@ -73,7 +75,7 @@ GitHub Releases 为 x64、x86 与 ARM64 提供两种版本：
 仓库包含三个 .NET 项目和一个独立部署的服务：
 
 - **SimpleList** —— WinUI 3 桌面界面、依赖注入、提供商配置与任务编排。
-- **SimpleList.Core** —— 网盘无关的接口和领域模型，以及 OneDrive、Google Drive、本地与 PikPak Provider。
+- **SimpleList.Core** —— 网盘无关的接口和领域模型，以及 OneDrive、SharePoint、Google Drive、本地与 PikPak Provider。
 - **SimpleList.Tests** —— 覆盖存储结果、迁移、分页、路径边界、Provider 映射、认证辅助逻辑与持久化的 xUnit 测试。
 - **services/link-share** —— 使用 Go/Fiber、SQLite、访问令牌与刷新令牌实现的分享社区后端，同时保留兼容 v1/v2 API。
 
@@ -89,7 +91,7 @@ dotnet build SimpleList.sln -c Debug -p:Platform=x64
 dotnet test SimpleList.Tests\SimpleList.Tests.csproj -c Release -p:Platform=x64
 ```
 
-当前共有 63 个 .NET 测试。分享社区服务使用独立的 Go 检查：
+当前共有 90 个 .NET 测试。分享社区服务使用独立的 Go 检查：
 
 ```powershell
 cd services\link-share

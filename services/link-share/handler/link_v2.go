@@ -72,6 +72,13 @@ func GetProvidersV2(c *fiber.Ctx) error {
 			},
 		},
 		{
+			Type:        models.ProviderSharePoint,
+			DisplayName: "SharePoint",
+			Capabilities: providerCapabilitiesV2{
+				PublicShare: true, CommunityPublish: true, Password: false, Expiration: true,
+			},
+		},
+		{
 			Type: models.ProviderPikPak, DisplayName: "PikPak",
 			Capabilities: providerCapabilitiesV2{},
 		},
@@ -286,6 +293,11 @@ func validateProviderOptionsV2(providerType, password string, expiresAt time.Tim
 	case models.ProviderGoogleDrive:
 		if password != "" || !expiresAt.IsZero() {
 			return fmt.Errorf("google_drive does not support password or expiration")
+		}
+		return nil
+	case models.ProviderSharePoint:
+		if password != "" {
+			return fmt.Errorf("sharepoint does not support password")
 		}
 		return nil
 	default:

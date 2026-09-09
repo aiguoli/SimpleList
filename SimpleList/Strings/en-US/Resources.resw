@@ -162,6 +162,18 @@
   <data name="CreateDrive_PikPakInvalidCredentials" xml:space="preserve">
     <value>Please enter a valid PikPak username and password.</value>
   </data>
+  <data name="CreateDrive_SharePointSiteUrl.Header" xml:space="preserve">
+    <value>SharePoint site URL</value>
+  </data>
+  <data name="CreateDrive_SharePointSiteUrl.PlaceholderText" xml:space="preserve">
+    <value>https://contoso.sharepoint.com/sites/team</value>
+  </data>
+  <data name="CreateDrive_SharePointHint.Text" xml:space="preserve">
+    <value>The site's default document library will be added. Your organization may require administrator consent.</value>
+  </data>
+  <data name="CreateDrive_SharePointInvalidSiteUrl" xml:space="preserve">
+    <value>Enter a valid SharePoint site URL, for example https://contoso.sharepoint.com/sites/team.</value>
+  </data>
   <data name="CreateDrive_LoginFailed" xml:space="preserve">
     <value>Login failed.</value>
   </data>
@@ -267,6 +279,9 @@
   <data name="CloudPage_Provider_PikPak" xml:space="preserve">
     <value>PikPak</value>
   </data>
+  <data name="CloudPage_Provider_SharePoint" xml:space="preserve">
+    <value>SharePoint</value>
+  </data>
   <data name="CloudPage_RemoveDriveDialog_Title" xml:space="preserve">
     <value>Remove drive</value>
   </data>
@@ -334,7 +349,7 @@
     <value>Welcome to SimpleList</value>
   </data>
   <data name="HomePage_Tutorial_Subtitle.Text" xml:space="preserve">
-    <value>Connect OneDrive, Google Drive, a local folder, or PikPak from one place. Read the provider notes below before adding your first drive.</value>
+    <value>Connect OneDrive, SharePoint, Google Drive, a local folder, or PikPak from one place. Read the provider notes below before adding your first drive.</value>
   </data>
   <data name="HomePage_QuickStart_Step1.Text" xml:space="preserve">
     <value>1. Complete any provider-specific preparation below. Google Drive requires OAuth credentials before it can be used.</value>
@@ -359,6 +374,12 @@
   </data>
   <data name="HomePage_OneDrive_Content.Text" xml:space="preserve">
     <value>No additional configuration is normally required. Select OneDrive and sign in through the Microsoft browser window. OneDrive supports uploads, downloads, trash, public links, link passwords, and expiration dates.</value>
+  </data>
+  <data name="HomePage_SharePoint_Title.Text" xml:space="preserve">
+    <value>SharePoint</value>
+  </data>
+  <data name="HomePage_SharePoint_Content.Text" xml:space="preserve">
+    <value>Select SharePoint, enter a site URL such as https://contoso.sharepoint.com/sites/team, and sign in with your work or school account. SimpleList connects to the site's default document library. Your Microsoft 365 administrator may need to approve site read access. SharePoint recycle-bin management and link passwords are not available.</value>
   </data>
   <data name="HomePage_GoogleDrive_Title.Text" xml:space="preserve">
     <value>Google Drive</value>
@@ -481,7 +502,7 @@
     <value>Check for Update</value>
   </data>
   <data name="SettingPage_CloudOAuth.Description" xml:space="preserve">
-    <value>Used when adding new OneDrive and Google Drive accounts.</value>
+    <value>Used when adding new OneDrive, SharePoint, and Google Drive accounts.</value>
   </data>
   <data name="SettingPage_CloudOAuth.Header" xml:space="preserve">
     <value>Cloud drive OAuth</value>
@@ -502,7 +523,7 @@
     <value>You are using the latest version.</value>
   </data>
   <data name="SettingPage_OneDriveClientId.Header" xml:space="preserve">
-    <value>OneDrive Client ID</value>
+    <value>Microsoft Graph Client ID (OneDrive / SharePoint)</value>
   </data>
   <data name="SettingPage_SaveProviderSettings.Content" xml:space="preserve">
     <value>Save</value>
@@ -1058,6 +1079,7 @@
   <data name="PikPak_DownloadUrlUnavailable" xml:space="preserve"><value>Download URL is not available for this PikPak item.</value></data>
   <data name="GoogleDrive_ErrorFormat" xml:space="preserve"><value>Google Drive error: {0}</value></data>
   <data name="OneDrive_ErrorFormat" xml:space="preserve"><value>OneDrive error: {0}</value></data>
+  <data name="SharePoint_ErrorFormat" xml:space="preserve"><value>SharePoint error: {0}</value></data>
   <data name="Local_FolderNotFoundFormat" xml:space="preserve"><value>Local folder does not exist: {0}</value></data>
   <data name="Local_ThumbnailsUnavailable" xml:space="preserve"><value>Thumbnails are not available for local items</value></data>
   <data name="Local_RestoreUnsupported" xml:space="preserve"><value>Local items do not support restore</value></data>

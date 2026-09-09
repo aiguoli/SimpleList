@@ -95,4 +95,36 @@ public class StorageProviderFactoryTests
         Assert.Equal("https://dav.example.com", provider.DriveId);
         Assert.Equal("user@example.com", provider.AccountId);
     }
+
+    [Fact]
+    public void Create_SharePoint_InvokesSharePointFactory()
+    {
+        string capturedSiteUrl = null;
+        var factory = new StorageProviderFactory(
+            null,
+            null,
+            null,
+            null,
+            (siteUrl, driveId, accountId) =>
+            {
+                capturedSiteUrl = siteUrl;
+                return new FakeProvider
+                {
+                    ProviderType = ProviderType.SharePoint,
+                    DriveId = driveId,
+                    AccountId = accountId,
+                };
+            });
+
+        var provider = factory.Create(
+            ProviderType.SharePoint,
+            "drive-2",
+            "acct-b",
+            "https://contoso.sharepoint.com/sites/team");
+
+        Assert.Equal(ProviderType.SharePoint, provider.ProviderType);
+        Assert.Equal("drive-2", provider.DriveId);
+        Assert.Equal("acct-b", provider.AccountId);
+        Assert.Equal("https://contoso.sharepoint.com/sites/team", capturedSiteUrl);
+    }
 }

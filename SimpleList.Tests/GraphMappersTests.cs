@@ -53,6 +53,16 @@ public class GraphMappersTests
     }
 
     [Fact]
+    public void ToFileItem_SharePoint_PreservesProviderType()
+    {
+        var driveItem = new GraphDriveItem { Id = "sp-1", Name = "report.docx" };
+
+        FileItem item = GraphMappers.ToFileItem(driveItem, ProviderType.SharePoint);
+
+        Assert.Equal(ProviderType.SharePoint, item.Provider);
+    }
+
+    [Fact]
     public void ToFileItem_WithImage_PopulatesImageMetadata()
     {
         var driveItem = new GraphDriveItem

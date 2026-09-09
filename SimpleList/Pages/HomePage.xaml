@@ -108,6 +108,15 @@
 
             <Expander Style="{StaticResource TutorialExpanderStyle}">
                 <Expander.Header>
+                    <TextBlock x:Uid="HomePage_SharePoint_Title" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                </Expander.Header>
+                <Border Margin="0,4,0,0" Style="{StaticResource TutorialCardStyle}">
+                    <TextBlock x:Uid="HomePage_SharePoint_Content" TextWrapping="Wrap" />
+                </Border>
+            </Expander>
+
+            <Expander Style="{StaticResource TutorialExpanderStyle}">
+                <Expander.Header>
                     <TextBlock x:Uid="HomePage_Local_Title" Style="{StaticResource BodyStrongTextBlockStyle}" />
                 </Expander.Header>
                 <Border Margin="0,4,0,0" Style="{StaticResource TutorialCardStyle}">

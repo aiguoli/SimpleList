@@ -27,6 +27,7 @@
             <ComboBoxItem Content="Google Drive" />
             <ComboBoxItem x:Uid="CreateDrive_Provider_Local" Content="Local" />
             <ComboBoxItem Content="PikPak" />
+            <ComboBoxItem Content="SharePoint" />
         </ComboBox>
         <TextBox x:Name="DriveName" x:Uid="CreateDrive_DisplayName" Header="Display name (optional)" PlaceholderText="Drive name" Text="{Binding DisplayName, Mode=TwoWay}" Margin="10,0,10,10" />
         <Grid
@@ -68,6 +69,21 @@
                 x:Uid="CreateDrive_PikPakRememberPassword"
                 Content="Remember account and password"
                 IsChecked="{Binding PikPakRememberPassword, Mode=TwoWay}" />
+        </StackPanel>
+        <StackPanel
+            Margin="10,0,10,10"
+            Spacing="6"
+            Visibility="{Binding IsSharePointProviderSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBox
+                x:Uid="CreateDrive_SharePointSiteUrl"
+                Header="SharePoint site URL"
+                PlaceholderText="https://contoso.sharepoint.com/sites/team"
+                Text="{Binding SharePointSiteUrl, Mode=TwoWay}" />
+            <TextBlock
+                x:Uid="CreateDrive_SharePointHint"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Text="The site's default document library will be added."
+                TextWrapping="Wrap" />
         </StackPanel>
     </StackPanel>
 </ContentDialog>

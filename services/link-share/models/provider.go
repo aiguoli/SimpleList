@@ -7,6 +7,7 @@ const (
 	ProviderGoogleDrive = "google_drive"
 	ProviderLocal       = "local"
 	ProviderPikPak      = "pikpak"
+	ProviderSharePoint  = "sharepoint"
 )
 
 // NormalizeProviderType converts client-facing aliases to the stable v2 values.
@@ -23,6 +24,8 @@ func NormalizeProviderType(value string) string {
 		return ProviderLocal
 	case "pikpak", "pik_pak":
 		return ProviderPikPak
+	case "sharepoint", "share_point":
+		return ProviderSharePoint
 	default:
 		return normalized
 	}
@@ -33,7 +36,7 @@ func NormalizeProviderType(value string) string {
 // the providers endpoint so clients can explain why publishing is disabled.
 func IsSupportedProvider(value string) bool {
 	switch NormalizeProviderType(value) {
-	case ProviderOneDrive, ProviderGoogleDrive:
+	case ProviderOneDrive, ProviderGoogleDrive, ProviderSharePoint:
 		return true
 	default:
 		return false

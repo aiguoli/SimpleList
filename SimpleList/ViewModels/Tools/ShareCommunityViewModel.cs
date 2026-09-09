@@ -81,6 +81,7 @@ public partial class ShareCommunityViewModel : ObservableObject
             "google_drive" => ProviderType.GoogleDrive,
             "local" => ProviderType.Local,
             "pikpak" => ProviderType.PikPak,
+            "sharepoint" => ProviderType.SharePoint,
             _ => null,
         };
         return providerType is null

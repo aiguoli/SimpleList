@@ -10,6 +10,7 @@ func TestNormalizeProviderType(t *testing.T) {
 		"google-drive":  ProviderGoogleDrive,
 		"Local Storage": ProviderLocal,
 		"pik-pak":       ProviderPikPak,
+		"Share Point":   ProviderSharePoint,
 	}
 	for input, expected := range tests {
 		if actual := NormalizeProviderType(input); actual != expected {
@@ -19,8 +20,8 @@ func TestNormalizeProviderType(t *testing.T) {
 }
 
 func TestSupportedProviders(t *testing.T) {
-	if !IsSupportedProvider(ProviderOneDrive) || !IsSupportedProvider(ProviderGoogleDrive) {
-		t.Fatal("expected OneDrive and Google Drive to be supported")
+	if !IsSupportedProvider(ProviderOneDrive) || !IsSupportedProvider(ProviderGoogleDrive) || !IsSupportedProvider(ProviderSharePoint) {
+		t.Fatal("expected OneDrive, Google Drive, and SharePoint to be supported")
 	}
 	if IsSupportedProvider("local") || IsSupportedProvider("pikpak") {
 		t.Fatal("local and PikPak do not currently support share links")

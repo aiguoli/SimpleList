@@ -2,7 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Contracts;
 using SimpleList.Core.Models;
+using SimpleList.Core.Services;
 using SimpleList.Helpers;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using WinUICommunity;
@@ -19,6 +21,7 @@ namespace SimpleList.ViewModels
         [RelayCommand]
         public async Task<bool> CreateDrive()
         {
+            string normalizedSiteUrl = null;
             if (SelectedProviderType == ProviderType.PikPak
                 && (string.IsNullOrWhiteSpace(PikPakUsername)
                     || string.IsNullOrWhiteSpace(PikPakPassword)
@@ -28,10 +31,18 @@ namespace SimpleList.ViewModels
                 return false;
             }
 
-            IStorageProvider drive = ProviderTypeIndex switch
+            if (SelectedProviderType == ProviderType.SharePoint
+                && !SharePointStorageProvider.TryNormalizeSiteUrl(SharePointSiteUrl, out normalizedSiteUrl))
             {
-                1 => App.CreateGoogleDriveProvider(),
-                3 => App.CreatePikPakProvider("Root", PikPakUsername, PikPakPassword, PikPakRememberPassword),
+                ShowCreateDriveError(Helpers.ResourceHelper.GetLocalized("CreateDrive_SharePointInvalidSiteUrl"));
+                return false;
+            }
+
+            IStorageProvider drive = SelectedProviderType switch
+            {
+                ProviderType.GoogleDrive => App.CreateGoogleDriveProvider(),
+                ProviderType.PikPak => App.CreatePikPakProvider("Root", PikPakUsername, PikPakPassword, PikPakRememberPassword),
+                ProviderType.SharePoint => App.CreateSharePointProvider(normalizedSiteUrl),
                 _ => App.CreateOneDriveProvider(),
             };
             return await FinalizeCreateDriveAsync(drive);
@@ -86,6 +97,13 @@ namespace SimpleList.ViewModels
         {
             if (drive.ProviderType != ProviderType.Local)
             {
+                if (drive is SharePointStorageProvider sharePoint)
+                {
+                    return string.IsNullOrWhiteSpace(sharePoint.SiteDisplayName)
+                        ? new Uri(sharePoint.SiteUrl).Segments[^1].Trim('/')
+                        : sharePoint.SiteDisplayName;
+                }
+
                 return drive.DriveId;
             }
 
@@ -118,17 +136,21 @@ namespace SimpleList.ViewModels
         [ObservableProperty]
         public partial bool PikPakRememberPassword { get; set; } = true;
         [ObservableProperty]
+        public partial string SharePointSiteUrl { get; set; }
+        [ObservableProperty]
         public partial int ProviderTypeIndex { get; set; } = 0;
 
         public ProviderType SelectedProviderType => (ProviderType)ProviderTypeIndex;
         public bool IsLocalProviderSelected => SelectedProviderType == ProviderType.Local;
         public bool IsPikPakProviderSelected => SelectedProviderType == ProviderType.PikPak;
+        public bool IsSharePointProviderSelected => SelectedProviderType == ProviderType.SharePoint;
 
         partial void OnProviderTypeIndexChanged(int value)
         {
             OnPropertyChanged(nameof(SelectedProviderType));
             OnPropertyChanged(nameof(IsLocalProviderSelected));
             OnPropertyChanged(nameof(IsPikPakProviderSelected));
+            OnPropertyChanged(nameof(IsSharePointProviderSelected));
         }
     }
 }

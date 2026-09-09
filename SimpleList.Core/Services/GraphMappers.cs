@@ -5,7 +5,9 @@ namespace SimpleList.Core.Services;
 
 internal static class GraphMappers
 {
-    public static Models.FileItem ToFileItem(GraphDriveItem item)
+    public static Models.FileItem ToFileItem(
+        GraphDriveItem item,
+        Models.ProviderType providerType = Models.ProviderType.OneDrive)
     {
         if (item == null) return null;
         var tokens = new Dictionary<string, string>();
@@ -28,17 +30,19 @@ internal static class GraphMappers
             MimeType = item.File?.MimeType,
             ETag = item.ETag,
             Image = image,
-            Provider = Models.ProviderType.OneDrive,
+            Provider = providerType,
             IsShared = item.Shared != null,
             ProviderTokens = tokens,
         };
     }
 
-    public static Models.PageResult<Models.FileItem> ToPageResult(GraphDriveItemCollection response)
+    public static Models.PageResult<Models.FileItem> ToPageResult(
+        GraphDriveItemCollection response,
+        Models.ProviderType providerType = Models.ProviderType.OneDrive)
     {
         return new Models.PageResult<Models.FileItem>
         {
-            Items = response?.Value?.Select(ToFileItem).ToList() ?? new List<Models.FileItem>(),
+            Items = response?.Value?.Select(item => ToFileItem(item, providerType)).ToList() ?? new List<Models.FileItem>(),
             NextPageToken = response?.OdataNextLink,
         };
     }

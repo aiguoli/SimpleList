@@ -18,7 +18,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
     private const int MaxConcurrentFileUploadCount = 3;
     private const long SimpleUploadMaxBytes = 4 * 1024 * 1024;
     private const string ItemSelect = "id,name,parentReference,size,lastModifiedDateTime,createdDateTime,folder,file,image,eTag,shared,@microsoft.graph.downloadUrl";
-    private static readonly string[] Scopes = ["User.Read", "Files.ReadWrite.All"];
+    private static readonly string[] OneDriveScopes = ["User.Read", "Files.ReadWrite.All"];
 
     private readonly IPublicClientApplication _publicClientApp;
     private readonly Task<MsalCacheHelper> _cacheHelperTask;
@@ -39,12 +39,14 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
         AccountId = accountId;
     }
 
-    public ProviderType ProviderType => ProviderType.OneDrive;
-    public string AccountId { get; private set; }
-    public string DriveId { get; private set; }
-    public bool IsAuthenticated { get; private set; }
-    public bool SupportsTrash => true;
-    public ShareCapabilities ShareCapabilities { get; } = new(true, true, true);
+    public virtual ProviderType ProviderType => ProviderType.OneDrive;
+    public string AccountId { get; protected set; }
+    public string DriveId { get; protected set; }
+    public bool IsAuthenticated { get; protected set; }
+    public virtual bool SupportsTrash => true;
+    public virtual ShareCapabilities ShareCapabilities { get; } = new(true, true, true);
+    protected virtual IReadOnlyList<string> RequiredScopes => OneDriveScopes;
+    private protected GraphRestClient GraphClient => _graphClient;
 
     public Task<StorageResult<bool>> LoginAsync(CancellationToken ct = default)
     {
@@ -62,7 +64,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
         }, ct);
     }
 
-    public Task<StorageResult<string>> GetDisplayNameAsync(CancellationToken ct = default)
+    public virtual Task<StorageResult<string>> GetDisplayNameAsync(CancellationToken ct = default)
     {
         return ExecuteAsync(async () =>
         {
@@ -89,7 +91,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
                 ? $"{DrivePath}/items/{Escape(parentId)}/children?$select={ItemSelect}"
                 : pageToken;
             GraphDriveItemCollection response = await _graphClient.GetAsync(url, GraphJsonContext.Default.GraphDriveItemCollection, ct);
-            return GraphMappers.ToPageResult(response);
+            return GraphMappers.ToPageResult(response, ProviderType);
         }, () => ValidateNotEmpty(parentId, nameof(parentId)));
     }
 
@@ -99,7 +101,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
         {
             GraphDriveItem item = await _graphClient.GetAsync(
                 $"{ItemPath(itemId)}?$select={ItemSelect}", GraphJsonContext.Default.GraphDriveItem, ct);
-            return GraphMappers.ToFileItem(item);
+            return GraphMappers.ToFileItem(item, ProviderType);
         }, () => ValidateNotEmpty(itemId, nameof(itemId)));
     }
 
@@ -157,7 +159,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
                 $"{ItemPath(parentId)}/children", requestBody,
                 GraphJsonContext.Default.GraphCreateFolderRequest,
                 GraphJsonContext.Default.GraphDriveItem, ct);
-            return GraphMappers.ToFileItem(item);
+            return GraphMappers.ToFileItem(item, ProviderType);
         }, () =>
         {
             ValidateNotEmpty(parentId, nameof(parentId));
@@ -173,7 +175,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
             GraphDriveItem item = await _graphClient.PatchAsync(
                 ItemPath(itemId), requestBody, GraphJsonContext.Default.GraphRenameRequest,
                 GraphJsonContext.Default.GraphDriveItem, ct);
-            return GraphMappers.ToFileItem(item);
+            return GraphMappers.ToFileItem(item, ProviderType);
         }, () =>
         {
             ValidateNotEmpty(itemId, nameof(itemId));
@@ -206,7 +208,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
             GraphDriveItem item = await _graphClient.PostAsync(
                 $"{ItemPath(itemId)}/restore", new GraphEmptyObject(), GraphJsonContext.Default.GraphEmptyObject,
                 GraphJsonContext.Default.GraphDriveItem, ct);
-            return GraphMappers.ToFileItem(item);
+            return GraphMappers.ToFileItem(item, ProviderType);
         }, () => ValidateNotEmpty(itemId, nameof(itemId)));
     }
 
@@ -220,7 +222,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
 
             GraphDriveItemCollection response = await _graphClient.GetAsync(url, GraphJsonContext.Default.GraphDriveItemCollection, ct);
             response.Value = response.Value?.Where(item => item.Deleted != null).ToList() ?? [];
-            return GraphMappers.ToPageResult(response);
+            return GraphMappers.ToPageResult(response, ProviderType);
         });
     }
 
@@ -269,7 +271,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
             {
                 using var empty = new MemoryStream();
                 GraphDriveItem emptyItem = await _graphClient.PutContentAsync(ItemContentPath(parentId, file.Name), empty, ct);
-                return GraphMappers.ToFileItem(emptyItem);
+                return GraphMappers.ToFileItem(emptyItem, ProviderType);
             }
 
             bool isResume = !string.IsNullOrWhiteSpace(resumeToken);
@@ -283,7 +285,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
 
             GraphDriveItem uploaded = await _graphClient.UploadLargeFileAsync(
                 uploadUrl, stream, checked((long)size), progress, isResume, ct);
-            return GraphMappers.ToFileItem(uploaded);
+            return GraphMappers.ToFileItem(uploaded, ProviderType);
         });
     }
 
@@ -306,14 +308,14 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
                 using var empty = new MemoryStream();
                 GraphDriveItem emptyItem = await _graphClient.PutContentAsync(ItemContentPath(parentId, fileName), empty, ct);
                 progress?.Report(0);
-                return GraphMappers.ToFileItem(emptyItem);
+                return GraphMappers.ToFileItem(emptyItem, ProviderType);
             }
 
             if (size.HasValue && size.Value <= SimpleUploadMaxBytes)
             {
                 GraphDriveItem item = await _graphClient.PutContentAsync(ItemContentPath(parentId, fileName), content, ct);
                 progress?.Report(size.Value);
-                return GraphMappers.ToFileItem(item);
+                return GraphMappers.ToFileItem(item, ProviderType);
             }
 
             string tempPath = null;
@@ -338,7 +340,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
                 GraphUploadSession uploadSession = await CreateUploadSessionAsync(parentId, fileName, ct);
                 GraphDriveItem uploaded = await _graphClient.UploadLargeFileAsync(
                     uploadSession.UploadUrl, uploadStream, uploadLength, progress, false, ct);
-                return GraphMappers.ToFileItem(uploaded);
+                return GraphMappers.ToFileItem(uploaded, ProviderType);
             }
             finally
             {
@@ -370,7 +372,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
             UploadProgressTracker tracker = new();
             using SemaphoreSlim uploadSemaphore = new(MaxConcurrentFileUploadCount, MaxConcurrentFileUploadCount);
             GraphDriveItem cloudFolder = await UploadFolderInternalAsync(folder, parentId, folder.Name, totalSize, tracker, overallProgress, detailProgress, uploadSemaphore, ct);
-            return GraphMappers.ToFileItem(cloudFolder);
+            return GraphMappers.ToFileItem(cloudFolder, ProviderType);
         });
     }
 
@@ -640,7 +642,7 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
                 : $"{ItemPath(scopeParentId)}/search(q='{escapedQuery}')?$select={ItemSelect}";
             GraphDriveItemCollection response = await _graphClient.GetAsync(
                 url, GraphJsonContext.Default.GraphDriveItemCollection, ct);
-            return GraphMappers.ToPageResult(response);
+            return GraphMappers.ToPageResult(response, ProviderType);
         }, () => ValidateNotEmpty(query, nameof(query)));
     }
 
@@ -663,13 +665,18 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
 
         try
         {
-            GraphDrive driveItem = await _graphClient.GetAsync("me/drive?$select=id", GraphJsonContext.Default.GraphDrive, CancellationToken.None);
+            GraphDrive driveItem = await ResolveDriveAsync(CancellationToken.None).ConfigureAwait(false);
             DriveId = driveItem.Id;
         }
-        catch
+        catch when (!string.IsNullOrWhiteSpace(DriveId))
         {
             // DriveId may already be populated from saved cache; ignore.
         }
+    }
+
+    private protected virtual Task<GraphDrive> ResolveDriveAsync(CancellationToken ct)
+    {
+        return _graphClient.GetAsync("me/drive?$select=id", GraphJsonContext.Default.GraphDrive, ct);
     }
 
     private async Task<string> AcquireAccessTokenAsync(CancellationToken ct)
@@ -688,13 +695,13 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
 
         try
         {
-            _authResult = await _publicClientApp.AcquireTokenSilent(Scopes, account).ExecuteAsync(ct).ConfigureAwait(false);
+            _authResult = await _publicClientApp.AcquireTokenSilent(RequiredScopes, account).ExecuteAsync(ct).ConfigureAwait(false);
         }
         catch (Exception exception) when (exception is MsalUiRequiredException || exception is InvalidOperationException)
         {
             try
             {
-                _authResult = await _publicClientApp.AcquireTokenInteractive(Scopes).ExecuteAsync(ct).ConfigureAwait(false);
+                _authResult = await _publicClientApp.AcquireTokenInteractive(RequiredScopes).ExecuteAsync(ct).ConfigureAwait(false);
             }
             catch (MsalException msalex)
             {
@@ -738,9 +745,12 @@ public class OneDriveStorageProvider : StorageProviderBase, IStorageProvider
             409 => StorageResult<T>.Failure(L("Http_Conflict", "Conflict"), StorageErrorType.Conflict, graphException),
             429 or 500 or 502 or 503 or 504 => StorageResult<T>.Failure(L("Http_ServiceUnavailable", "Service Unavailable"), StorageErrorType.ServiceUnavailable, graphException),
             507 => StorageResult<T>.Failure(L("Http_InsufficientStorage", "Insufficient Storage"), StorageErrorType.QuotaExceeded, graphException),
-            _ => StorageResult<T>.Failure(LF("OneDrive_ErrorFormat", "OneDrive error: {0}", graphException.Message), StorageErrorType.Unknown, graphException),
+            _ => StorageResult<T>.Failure(LF(ProviderErrorResourceKey, ProviderErrorFallback, graphException.Message), StorageErrorType.Unknown, graphException),
         };
     }
+
+    protected virtual string ProviderErrorResourceKey => "OneDrive_ErrorFormat";
+    protected virtual string ProviderErrorFallback => "OneDrive error: {0}";
 
     private string DrivePath => $"drives/{Escape(DriveId)}";
 

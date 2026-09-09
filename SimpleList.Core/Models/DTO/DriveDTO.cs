@@ -15,6 +15,7 @@ public class ProviderDTO
     public string HomeAccountId { get; set; }
     public string DriveId { get; set; }
     public string CredentialStoreKey { get; set; }
+    public string SiteUrl { get; set; }
 }
 
 [JsonSourceGenerationOptions(DefaultIgnoreCondition = JsonIgnoreCondition.Never)]
