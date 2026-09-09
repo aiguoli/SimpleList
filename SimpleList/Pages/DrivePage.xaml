@@ -10,7 +10,7 @@
     xmlns:models="using:SimpleList.Models"
     xmlns:views="using:SimpleList.Views.Layout"
     xmlns:vm="using:SimpleList.ViewModels"
-    xmlns:wuc="using:WinUICommunity"
+    xmlns:wuc="using:DevWinUI"
     d:DataContext="{x:Bind vm:DriveViewModel}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">

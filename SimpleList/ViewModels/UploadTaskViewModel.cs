@@ -187,7 +187,7 @@ public partial class UploadTaskViewModel : ObservableObject
     {
         UpdateOnUiThread(() =>
         {
-            WinUICommunity.Growl.Success(new WinUICommunity.GrowlInfo
+            DevWinUI.Growl.Success(new DevWinUI.GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("Success"),
                 StaysOpen = false,
@@ -200,7 +200,7 @@ public partial class UploadTaskViewModel : ObservableObject
     {
         UpdateOnUiThread(() =>
         {
-            WinUICommunity.Growl.Error(new WinUICommunity.GrowlInfo
+            DevWinUI.Growl.Error(new DevWinUI.GrowlInfo
             {
                 Title = Helpers.ResourceHelper.GetLocalized("Error"),
                 Message = message,
@@ -223,7 +223,7 @@ public partial class UploadTaskViewModel : ObservableObject
         FolderUploadItems.Clear();
         _folderProgressMap.Clear();
 
-        WinUICommunity.Growl.Info(new WinUICommunity.GrowlInfo
+        DevWinUI.Growl.Info(new DevWinUI.GrowlInfo
         {
             Title = Helpers.ResourceHelper.GetLocalized("TaskManagerPage_Upload"),
             Message = string.Format(Helpers.ResourceHelper.GetLocalized("TaskManagerPage_StartUploadDesc"), _item.Name),

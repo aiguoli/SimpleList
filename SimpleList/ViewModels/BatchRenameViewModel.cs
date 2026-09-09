@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using WinUICommunity;
+using DevWinUI;
 
 namespace SimpleList.ViewModels;
 

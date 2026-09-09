@@ -12,8 +12,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using WinUICommunity;
+using DevWinUI;
 using AppResourceHelper = SimpleList.Helpers.ResourceHelper;
+using Utils = SimpleList.Services.Utils;
 
 namespace SimpleList.Pages
 {
@@ -114,7 +115,7 @@ namespace SimpleList.Pages
             CheckUpdateButton.IsEnabled = false;
             zipballUrl = null;
             IsUpdateAvailable = false;
-            var ver = await UpdateHelper.CheckUpdateAsync("aiguoli", "SimpleList");
+            var (ver, _) = await UpdateHelper.CheckUpdateAsync("aiguoli", "SimpleList");
             if (ver.IsExistNewVersion)
             {
                 // Update App

@@ -5,7 +5,7 @@ using SimpleList.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WinUICommunity;
+using DevWinUI;
 
 namespace SimpleList.ViewModels;
 

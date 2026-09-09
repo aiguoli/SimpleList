@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SimpleList.Core.Models;
 using SimpleList.Helpers;
 using System.Threading.Tasks;
-using WinUICommunity;
+using DevWinUI;
 
 namespace SimpleList.ViewModels;
 
